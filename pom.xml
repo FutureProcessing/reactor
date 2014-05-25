@@ -11,8 +11,8 @@
 
     <repositories>
         <repository>
-            <id>gmaslowski-nexus</id>
-            <url>http://nexus-gmaslowski.rhcloud.com/nexus/content/groups/public</url>
+            <id>activey-cloudbees</id>
+            <url>http://repository-activey.forge.cloudbees.com/release</url>
         </repository>
     </repositories>
 
@@ -33,7 +33,7 @@
     <properties>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         
-        <com.bethecode.ascii_table.version>0.0.1</com.bethecode.ascii_table.version>
+        <com.bethecode.ascii-table.version>0.0.1</com.bethecode.ascii-table.version>
         <org.slf4j.version>1.7.1</org.slf4j.version>
         <org.slf4j.slf4j-log4j12.version>1.7.5</org.slf4j.slf4j-log4j12.version>
         <log4j.log4j.version>1.2.12</log4j.log4j.version>
@@ -156,9 +156,9 @@
             </dependency>
 
             <dependency>
-                <groupId>com.bethecode</groupId>
-                <artifactId>ascii_table</artifactId>
-                <version>${com.bethecode.ascii_table.version}</version>
+                <groupId>com.bethecoder</groupId>
+                <artifactId>ascii-table</artifactId>
+                <version>${com.bethecode.ascii-table.version}</version>
             </dependency>
 
             <dependency>

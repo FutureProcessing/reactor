@@ -38,8 +38,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.bethecode</groupId>
-            <artifactId>ascii_table</artifactId>
+            <groupId>com.bethecoder</groupId>
+            <artifactId>ascii-table</artifactId>
         </dependency>
 
         <dependency>
