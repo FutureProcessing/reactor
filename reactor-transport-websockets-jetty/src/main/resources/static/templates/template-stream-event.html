@@ -1,0 +1,8 @@
+<i class="close icon" data-ng-click="removeEvent()"></i>
+
+<i class="exclamation icon"></i>
+
+<div class="content">
+    <div class="header truncate" style="white-space: pre !important;" data-ng-bind-html-unsafe="event.body | parseUrl"></div>
+    <p>{{event.date | date:'yyyy-MM-dd HH:mm:ss.sss'}}</p>
+</div>

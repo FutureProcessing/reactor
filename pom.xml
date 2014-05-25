@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.reactor</groupId>
+    <artifactId>reactor-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1</version>
+
+    <repositories>
+        <repository>
+            <id>gmaslowski-nexus</id>
+            <url>http://nexus-gmaslowski.rhcloud.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        
+        <com.bethecode.ascii_table.version>0.0.1</com.bethecode.ascii_table.version>
+        <org.slf4j.version>1.7.1</org.slf4j.version>
+        <org.slf4j.slf4j-log4j12.version>1.7.5</org.slf4j.slf4j-log4j12.version>
+        <log4j.log4j.version>1.2.12</log4j.log4j.version>
+        <com.google.guava.version>15.0</com.google.guava.version>
+        <commons-beanutils.version>1.8.3</commons-beanutils.version>
+        <commons-cli.version>1.2</commons-cli.version>
+        <org.pircbotx.version>2.0</org.pircbotx.version>
+        <org.apache.mina.version>2.0.4</org.apache.mina.version>
+        <org.webbitserver.webbit.version>0.4.15</org.webbitserver.webbit.version>
+        <org.json.version>20140107</org.json.version>
+
+        <com.offbytwo.jenkins.jenkins-client.version>0.2.2-SNAPSHOT</com.offbytwo.jenkins.jenkins-client.version>
+        <com.github.taksan.skype.version>1.5</com.github.taksan.skype.version>
+        <org.eclipse.jetty.version>8.1.10.v20130312</org.eclipse.jetty.version>
+        <junit.junit.version>4.8.1</junit.junit.version>
+        <org.mockito.version>1.9.0</org.mockito.version>
+        <fest-assert.version>1.4</fest-assert.version>
+
+        <org.reactor.api.version>0.0.1</org.reactor.api.version>
+        <org.reactor.jira.version>0.0.1</org.reactor.jira.version>
+        <org.reactor.jenkins.version>0.0.1</org.reactor.jenkins.version>
+        <org.reactor.filesystem.version>0.0.1</org.reactor.filesystem.version>
+        <org.reactor.transport-irc.version>0.0.1</org.reactor.transport-irc.version>
+        <org.reactor.transport-skype.version>0.0.1</org.reactor.transport-skype.version>
+        <org.reactor.transport-telnet.version>0.0.1</org.reactor.transport-telnet.version>
+        <org.reactor.transport-websockets.version>0.0.1</org.reactor.transport-websockets.version>
+        <org.reactor.transport-speech.version>0.0.1</org.reactor.transport-speech.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-commons</artifactId>
+                <version>${org.reactor.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-api</artifactId>
+                <version>${org.reactor.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-jira</artifactId>
+                <version>${org.reactor.jira.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-jenkins</artifactId>
+                <version>${org.reactor.jenkins.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-filesystem</artifactId>
+                <version>${org.reactor.filesystem.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-transport-irc</artifactId>
+                <version>${org.reactor.transport-irc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-transport-skype</artifactId>
+                <version>${org.reactor.transport-skype.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-transport-telnet</artifactId>
+                <version>${org.reactor.transport-telnet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-transport-websockets-jetty</artifactId>
+                <version>${org.reactor.transport-websockets.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-transport-speech</artifactId>
+                <version>${org.reactor.transport-speech.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>${org.apache.mina.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webbitserver</groupId>
+                <artifactId>webbit</artifactId>
+                <version>${org.webbitserver.webbit.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-server</artifactId>
+                <version>${org.eclipse.jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-websocket</artifactId>
+                <version>${org.eclipse.jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${org.json.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bethecode</groupId>
+                <artifactId>ascii_table</artifactId>
+                <version>${com.bethecode.ascii_table.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${com.google.guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils-core</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-cli</groupId>
+                <artifactId>commons-cli</artifactId>
+                <version>${commons-cli.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${org.slf4j.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${org.slf4j.slf4j-log4j12.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.log4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.pircbotx</groupId>
+                <artifactId>pircbotx</artifactId>
+                <version>${org.pircbotx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.offbytwo.jenkins</groupId>
+                <artifactId>jenkins-client</artifactId>
+                <version>${com.offbytwo.jenkins.jenkins-client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.taksan</groupId>
+                <artifactId>skype-java-api</artifactId>
+                <version>${com.github.taksan.skype.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${org.mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.easytesting</groupId>
+                <artifactId>fest-assert</artifactId>
+                <version>${fest-assert.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>reactor-commons</module>
+
+        <module>reactor-api</module>
+        <module>reactor-bootstrap</module>
+        <module>reactor-jira</module>
+        <module>reactor-jenkins</module>
+        <module>reactor-filesystem</module>
+
+        <module>reactor-transport-irc</module>
+        <module>reactor-transport-skype</module>
+        <module>reactor-transport-telnet</module>
+        <module>reactor-transport-websockets-jetty</module>
+        <module>reactor-transport-speech</module>
+
+        <module>travelling</module>
+    </modules>
+</project>

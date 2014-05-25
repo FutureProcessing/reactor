@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html data-ng-app="ReactorConsole">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>Reactor Console</title>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/feed.js"></script>
+    <script src="js/semantic.js"></script>
+    <script src="js/ngStorage.js"></script>
+    <script src="js/jquery.terminal-0.8.7.min.js"></script>
+    <script src="js/reconnecting-websocket.js"></script>
+
+    <script src="js/services/service-configuration.js"></script>
+    <script src="js/services/service-websockets.js"></script>
+    <script src="js/services/service-event-storage.js"></script>
+
+    <script src="js/controllers/controller-stream.js"></script>
+    <script src="js/controllers/controller-sidebar-button.js"></script>
+
+    <script src="js/directives/directive-stream-event.js"></script>
+    <script src="js/directives/directive-reactor-console.js"></script>
+    <script src="js/directives/directive-sidebar.js"></script>
+    <script src="js/directives/directive-connection-monitor.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/feed.css">
+    <link rel="stylesheet" type="text/css" href="css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.terminal.css">
+</head>
+<body id="feed">
+
+<div class="ui basic modal" data-connection-monitor>
+    <div class="header">
+        Unable to connect to Reactor Server, reconnecting ...
+    </div>
+</div>
+
+<div class="ui purple launch bottom attached icon button floating" data-ng-controller="SidebarButtonController" data-ng-click="toggleSidebar()">
+    <i class="icon setting"></i>
+</div>
+
+<div class="ui top floating sidebar" data-sidebar>
+    <div class="ui purple inverted menu">
+        <a class="item">
+            <i class="checkmark icon red"></i>
+            Enable HTML5 Desktop Notifications
+        </a>
+    </div>
+</div>
+
+<div class="ui celled grid full">
+    <div class="eight wide middle column" data-ng-controller="ReactorEventsController">
+
+        <h2 class="ui dividing header">
+            <i class="bullhorn icon"></i>
+            Broadcast stream
+        </h2>
+
+        <div class="ui grid">
+            <div class="six wide column">
+                <div class="ui pagination menu">
+                    <a class="icon item" data-ng-click="firstPage()"
+                       data-ng-class="{'disabled' : !hasPreviousPage()}"><i class="icon left double angle"></i></a>
+                    <a class="icon item" data-ng-click="previousPage()"
+                       data-ng-class="{'disabled' : !hasPreviousPage()}"><i class="icon left angle"></i></a>
+                    <a class="icon item" data-ng-click="nextPage()" data-ng-class="{'disabled' : !hasNextPage()}"><i
+                            class="icon right angle"></i></a>
+                </div>
+            </div>
+            <div class="ten wide column">
+                <div class="page">Showing page <strong>{{currentPage()}}</strong> of {{eventPagesCount()}} (of
+                    {{totalEvents()}} events in total)
+                </div>
+            </div>
+        </div>
+
+        <div class="ui icon info message"
+             data-ng-repeat="event in eventStorage.events | startFrom: eventsPage * eventsPerPage | limitTo: eventsPerPage"
+             data-stream-event
+             data-event="event" data-event-index="$index">
+        </div>
+
+    </div>
+    <div class="eight wide right column">
+        <div class="scrolling" reactor-console></div>
+    </div>
+</div>
+</body>
+
+</html>
