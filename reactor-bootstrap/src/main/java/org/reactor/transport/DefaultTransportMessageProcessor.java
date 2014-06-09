@@ -20,8 +20,8 @@ public class DefaultTransportMessageProcessor implements ReactorMessageTransport
 
     @Override
     public void processTransportMessage(String messageText, String sender, Writer responseWriter) {
-        ReactorRequest request = parseRequestFromLine(sender, messageText);
         try {
+            ReactorRequest request = parseRequestFromLine(sender, messageText);
             ReactorResponse response = reactorSupplier.get().react(request);
             response.renderResponse(responseWriter);
         } catch (Exception e) {

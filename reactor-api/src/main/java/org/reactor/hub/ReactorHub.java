@@ -29,10 +29,10 @@ public class ReactorHub extends AbstractReactor implements InitializingReactor, 
     private final List<Reactor> reactors = newArrayList();
 
     public ReactorHub() {
-        collectReactors();
+        collectHubReactors();
     }
 
-    private void collectReactors() {
+    private void collectHubReactors() {
         reactors.add(new HubDetailsReactor());
 
         ServiceLoader<Reactor> reactorsLoader = ServiceLoader.load(Reactor.class);

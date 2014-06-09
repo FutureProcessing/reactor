@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractAnnotatedNestingReactor extends AbstractNestingReactor {
 
     private final static Logger LOG = LoggerFactory.getLogger(AbstractAnnotatedNestingReactor.class);
+
     private String reactorTrigger;
     private String reactorDescription;
 

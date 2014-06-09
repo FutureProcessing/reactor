@@ -8,9 +8,7 @@ public interface JourneyStepVisitor<SUBJECT> {
 
     AbstractJourneyStep<SUBJECT> moveBackward();
 
-    AbstractJourneyStep<SUBJECT> fork(ForkingStepOutcome<SUBJECT> forkingStepOutcome);
+    void fork(ForkingStepOutcome<SUBJECT> forkingStepOutcome);
 
     void endJourney();
-
-    boolean hasJourneyEnded();
 }

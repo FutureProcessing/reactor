@@ -1,14 +1,14 @@
 package org.reactor.jira;
 
-import org.reactor.jira.command.BeHappyReactor;
-import org.reactor.jira.command.EnvironmentVariableReactor;
-import org.reactor.jira.command.PingReactor;
 import org.reactor.InitializingReactor;
 import org.reactor.ReactorProperties;
 import org.reactor.annotation.AbstractAnnotatedNestingReactor;
 import org.reactor.annotation.ReactOn;
 import org.reactor.annotation.ReactorRequestParameter;
 import org.reactor.command.PrintNestedReactorsReactor;
+import org.reactor.jira.command.BeHappyReactor;
+import org.reactor.jira.command.EnvironmentVariableReactor;
+import org.reactor.jira.command.PingReactor;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.StringReactorResponse;
 

@@ -61,6 +61,7 @@
         <org.reactor.transport-telnet.version>0.0.1</org.reactor.transport-telnet.version>
         <org.reactor.transport-websockets.version>0.0.1</org.reactor.transport-websockets.version>
         <org.reactor.transport-speech.version>0.0.1</org.reactor.transport-speech.version>
+        <org.reactor.transport-directinput.version>0.0.1</org.reactor.transport-directinput.version>
     </properties>
 
     <dependencyManagement>
@@ -123,6 +124,12 @@
                 <groupId>org.reactor</groupId>
                 <artifactId>reactor-transport-speech</artifactId>
                 <version>${org.reactor.transport-speech.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-transport-directinput</artifactId>
+                <version>${org.reactor.transport-directinput.version}</version>
             </dependency>
 
             <dependency>
@@ -253,7 +260,9 @@
         <module>reactor-transport-telnet</module>
         <module>reactor-transport-websockets-jetty</module>
         <module>reactor-transport-speech</module>
+        <module>reactor-transport-directinput</module>
 
         <module>travelling</module>
+        <module>reactor-interactive</module>
     </modules>
 </project>

@@ -48,6 +48,7 @@ public class TelnetMessageTransport extends KeepAliveReactorMessageTransport {
 
     @Override
     public void stopTransport() {
+        acceptor.dispose();
         acceptor.unbind();
         acceptor = null;
     }

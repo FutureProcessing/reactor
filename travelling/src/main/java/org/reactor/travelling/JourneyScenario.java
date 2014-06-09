@@ -1,19 +1,17 @@
 package org.reactor.travelling;
 
 import com.google.common.base.Supplier;
-
 import org.reactor.travelling.step.AbstractJourneyStep;
 import org.reactor.travelling.step.JourneyStepVisitor;
 import org.reactor.travelling.step.forking.ForkingStepOutcome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.List;
 
 public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
 
     private final static Logger LOG = LoggerFactory.getLogger(JourneyScenario.class);
-    
+
     private final SUBJECT scenarioSubject;
     private final List<AbstractJourneyStep<SUBJECT>> journeySteps;
     private final JourneyScenario<SUBJECT> parentScenario;
@@ -28,11 +26,15 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
         this.scenarioSubject = scenarioSubject;
         this.journeySteps = journeySteps;
 
-        startScenario();
+        startJourney();
     }
 
-    private void startScenario() {
+    private void startJourney() {
         currentStep().beforeStep();
+    }
+
+    public boolean hasJourneyEnded() {
+        return journeyEnded;
     }
 
     public void answer(String stepInput) {
@@ -71,10 +73,16 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
         return currentStep();
     }
 
+    private AbstractJourneyStep<SUBJECT> currentStep() {
+        if (forkedScenario != null) {
+            return forkedScenario.currentStep();
+        }
+        return journeySteps.get(stepIndex);
+    }
+
     @Override
-    public AbstractJourneyStep<SUBJECT> fork(ForkingStepOutcome<SUBJECT> forkingStepOutcome) {
+    public void fork(ForkingStepOutcome<SUBJECT> forkingStepOutcome) {
         this.forkedScenario = forkingStepOutcome.createForkedScenario(scenarioSubject, this);
-        return currentStep();
     }
 
     @Override
@@ -90,11 +98,6 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
             forkedScenario = null;
             moveForward().beforeStep();
         }
-    }
-
-    @Override
-    public boolean hasJourneyEnded() {
-        return journeyEnded;
     }
 
     private boolean validateCanMoveForward() {
@@ -113,10 +116,4 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
         return false;
     }
 
-    private AbstractJourneyStep<SUBJECT> currentStep() {
-        if (forkedScenario != null) {
-            return forkedScenario.currentStep();
-        }
-        return journeySteps.get(stepIndex);
-    }
 }
