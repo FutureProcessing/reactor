@@ -1,8 +1,10 @@
 package org.reactor.annotation;
 
+import org.reactor.request.parser.ReactorRequestParameterDefinition;
+
 public class AnnotatedNestingReactorMethodParametersMissingException extends AnnotatedNestingReactorMethodInvokerException {
 
-    public AnnotatedNestingReactorMethodParametersMissingException(AnnotatedNestingReactorMethodProxyOption option) {
+    public AnnotatedNestingReactorMethodParametersMissingException(ReactorRequestParameterDefinition option) {
         super("Missing value for required option: %s", option.getName());
     }
 }

@@ -64,7 +64,7 @@
             <artifactId>reactor-filesystem</artifactId>
         </dependency>
 
-        <dependency>
+        <!-- dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-skype</artifactId>
         </dependency>
@@ -75,7 +75,7 @@
         </dependency>
 
 
-        <!-- dependency>
+        <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-speech</artifactId>
         </dependency>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-teamspeak</artifactId>
-        </dependency -->
+        </dependency>
 
         <dependency>
             <groupId>org.reactor</groupId>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-websockets-jetty</artifactId>
-        </dependency>
+        </dependency -->
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -117,6 +117,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.reactor</groupId>
+            <artifactId>travelling</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -133,5 +138,6 @@
             <artifactId>fest-assert</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 </project>

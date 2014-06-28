@@ -2,20 +2,20 @@ package org.reactor.request;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ReactorRequest {
+public class ReactorRequest<T> {
 
     private final String sender;
     private final String trigger;
-    private final String[] arguments;
+    private final T requestData;
 
-    public ReactorRequest(String sender, String trigger, String... arguments) {
+    public  ReactorRequest(String sender, String trigger, T requestData) {
         this.sender = sender;
         this.trigger = trigger;
-        this.arguments = arguments;
+        this.requestData = requestData;
     }
 
-    public String[] getArguments() {
-        return arguments;
+    public T getRequestData() {
+        return requestData;
     }
 
     public String getTrigger() {

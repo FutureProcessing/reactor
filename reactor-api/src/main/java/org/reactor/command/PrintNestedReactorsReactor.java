@@ -2,30 +2,31 @@ package org.reactor.command;
 
 import static java.lang.String.format;
 import org.reactor.AbstractNestingReactor;
+import org.reactor.AbstractReactor;
 import org.reactor.Reactor;
-import org.reactor.annotation.AbstractAnnotatedReactor;
+import org.reactor.annotation.ReactOn;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
-import org.reactor.annotation.ReactOn;
 import org.reactor.response.list.ListElementFormatter;
 import org.reactor.response.list.ListReactorResponse;
 
 @ReactOn(value = "help", description = "Prints out this information")
-public class PrintNestedReactorsReactor extends AbstractAnnotatedReactor {
+public class PrintNestedReactorsReactor extends AbstractReactor<Void> {
 
     private final AbstractNestingReactor nestingReactor;
 
     public PrintNestedReactorsReactor(AbstractNestingReactor nestingReactor) {
+        super(Void.class);
         this.nestingReactor = nestingReactor;
     }
 
     @Override
-    public ReactorResponse doReact(ReactorRequest request) {
+    public ReactorResponse doReact(ReactorRequest<Void> request) {
         return new ListReactorResponse<Reactor>(nestingReactor.getDescription()) {
 
             @Override
             protected Iterable<Reactor> getElements() {
-                return nestingReactor.getNestedReactors();
+                return nestingReactor.subReactors();
             }
 
             @Override

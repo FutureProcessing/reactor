@@ -6,6 +6,7 @@ import static java.util.Arrays.asList;
 import com.google.common.base.Predicate;
 import java.lang.reflect.Method;
 import org.apache.commons.cli.ParseException;
+import org.reactor.AbstractNestingReactor;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.CommandHelpResponse;
 import org.reactor.response.ExceptionReactorResponse;
@@ -13,18 +14,15 @@ import org.reactor.response.ReactorResponse;
 
 public class AnnotatedNestingReactorMethodInvoker {
 
-    private final AbstractAnnotatedNestingReactor nestingReactor;
-    private final AnnotatedNestingReactorMethodProxyOptionsProvider optionsProvider;
+    private final AnnotatedNestingReactorMethodProxyOptionsProvider optionsProvider = new AnnotatedNestingReactorMethodProxyOptionsProvider();
+    private final AbstractNestingReactor nestingReactor;
 
     private AnnotatedNestingReactorMethodProxyArgumentsProvider objectMethodArgumentsProvider;
     private Method objectMethodToInvoke;
 
-    public AnnotatedNestingReactorMethodInvoker(AbstractAnnotatedNestingReactor nestingReactor,
-                                                Predicate<Method> methodFilter,
-                                                AnnotatedNestingReactorMethodProxyOptionsProvider optionsProvider) {
+    public AnnotatedNestingReactorMethodInvoker(AbstractNestingReactor nestingReactor,
+                                                Predicate<Method> methodFilter) {
         this.nestingReactor = nestingReactor;
-        this.optionsProvider = optionsProvider;
-
         initializeObjectMethodToInvoke(methodFilter);
         initializeObjectMethodArgumentsProvider(optionsProvider);
     }

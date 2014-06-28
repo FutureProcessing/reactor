@@ -17,14 +17,9 @@ public class TransportController {
 
     private final static ListeningExecutorService executorService = listeningDecorator(newFixedThreadPool(10));
 
-    private final ReactorMessageTransportProcessor transportProcessor;
-    private final TransportProperties transportProperties;
     private final List<ReactorMessageTransport> transports = newArrayList();
 
-    public TransportController(ReactorMessageTransportProcessor transportProcessor, TransportProperties transportProperties) {
-        this.transportProcessor = transportProcessor;
-        this.transportProperties = transportProperties;
-
+    public TransportController() {
         loadTransports();
     }
 
@@ -36,17 +31,19 @@ public class TransportController {
         }
     }
 
-    public final void startTransports() {
+    public final void startTransports(TransportProperties transportProperties,
+                                      ReactorMessageTransportProcessor messageTransportProcessor) {
         for (ReactorMessageTransport transport : transports) {
-            startTransport(transport);
+            startTransport(transport, transportProperties, messageTransportProcessor);
         }
         executorService.shutdown();
         new TransportsShutdownHook(this).initHook();
     }
 
-    private void startTransport(ReactorMessageTransport transport) {
+    private void startTransport(ReactorMessageTransport transport, TransportProperties transportProperties,
+                                ReactorMessageTransportProcessor messageTransportProcessor) {
         addCallback(executorService.submit(new TransportInitializationCallable(transport, transportProperties,
-            transportProcessor)), new TransportInitializationCallback(transport));
+            messageTransportProcessor)), new TransportInitializationCallback(transport));
     }
 
     public final void stopTransports() {

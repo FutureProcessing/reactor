@@ -1,19 +1,21 @@
 package org.reactor.transport.telnet;
 
+import static java.lang.String.valueOf;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.reactor.transport.ReactorMessageTransportProcessor;
 
 public class TelnetMessageProcessorHandler extends IoHandlerAdapter {
 
-    private final ReactorMessageTransportProcessor messageTransport;
+    private final ReactorMessageTransportProcessor messageTransportProcessor;
 
-    public TelnetMessageProcessorHandler(ReactorMessageTransportProcessor messageTransport) {
-        this.messageTransport = messageTransport;
+    public TelnetMessageProcessorHandler(ReactorMessageTransportProcessor messageTransportProcessor) {
+        this.messageTransportProcessor = messageTransportProcessor;
     }
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-        messageTransport.processTransportMessage(message.toString(), "", new TelnetSessionResponseWriter(session));
+        messageTransportProcessor.processTransportMessage(message.toString(), valueOf(session.getId()),
+            new TelnetSessionResponseWriter(session));
     }
 }

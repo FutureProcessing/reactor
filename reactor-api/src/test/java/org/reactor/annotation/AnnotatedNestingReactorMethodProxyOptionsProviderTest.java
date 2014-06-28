@@ -7,6 +7,7 @@ import org.reactor.AbstractUnitTest;
 import org.reactor.TestAnnotatedNestingReactor;
 
 import java.lang.reflect.Method;
+import org.reactor.request.parser.ReactorRequestParameterDefinition;
 
 public class AnnotatedNestingReactorMethodProxyOptionsProviderTest extends AbstractUnitTest {
 
@@ -20,7 +21,7 @@ public class AnnotatedNestingReactorMethodProxyOptionsProviderTest extends Abstr
         method = givenAnnotatedMethod();
 
         // when
-        Iterable<AnnotatedNestingReactorMethodProxyOption> options = optionsProvider
+        Iterable<ReactorRequestParameterDefinition> options = optionsProvider
             .provideReactorMethodProxyOptions(method);
 
         // then
@@ -28,21 +29,21 @@ public class AnnotatedNestingReactorMethodProxyOptionsProviderTest extends Abstr
             givenIntOption("argumentB", "b"), givenBooleanOption("argumentC", "c"));
     }
 
-    private AnnotatedNestingReactorMethodProxyOption givenStringOption(String name, String shortName) {
+    private ReactorRequestParameterDefinition givenStringOption(String name, String shortName) {
         return givenOption(name, shortName, false, String.class);
     }
 
-    private AnnotatedNestingReactorMethodProxyOption givenBooleanOption(String name, String shortName) {
+    private ReactorRequestParameterDefinition givenBooleanOption(String name, String shortName) {
         return givenOption(name, shortName, false, boolean.class);
     }
 
-    private AnnotatedNestingReactorMethodProxyOption givenIntOption(String name, String shortName) {
+    private ReactorRequestParameterDefinition givenIntOption(String name, String shortName) {
         return givenOption(name, shortName, false, int.class);
     }
 
-    private AnnotatedNestingReactorMethodProxyOption givenOption(String name, String shortName, boolean required,
+    private ReactorRequestParameterDefinition givenOption(String name, String shortName, boolean required,
                                                                  Class<?> dataType) {
-        return new AnnotatedNestingReactorMethodProxyOption(name, shortName, required, dataType);
+        return new ReactorRequestParameterDefinition(name, shortName, required, dataType);
     }
 
     private Method givenAnnotatedMethod() throws NoSuchMethodException {

@@ -1,13 +1,13 @@
 package org.reactor.response;
 
 import static com.google.common.collect.Iterables.transform;
-import static org.reactor.annotation.AnnotatedNestingReactorMethodProxyOption.TO_CMD_LINE_OPTION;
+import static org.reactor.request.parser.ReactorRequestParameterDefinition.TO_CMD_LINE_OPTION;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.reactor.Reactor;
-import org.reactor.annotation.AnnotatedNestingReactorMethodProxyOption;
+import org.reactor.request.parser.ReactorRequestParameterDefinition;
 
 import java.io.PrintWriter;
 
@@ -15,11 +15,11 @@ public class CommandHelpResponse extends StringReactorResponse {
 
     public static final int TEXT_WIDTH = 100;
     private final Reactor reactor;
-    private final Iterable<AnnotatedNestingReactorMethodProxyOption> arguments;
+    private final Iterable<ReactorRequestParameterDefinition> arguments;
 
     private HelpFormatter helpFormatter;
 
-    public CommandHelpResponse(String reason, Reactor reactor, Iterable<AnnotatedNestingReactorMethodProxyOption> arguments) {
+    public CommandHelpResponse(String reason, Reactor reactor, Iterable<ReactorRequestParameterDefinition> arguments) {
         super(reason);
         this.reactor = reactor;
         this.arguments = arguments;

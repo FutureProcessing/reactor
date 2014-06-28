@@ -3,9 +3,9 @@ package org.reactor.annotation;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_DESCRIPTION;
 import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_TRIGGER;
-import static org.reactor.request.ArgumentsParser.parseArguments;
 
 import org.junit.Test;
+import org.reactor.AbstractReactor;
 import org.reactor.AbstractUnitTest;
 import org.reactor.TestAnnotatedReactor;
 import org.reactor.TestNotAnnotatedReactor;
@@ -18,7 +18,7 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
 
     public static final String SENDER = "sender";
 
-    private AbstractAnnotatedReactor reactor;
+    private AbstractReactor reactor;
     private ReactorRequest reactorRequest;
 
     @Test
@@ -44,26 +44,21 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
     public void shouldInvokeReactorAndReturnAwaitedResult() throws Exception {
         // given
         reactor = givenAnnotatedReactor();
-        reactorRequest = givenReactorRequest("one two three");
 
         // when
         StringWriter writer = new StringWriter();
-        ReactorResponse response = reactor.react(reactorRequest);
+        ReactorResponse response = reactor.react(SENDER, "one two three");
         response.renderResponse(writer);
 
         // then
         assertThat(writer.toString()).isEqualTo("one,two,three");
     }
 
-    private ReactorRequest givenReactorRequest(String argumentsString) {
-        return new ReactorRequest(SENDER, ANNOTATED_REACTOR_TRIGGER, parseArguments(argumentsString));
-    }
-
-    private AbstractAnnotatedReactor givenNotAnnotatedReactor() {
+    private AbstractReactor givenNotAnnotatedReactor() {
         return new TestNotAnnotatedReactor();
     }
 
-    private AbstractAnnotatedReactor givenAnnotatedReactor() {
+    private AbstractReactor givenAnnotatedReactor() {
         return new TestAnnotatedReactor();
     }
 }

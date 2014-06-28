@@ -1,6 +1,6 @@
 package org.reactor;
 
-import org.reactor.request.ReactorRequest;
+import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.response.ReactorResponse;
 
 public interface Reactor {
@@ -9,5 +9,7 @@ public interface Reactor {
 
     String getDescription();
 
-    ReactorResponse react(ReactorRequest reactorRequest);
+    ReactorResponse react(String sender, String reactorInput);
+
+    void accept(ReactorTopologyDiscoveringVisitor topologyVisitor);
 }

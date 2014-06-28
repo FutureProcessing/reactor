@@ -4,11 +4,12 @@ import static com.google.common.collect.Lists.newLinkedList;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
+import org.reactor.request.parser.ReactorRequestParameterDefinition;
 
 public class AnnotatedNestingReactorMethodProxyOptionsProvider {
 
-    public final Iterable<AnnotatedNestingReactorMethodProxyOption> provideReactorMethodProxyOptions(Method objectMethod) {
-        List<AnnotatedNestingReactorMethodProxyOption> parameterDefinitions = newLinkedList();
+    public final Iterable<ReactorRequestParameterDefinition> provideReactorMethodProxyOptions(Method objectMethod) {
+        List<ReactorRequestParameterDefinition> parameterDefinitions = newLinkedList();
 
         Annotation[][] parameterAnnotations = objectMethod.getParameterAnnotations();
         Class<?>[] parameterTypes = objectMethod.getParameterTypes();
@@ -24,9 +25,9 @@ public class AnnotatedNestingReactorMethodProxyOptionsProvider {
         return parameterDefinitions;
     }
 
-    private void collectOption(List<AnnotatedNestingReactorMethodProxyOption> parameterDefinitions,
+    private void collectOption(List<ReactorRequestParameterDefinition> parameterDefinitions,
                                ReactorRequestParameter parameterAnnotation, Class<?> parameterType) {
-        parameterDefinitions.add(new AnnotatedNestingReactorMethodProxyOption(parameterAnnotation.name(),
+        parameterDefinitions.add(new ReactorRequestParameterDefinition(parameterAnnotation.name(),
             parameterAnnotation.shortName(), parameterAnnotation.required(), parameterType));
     }
 }

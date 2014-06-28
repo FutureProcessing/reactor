@@ -1,7 +1,8 @@
 package org.reactor.annotation;
 
+import org.reactor.AbstractNestingReactor;
 import org.reactor.Reactor;
-import org.reactor.request.ReactorRequest;
+import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.response.ReactorResponse;
 
 public class AnnotatedNestingReactorMethodProxyReactor implements Reactor {
@@ -10,7 +11,7 @@ public class AnnotatedNestingReactorMethodProxyReactor implements Reactor {
     private final String nestedReactorDescription;
     private AnnotatedNestingReactorMethodInvoker methodInvoker;
 
-    public AnnotatedNestingReactorMethodProxyReactor(AbstractAnnotatedNestingReactor nestingReactor,
+    public AnnotatedNestingReactorMethodProxyReactor(AbstractNestingReactor nestingReactor,
                                                      String nestedReactorMethodName, String nestedReactorTrigger,
                                                      String nestedReactorDescription) {
         this.nestedReactorTrigger = nestedReactorTrigger;
@@ -19,15 +20,21 @@ public class AnnotatedNestingReactorMethodProxyReactor implements Reactor {
         initializeMethodInvoker(nestingReactor, nestedReactorMethodName);
     }
 
-    private void initializeMethodInvoker(AbstractAnnotatedNestingReactor nestingReactor, String nestedReactorMethodName) {
+    private void initializeMethodInvoker(AbstractNestingReactor nestingReactor, String nestedReactorMethodName) {
         methodInvoker = new AnnotatedNestingReactorMethodInvoker(nestingReactor,
-            new AnnotatedNestingReactorMethodFilter(nestedReactorMethodName),
-            new AnnotatedNestingReactorMethodProxyOptionsProvider());
+            new AnnotatedNestingReactorMethodFilter(nestedReactorMethodName));
     }
 
     @Override
-    public ReactorResponse react(ReactorRequest request) {
-        return methodInvoker.invoke(request);
+    public ReactorResponse react(String sender, String reactorInput) {
+        //return methodInvoker.invoke(request);
+        return null;
+    }
+
+    @Override
+    public void accept(ReactorTopologyDiscoveringVisitor topologyVisitor) {
+
+        // TODO
     }
 
     @Override
