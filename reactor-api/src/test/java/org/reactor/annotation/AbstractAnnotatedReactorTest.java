@@ -5,8 +5,9 @@ import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_DESCRIPTION;
 import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_TRIGGER;
 
 import org.junit.Test;
-import org.reactor.AbstractReactor;
+import org.reactor.AbstractAnnotatedReactor;
 import org.reactor.AbstractUnitTest;
+import org.reactor.ReactorAnnotationMissingException;
 import org.reactor.TestAnnotatedReactor;
 import org.reactor.TestNotAnnotatedReactor;
 import org.reactor.request.ReactorRequest;
@@ -18,7 +19,7 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
 
     public static final String SENDER = "sender";
 
-    private AbstractReactor reactor;
+    private AbstractAnnotatedReactor reactor;
     private ReactorRequest reactorRequest;
 
     @Test
@@ -54,11 +55,11 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
         assertThat(writer.toString()).isEqualTo("one,two,three");
     }
 
-    private AbstractReactor givenNotAnnotatedReactor() {
+    private AbstractAnnotatedReactor givenNotAnnotatedReactor() {
         return new TestNotAnnotatedReactor();
     }
 
-    private AbstractReactor givenAnnotatedReactor() {
+    private AbstractAnnotatedReactor givenAnnotatedReactor() {
         return new TestAnnotatedReactor();
     }
 }

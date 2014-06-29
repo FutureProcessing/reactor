@@ -4,7 +4,7 @@ import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Job;
 import java.io.IOException;
 import java.util.Map;
-import org.reactor.AbstractReactor;
+import org.reactor.AbstractAnnotatedReactor;
 import org.reactor.ReactorProcessingException;
 import org.reactor.annotation.ReactOn;
 import org.reactor.jenkins.response.JobsListResponse;
@@ -12,7 +12,7 @@ import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 
 @ReactOn(value = "jobs", description = "Prints list of all defined jobs")
-public class JenkinsJobsReactor extends AbstractReactor<Void> {
+public class JenkinsJobsReactor extends AbstractAnnotatedReactor<Void> {
 
     JenkinsServer jenkins;
 

@@ -4,7 +4,7 @@ import org.reactor.annotation.ReactorRequestParameter;
 
 public class UppercaseRequestData {
 
-    @ReactorRequestParameter(name = "message", shortName = "m", required = true)
+    @ReactorRequestParameter(shortName = "m", required = true)
     private String message;
 
     public String getMessage() {

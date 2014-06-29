@@ -12,6 +12,7 @@ import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.filesystem.event.DirectoryChangedEvent;
 import org.reactor.filesystem.response.ListFilesResponse;
+import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class FilesystemReactor extends AbstractNestingReactor implements Initial
     private boolean directoryListener;
 
     @ReactOn(value = "ls", description = "Prints list of files in given folder")
-    public ReactorResponse listFiles() {
+    public ReactorResponse listFiles(ReactorRequest<Void> reactorRequest) {
         return new ListFilesResponse(directory);
     }
 

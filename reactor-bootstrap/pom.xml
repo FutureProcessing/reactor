@@ -84,14 +84,14 @@
         <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-teamspeak</artifactId>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-telnet</artifactId>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-websockets-jetty</artifactId>
         </dependency -->

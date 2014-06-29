@@ -53,6 +53,7 @@
         <fest-assert.version>1.4</fest-assert.version>
 
         <org.reactor.travelling.version>0.0.1</org.reactor.travelling.version>
+        <org.reactor.type-visitor.version>0.0.1</org.reactor.type-visitor.version>
 
         <org.reactor.api.version>0.0.1</org.reactor.api.version>
         <org.reactor.jira.version>0.0.1</org.reactor.jira.version>
@@ -124,6 +125,12 @@
             <dependency>
                 <groupId>org.reactor</groupId>
                 <artifactId>reactor-transport-speech</artifactId>
+                <version>${org.reactor.transport-speech.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-transport-di</artifactId>
                 <version>${org.reactor.transport-speech.version}</version>
             </dependency>
 

@@ -1,8 +1,7 @@
 package org.reactor.request.parser;
 
-import java.lang.reflect.Field;
-import org.apache.commons.cli.Option;
 import com.google.common.base.Function;
+import org.apache.commons.cli.Option;
 
 public class ReactorRequestParameterDefinition {
 
@@ -11,22 +10,14 @@ public class ReactorRequestParameterDefinition {
         private static final String DESCRIPTION_EMPTY = "";
 
         @Override
-        public Option apply(ReactorRequestParameterDefinition input) {
-            Option option = new Option(input.getShortName(), input.getName(), true, DESCRIPTION_EMPTY);
-            option.setRequired(input.isRequired());
-            option.setType(input.getType());
+        public Option apply(ReactorRequestParameterDefinition parameterDefinition) {
+            Option option = new Option(parameterDefinition.getShortName(), parameterDefinition.getName(), true,
+                DESCRIPTION_EMPTY);
+            option.setRequired(parameterDefinition.isRequired());
+            option.setType(parameterDefinition.getType());
             return option;
         }
     };
-
-    public static final Function<Field, ReactorRequestParameterDefinition> FROM_FIELD = new Function<Field, ReactorRequestParameterDefinition>() {
-
-        @Override
-        public ReactorRequestParameterDefinition apply(Field input) {
-            return null;
-            // TODO
-        }
-    }   ;
 
     private String name;
     private String shortName;
@@ -44,6 +35,10 @@ public class ReactorRequestParameterDefinition {
         return shortName;
     }
 
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     public String getName() {
         return name;
     }
@@ -54,6 +49,10 @@ public class ReactorRequestParameterDefinition {
 
     public boolean isRequired() {
         return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 
     @Override

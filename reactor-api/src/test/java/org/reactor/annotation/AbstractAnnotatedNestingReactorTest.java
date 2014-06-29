@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.reactor.AbstractNestingReactor;
 import org.reactor.AbstractUnitTest;
 import org.reactor.Reactor;
+import org.reactor.ReactorAnnotationMissingException;
 import org.reactor.TestAnnotatedNestingReactor;
 import org.reactor.TestNotAnnotatedNestingReactor;
 import org.reactor.response.ReactorResponse;

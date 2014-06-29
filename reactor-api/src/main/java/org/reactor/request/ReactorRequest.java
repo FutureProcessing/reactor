@@ -8,7 +8,7 @@ public class ReactorRequest<T> {
     private final String trigger;
     private final T requestData;
 
-    public  ReactorRequest(String sender, String trigger, T requestData) {
+    public ReactorRequest(String sender, String trigger, T requestData) {
         this.sender = sender;
         this.trigger = trigger;
         this.requestData = requestData;

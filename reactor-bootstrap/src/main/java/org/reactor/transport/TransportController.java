@@ -25,6 +25,10 @@ public class TransportController {
 
     private void loadTransports() {
         ServiceLoader<ReactorMessageTransport> transportsLoader = ServiceLoader.load(ReactorMessageTransport.class);
+        if (!transportsLoader.iterator().hasNext()) {
+             LOG.warn("No message transports found!");
+            return;
+        }
         for (ReactorMessageTransport transport : transportsLoader) {
             LOG.debug("Loading message transport: {}", transport.getClass().getName());
             transports.add(transport);

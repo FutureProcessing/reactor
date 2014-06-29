@@ -4,7 +4,7 @@ import org.reactor.annotation.ReactorRequestParameter;
 
 public class JenkinsJobDetailsRequestData {
 
-    @ReactorRequestParameter(required = true, name = "jobName", shortName = "j")
+    @ReactorRequestParameter(required = true, shortName = "j")
     private String jobName;
 
     public String getJobName() {

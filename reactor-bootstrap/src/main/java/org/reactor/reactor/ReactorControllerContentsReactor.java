@@ -2,7 +2,7 @@ package org.reactor.reactor;
 
 import static java.lang.String.format;
 import org.reactor.AbstractNestingReactor;
-import org.reactor.AbstractReactor;
+import org.reactor.AbstractAnnotatedReactor;
 import org.reactor.InitializingReactor;
 import org.reactor.Reactor;
 import org.reactor.ReactorProperties;
@@ -28,7 +28,7 @@ public class ReactorControllerContentsReactor extends AbstractNestingReactor imp
     }
 
     @ReactOn("list")
-    private class ListHubReactorsReactor extends AbstractReactor<Void> {
+    private class ListHubReactorsReactor extends AbstractAnnotatedReactor<Void> {
 
         public ListHubReactorsReactor() {
             super(Void.class);

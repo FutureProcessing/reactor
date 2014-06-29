@@ -13,7 +13,7 @@ import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.StringReactorResponse;
 
-@ReactOn(value = "!jira", description = "Jira reactor - some description will be here")
+@ReactOn(value = "jira", description = "Jira reactor - some description will be here")
 public class JiraReactor extends AbstractNestingReactor implements InitializingReactor {
 
     @ReactOn(value = "uppercase", description = "Prints given text in uppercase")

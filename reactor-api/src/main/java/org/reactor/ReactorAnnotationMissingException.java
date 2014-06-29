@@ -1,7 +1,4 @@
-package org.reactor.annotation;
-
-import org.reactor.Reactor;
-import org.reactor.ReactorInitializationException;
+package org.reactor;
 
 public class ReactorAnnotationMissingException extends ReactorInitializationException {
 

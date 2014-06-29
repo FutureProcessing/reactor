@@ -1,8 +1,8 @@
 package org.reactor.command;
 
 import static java.lang.String.format;
+import org.reactor.AbstractAnnotatedReactor;
 import org.reactor.AbstractNestingReactor;
-import org.reactor.AbstractReactor;
 import org.reactor.Reactor;
 import org.reactor.annotation.ReactOn;
 import org.reactor.request.ReactorRequest;
@@ -11,7 +11,7 @@ import org.reactor.response.list.ListElementFormatter;
 import org.reactor.response.list.ListReactorResponse;
 
 @ReactOn(value = "help", description = "Prints out this information")
-public class PrintNestedReactorsReactor extends AbstractReactor<Void> {
+public class PrintNestedReactorsReactor extends AbstractAnnotatedReactor<Void> {
 
     private final AbstractNestingReactor nestingReactor;
 

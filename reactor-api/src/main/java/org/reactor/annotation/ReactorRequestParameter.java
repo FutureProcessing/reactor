@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 public @interface ReactorRequestParameter {
 
-    String name();
-
     String shortName() default "";
 
     boolean required() default false;

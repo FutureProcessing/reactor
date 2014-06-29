@@ -1,13 +1,14 @@
 package org.reactor;
 
+import static org.reactor.request.parser.AbstractReactorRequestDataParser.forDataType;
 import static org.reactor.response.NoResponse.NO_RESPONSE;
-
-import org.reactor.annotation.ReactOn;
-import org.reactor.annotation.ReactorAnnotationMissingException;
+import com.google.common.collect.Lists;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.request.ReactorRequest;
-import org.reactor.request.parser.AbstractRequestDataParser;
-import org.reactor.request.parser.ReactorRequestDataParser;
+import org.reactor.request.ReactorRequestParsingException;
+import org.reactor.request.parser.AbstractReactorRequestDataParser;
+import org.reactor.request.parser.ReactorRequestParameterDefinition;
+import org.reactor.response.CommandHelpResponse;
 import org.reactor.response.ReactorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,24 +16,10 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractReactor<T> implements Reactor {
 
     private final static Logger LOG = LoggerFactory.getLogger(AbstractReactor.class);
-    private final AbstractRequestDataParser<T> dataParser;
-
-    private String reactorTrigger;
-    private String reactorDescription;
+    private final AbstractReactorRequestDataParser<T> dataParser;
 
     public AbstractReactor(Class<T> requestDataType) {
-        this.dataParser = new ReactorRequestDataParser<>(requestDataType);
-        readReactorAnnotations();
-    }
-
-    private void readReactorAnnotations() {
-        Class<?> reactorClass = this.getClass();
-        if (!reactorClass.isAnnotationPresent(ReactOn.class)) {
-            throw new ReactorAnnotationMissingException(this);
-        }
-        ReactOn reactOn = reactorClass.getAnnotation(ReactOn.class);
-        reactorTrigger = reactOn.value();
-        reactorDescription = reactOn.description();
+        this.dataParser = forDataType(requestDataType);
     }
 
     @Override
@@ -41,9 +28,14 @@ public abstract class AbstractReactor<T> implements Reactor {
     }
 
     @Override
-    public ReactorResponse react(String sender, String reactorInput) {
-        ReactorRequest<T> reactorRequest = dataParser.parseRequestWithData(sender, reactorTrigger, reactorInput);
-        return react(reactorRequest);
+    public final ReactorResponse react(String sender, String reactorInput) {
+        try {
+            return react(dataParser.parseRequestWithData(sender, getTriggeringExpression(), reactorInput));
+        } catch (ReactorRequestParsingException e) {
+            LOG.error("An error occurred while parsing Request", e);
+            // TODO handle passing list of possible parameters into response object
+            return new CommandHelpResponse(e.getMessage(), this, Lists.<ReactorRequestParameterDefinition>newArrayList());
+        }
     }
 
     private ReactorResponse react(ReactorRequest<T> reactorRequest) {
@@ -57,14 +49,4 @@ public abstract class AbstractReactor<T> implements Reactor {
     }
 
     protected abstract ReactorResponse doReact(ReactorRequest<T> reactorRequest);
-
-    @Override
-    public final String getTriggeringExpression() {
-        return reactorTrigger;
-    }
-
-    @Override
-    public final String getDescription() {
-        return reactorDescription;
-    }
 }

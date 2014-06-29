@@ -7,7 +7,7 @@ import org.reactor.response.StringReactorResponse;
 
 @ReactOn(value = TestAnnotatedReactor.ANNOTATED_REACTOR_TRIGGER,
          description = TestAnnotatedReactor.ANNOTATED_REACTOR_DESCRIPTION)
-public class TestAnnotatedReactor extends AbstractReactor<String> {
+public class TestAnnotatedReactor extends AbstractAnnotatedReactor<String> {
 
     public static final String ANNOTATED_REACTOR_DESCRIPTION = "Description";
     public static final String ANNOTATED_REACTOR_TRIGGER = "!test";

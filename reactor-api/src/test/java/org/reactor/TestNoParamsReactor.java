@@ -6,7 +6,7 @@ import org.reactor.response.ReactorResponse;
 import org.reactor.response.StringReactorResponse;
 
 @ReactOn(value = "noparams")
-public class TestNoParamsReactor extends AbstractReactor<Void> {
+public class TestNoParamsReactor extends AbstractAnnotatedReactor<Void> {
 
     public TestNoParamsReactor() {
         super(Void.class);

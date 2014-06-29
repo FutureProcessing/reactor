@@ -4,7 +4,7 @@ import static org.reactor.response.NoResponse.NO_RESPONSE;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 
-public class TestNotAnnotatedReactor extends AbstractReactor<Void> {
+public class TestNotAnnotatedReactor extends AbstractAnnotatedReactor<Void> {
 
     public TestNotAnnotatedReactor() {
         super(Void.class);
