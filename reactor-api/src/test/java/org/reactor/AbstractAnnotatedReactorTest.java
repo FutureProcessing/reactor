@@ -1,15 +1,10 @@
-package org.reactor.annotation;
+package org.reactor;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_DESCRIPTION;
 import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_TRIGGER;
 import java.io.StringWriter;
 import org.junit.Test;
-import org.reactor.AbstractAnnotatedReactor;
-import org.reactor.AbstractUnitTest;
-import org.reactor.ReactorAnnotationMissingException;
-import org.reactor.TestAnnotatedReactor;
-import org.reactor.TestNotAnnotatedReactor;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
 

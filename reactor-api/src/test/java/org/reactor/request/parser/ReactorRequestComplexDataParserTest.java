@@ -44,7 +44,7 @@ public class ReactorRequestComplexDataParserTest extends AbstractUnitTest {
 
         // when
         dataParser.parseRequestWithData(
-                SENDER, TRIGGER, new ReactorRequestInput(format("--f1 %s --f2 %s"), VALUE_STRING, VALUE_BOOLEAN));
+                SENDER, TRIGGER, new ReactorRequestInput(format("--f1 %s --f2 %s", VALUE_STRING, VALUE_BOOLEAN)));
     }
 
     private <T> ReactorRequestComplexDataParser<T> givenDataParser(Class<T> dataType) {

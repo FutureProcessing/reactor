@@ -94,7 +94,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
             ReactorRequestInput triggerStrippedInput = subReactorInput.popArguments();
             return subReactor.get().react(reactorRequest.getSender(), triggerStrippedInput);
         }
-        LOG.debug("Unable to find nested reactor for input data {}", subReactorInput.getArguments());
+        LOG.debug("Unable to find nested reactor for input data {}", subReactorInput.getArgumentsAsString());
         return NO_RESPONSE;
     }
 
