@@ -1,60 +1,45 @@
 package org.reactor.reactor;
 
 import static java.lang.String.format;
-import org.reactor.AbstractNestingReactor;
 import org.reactor.AbstractAnnotatedReactor;
-import org.reactor.InitializingReactor;
 import org.reactor.Reactor;
-import org.reactor.ReactorProperties;
 import org.reactor.annotation.ReactOn;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.list.ListElementFormatter;
 import org.reactor.response.list.ListReactorResponse;
 
-@ReactOn(value = "!hub",
-        description = "Reactor that gather a set of different reactors and merges them into one ;)")
-public class ReactorControllerContentsReactor extends AbstractNestingReactor implements InitializingReactor {
+@ReactOn(value = "help",
+        description = "Prints out this information")
+public class ReactorControllerContentsReactor extends AbstractAnnotatedReactor<Void> {
 
     private final ReactorController reactorController;
 
     public ReactorControllerContentsReactor(ReactorController reactorController) {
+        super(Void.class);
         this.reactorController = reactorController;
     }
 
     @Override
-    public void initReactor(ReactorProperties reactorProperties) {
-        registerNestedReactor(new ListHubReactorsReactor());
-    }
+    protected ReactorResponse doReact(ReactorRequest<Void> reactorRequest) {
+        return new ListReactorResponse<Reactor>("List of all reactors") {
 
-    @ReactOn("list")
-    private class ListHubReactorsReactor extends AbstractAnnotatedReactor<Void> {
+            @Override
+            protected Iterable<Reactor> getElements() {
+                return reactorController.getReactors();
+            }
 
-        public ListHubReactorsReactor() {
-            super(Void.class);
-        }
+            @Override
+            protected ListElementFormatter<Reactor> getElementFormatter() {
+                return new ListElementFormatter<Reactor>() {
 
-        @Override
-        public ReactorResponse doReact(ReactorRequest<Void> request) {
-            return new ListReactorResponse<Reactor>("List of all registered reactors") {
-
-                @Override
-                protected Iterable<Reactor> getElements() {
-                    return reactorController.getReactors();
-                }
-
-                @Override
-                protected ListElementFormatter<Reactor> getElementFormatter() {
-                    return new ListElementFormatter<Reactor>() {
-
-                        @Override
-                        public String formatListElement(long elementIndex, Reactor listElement) {
-                            return format("%d. %s - %s", elementIndex, listElement.getTriggeringExpression(),
+                    @Override
+                    public String formatListElement(long elementIndex, Reactor listElement) {
+                        return format("%d. %s - %s", elementIndex, listElement.getTriggeringExpression(),
                                 listElement.getDescription());
-                        }
-                    };
-                }
-            };
-        }
+                    }
+                };
+            }
+        };
     }
 }

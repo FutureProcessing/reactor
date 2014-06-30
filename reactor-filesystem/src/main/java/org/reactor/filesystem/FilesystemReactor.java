@@ -2,12 +2,11 @@ package org.reactor.filesystem;
 
 import static java.lang.String.format;
 import static org.reactor.filesystem.event.DirectoryChangedEvent.TO_RESPONSE;
-
+import java.io.File;
+import java.io.IOException;
 import org.reactor.AbstractNestingReactor;
-import org.reactor.InitializingReactor;
 import org.reactor.ReactorProperties;
 import org.reactor.annotation.ReactOn;
-import org.reactor.command.PrintNestedReactorsReactor;
 import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.filesystem.event.DirectoryChangedEvent;
@@ -18,12 +17,9 @@ import org.reactor.transport.ReactorMessageTransportInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-
-@ReactOn(value = "!fs",
+@ReactOn(value = "fs",
          description = "Does some basic filesystem manipulation and informs about changes in given directory")
-public class FilesystemReactor extends AbstractNestingReactor implements InitializingReactor, EventProducingReactor {
+public class FilesystemReactor extends AbstractNestingReactor implements EventProducingReactor {
 
     private final static Logger LOG = LoggerFactory.getLogger(FilesystemReactor.class);
 
@@ -60,10 +56,8 @@ public class FilesystemReactor extends AbstractNestingReactor implements Initial
     } */
 
     @Override
-    public void initReactor(ReactorProperties properties) {
+    public void initNestingReactor(ReactorProperties properties) {
         initFilesystemReactor(new FilesystemReactorProperties(properties));
-
-        registerNestedReactor(new PrintNestedReactorsReactor(this));
     }
 
     private void initFilesystemReactor(FilesystemReactorProperties filesystemReactorProperties) {

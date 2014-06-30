@@ -25,7 +25,7 @@ public class ReactorRequestInput {
     public ReactorRequestInput(String inputData) {
         argumentsList = newArrayList(parseArguments(inputData));
     }
-    
+
     private ReactorRequestInput(List<String> inputDataArguments) {
         argumentsList = inputDataArguments;
     }
@@ -40,6 +40,17 @@ public class ReactorRequestInput {
     }
 
     public boolean matchesTriggeringExpression(String triggeringExpression) {
+        if (!validateArgumentsLength(argumentsList)) {
+            return false;
+        }
         return triggeringExpression.matches(argumentsList.get(0));
+    }
+
+    private boolean validateArgumentsLength(List<String> argumentsList) {
+        return argumentsList.size() > 0;
+    }
+
+    public boolean isEmpty() {
+        return argumentsList.isEmpty();
     }
 }

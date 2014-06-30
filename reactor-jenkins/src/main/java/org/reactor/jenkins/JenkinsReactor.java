@@ -2,16 +2,14 @@ package org.reactor.jenkins;
 
 import static org.reactor.jenkins.JenkinsServerFacade.forServerDetails;
 import static org.reactor.jenkins.event.JobActivityEvent.TO_RESPONSE;
-
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
-
+import java.io.IOException;
+import java.net.URISyntaxException;
 import org.reactor.AbstractNestingReactor;
-import org.reactor.InitializingReactor;
 import org.reactor.ReactorInitializationException;
 import org.reactor.ReactorProperties;
 import org.reactor.annotation.ReactOn;
-import org.reactor.command.PrintNestedReactorsReactor;
 import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.jenkins.event.JobActivityEvent;
@@ -23,11 +21,8 @@ import org.reactor.jenkins.response.JobsListResponse;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-@ReactOn(value = "!jenkins", description = "Jenkins reactor")
-public class JenkinsReactor extends AbstractNestingReactor implements InitializingReactor, EventProducingReactor {
+@ReactOn(value = "jenkins", description = "Jenkins reactor")
+public class JenkinsReactor extends AbstractNestingReactor implements EventProducingReactor {
 
     private JenkinsServerFacade jenkinsServerFacade;
     private JobActivityEventListener jobActivityEventListener;
@@ -68,10 +63,8 @@ public class JenkinsReactor extends AbstractNestingReactor implements Initializi
     }
 
     @Override
-    public void initReactor(ReactorProperties reactorProperties) {
+    public void initNestingReactor(ReactorProperties reactorProperties) {
         initJenkinsReactor(new JenkinsReactorProperties(reactorProperties));
-
-        registerNestedReactor(new PrintNestedReactorsReactor(this));
     }
 
     @Override
