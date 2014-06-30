@@ -5,6 +5,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.junit.Test;
 import org.reactor.AbstractUnitTest;
 import org.reactor.request.ReactorRequest;
+import org.reactor.request.ReactorRequestInput;
 
 public class ReactorRequestPrimitiveDataParserTest extends AbstractUnitTest {
 
@@ -17,30 +18,25 @@ public class ReactorRequestPrimitiveDataParserTest extends AbstractUnitTest {
 
     public static final int INTEGER_ZERO = 0;
 
-
     @Test
     public void shouldParseStringWhenDataTypeIsString() {
         // given
         ReactorRequestPrimitiveDataParser<String> dataParser = givenPrimitiveDataParser(String.class);
 
         // when
-        ReactorRequest<String> reactorRequest = dataParser.parseRequestWithData(SENDER, TRIGGER, VALUE_STRING);
+        ReactorRequest<String> reactorRequest = dataParser.parseRequestWithData(SENDER, TRIGGER,
+            new ReactorRequestInput(VALUE_STRING));
 
         // then
         assertThat(reactorRequest.getRequestData()).isEqualTo(VALUE_STRING);
     }
 
-    /* @Test
-    public void shouldParseVoidWhenDataTypeIsVoid() {
-        // given
-        ReactorRequestPrimitiveDataParser<Void> dataParser = givenPrimitiveDataParser(Void.class);
-
-        // when
-        ReactorRequest<Void> reactorRequest = dataParser.parseRequestWithData(SENDER, TRIGGER, null);
-
-        // then
-        assertThat(reactorRequest.getRequestData()).isNull();
-    }*/
+    /*
+     * @Test public void shouldParseVoidWhenDataTypeIsVoid() { // given ReactorRequestPrimitiveDataParser<Void>
+     * dataParser = givenPrimitiveDataParser(Void.class); // when ReactorRequest<Void> reactorRequest =
+     * dataParser.parseRequestWithData(SENDER, TRIGGER, null); // then
+     * assertThat(reactorRequest.getRequestData()).isNull(); }
+     */
 
     @Test
     public void shouldParseIntegerWhenDataTypeIsInteger() {
@@ -48,7 +44,8 @@ public class ReactorRequestPrimitiveDataParserTest extends AbstractUnitTest {
         ReactorRequestPrimitiveDataParser<Integer> dataParser = givenPrimitiveDataParser(Integer.class);
 
         // when
-        ReactorRequest<Integer> reactorRequest = dataParser.parseRequestWithData(SENDER, TRIGGER, VALUE_INTEGER);
+        ReactorRequest<Integer> reactorRequest = dataParser.parseRequestWithData(SENDER, TRIGGER,
+            new ReactorRequestInput(VALUE_INTEGER));
 
         // then
         assertThat(reactorRequest.getRequestData()).isEqualTo(parseInt(VALUE_INTEGER));
@@ -60,7 +57,8 @@ public class ReactorRequestPrimitiveDataParserTest extends AbstractUnitTest {
         ReactorRequestPrimitiveDataParser<Integer> dataParser = givenPrimitiveDataParser(Integer.class);
 
         // when
-        ReactorRequest<Integer> reactorRequest = dataParser.parseRequestWithData(SENDER, TRIGGER, VALUE_STRING);
+        ReactorRequest<Integer> reactorRequest = dataParser.parseRequestWithData(SENDER, TRIGGER,
+            new ReactorRequestInput(VALUE_STRING));
 
         // then
         assertThat(reactorRequest.getRequestData()).isEqualTo(INTEGER_ZERO);

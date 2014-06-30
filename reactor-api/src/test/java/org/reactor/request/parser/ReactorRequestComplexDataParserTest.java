@@ -5,6 +5,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.junit.Test;
 import org.reactor.AbstractUnitTest;
 import org.reactor.request.ReactorRequest;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.request.ReactorRequestParsingException;
 
 public class ReactorRequestComplexDataParserTest extends AbstractUnitTest {
@@ -24,7 +25,7 @@ public class ReactorRequestComplexDataParserTest extends AbstractUnitTest {
 
         // when
         ReactorRequest<ReactorRequestComplexDataWithAnnotations> reactorRequest = dataParser.parseRequestWithData(
-            SENDER, TRIGGER, format("--f1 %s --f3 %s --f2 %s", VALUE_STRING, VALUE_INTEGER, VALUE_BOOLEAN));
+            SENDER, TRIGGER, new ReactorRequestInput(format("--f1 %s --f3 %s --f2 %s", VALUE_STRING, VALUE_INTEGER, VALUE_BOOLEAN)));
 
         // then
         ReactorRequestComplexDataWithAnnotations requestData = reactorRequest.getRequestData();
@@ -43,7 +44,7 @@ public class ReactorRequestComplexDataParserTest extends AbstractUnitTest {
 
         // when
         dataParser.parseRequestWithData(
-                SENDER, TRIGGER, format("--f1 %s --f2 %s", VALUE_STRING, VALUE_BOOLEAN));
+                SENDER, TRIGGER, new ReactorRequestInput(format("--f1 %s --f2 %s"), VALUE_STRING, VALUE_BOOLEAN));
     }
 
     private <T> ReactorRequestComplexDataParser<T> givenDataParser(Class<T> dataType) {

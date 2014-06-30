@@ -10,6 +10,7 @@ import org.reactor.AbstractUnitTest;
 import org.reactor.ReactorAnnotationMissingException;
 import org.reactor.TestAnnotatedReactor;
 import org.reactor.TestNotAnnotatedReactor;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
 
 public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
@@ -44,7 +45,7 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
 
         // when
         StringWriter writer = new StringWriter();
-        ReactorResponse response = reactor.react(SENDER, "one two three");
+        ReactorResponse response = reactor.react(SENDER, new ReactorRequestInput("one two three"));
         response.renderResponse(writer);
 
         // then

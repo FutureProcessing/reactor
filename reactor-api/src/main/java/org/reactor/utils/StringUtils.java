@@ -1,13 +1,17 @@
 package org.reactor.utils;
 
+import static com.google.common.base.CharMatcher.anyOf;
 import static java.lang.String.format;
 import java.util.Arrays;
 import java.util.Iterator;
 
 public class StringUtils {
 
+    public static final char ESCAPE_QUOTE = '"';
+
     private static class EscapingStringsIterator implements Iterator<String> {
 
+        private static final String WHITESPACE = " ";
         private final Iterator<String> strings;
         private final char escapeCharacter;
         private int position;
@@ -24,7 +28,11 @@ public class StringUtils {
 
         @Override
         public String next() {
-            return format("%s%s%s", escapeCharacter, strings.next(), escapeCharacter);
+            String nextString = strings.next();
+            if (anyOf(WHITESPACE).matchesAnyOf(nextString)) {
+                return format("%s%s%s", escapeCharacter, nextString, escapeCharacter);
+            }
+            return nextString;
         }
 
         @Override
@@ -41,7 +49,7 @@ public class StringUtils {
         return new Iterable<String>() {
             @Override
             public Iterator<String> iterator() {
-                return new EscapingStringsIterator(strings, '"');
+                return new EscapingStringsIterator(strings, ESCAPE_QUOTE);
             }
         };
     }

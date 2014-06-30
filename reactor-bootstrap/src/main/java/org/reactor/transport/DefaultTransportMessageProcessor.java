@@ -5,6 +5,7 @@ import com.google.common.base.Supplier;
 import java.io.Writer;
 import org.reactor.Reactor;
 import org.reactor.reactor.ReactorController;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,10 @@ public class DefaultTransportMessageProcessor implements ReactorMessageTransport
     @Override
     public void processTransportMessage(String messageText, String sender, Writer responseWriter) {
         try {
-            Optional<Reactor> reactor = reactorControllerSupplier.get().reactorMatchingInput(messageText);
+            ReactorRequestInput requestInput = new ReactorRequestInput(messageText);
+            Optional<Reactor> reactor = reactorControllerSupplier.get().reactorMatchingInput(requestInput);
             if (reactor.isPresent()) {
-                ReactorResponse response = reactor.get().react(sender, messageText);
+                ReactorResponse response = reactor.get().react(sender, requestInput);
                 response.renderResponse(responseWriter);
                 return;
             }

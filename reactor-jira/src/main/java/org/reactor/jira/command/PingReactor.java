@@ -1,7 +1,9 @@
 package org.reactor.jira.command;
 
+import static com.google.common.base.Joiner.on;
 import org.reactor.Reactor;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.StringReactorResponse;
 
@@ -18,8 +20,8 @@ public class PingReactor implements Reactor {
     }
 
     @Override
-    public ReactorResponse react(String sender, String reactorInput) {
-        return new StringReactorResponse(reactorInput);
+    public ReactorResponse react(String sender, ReactorRequestInput requestInput) {
+        return new StringReactorResponse(on(' ').join(requestInput.getArguments()));
     }
 
     @Override

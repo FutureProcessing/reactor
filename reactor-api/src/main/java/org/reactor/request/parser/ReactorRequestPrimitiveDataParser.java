@@ -3,6 +3,7 @@ package org.reactor.request.parser;
 import static org.apache.commons.beanutils.ConvertUtils.convert;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.request.ReactorRequest;
+import org.reactor.request.ReactorRequestInput;
 
 public class ReactorRequestPrimitiveDataParser<T> extends AbstractReactorRequestDataParser<T> {
 
@@ -12,9 +13,9 @@ public class ReactorRequestPrimitiveDataParser<T> extends AbstractReactorRequest
         this.primitiveType = primitiveType;
     }
 
-    public ReactorRequest<T> parseRequestWithData(String sender, String trigger, String reactorInput) {
+    public ReactorRequest<T> parseRequestWithData(String sender, String trigger, ReactorRequestInput requestInput) {
         // just converting to one of possible primitive type wrappers
-        T typedReactorInput = (T) convert(reactorInput, primitiveType);
+        T typedReactorInput = (T) convert(requestInput.getArgumentsAsString(), primitiveType);
         return new ReactorRequest<>(sender, trigger, typedReactorInput);
     }
 

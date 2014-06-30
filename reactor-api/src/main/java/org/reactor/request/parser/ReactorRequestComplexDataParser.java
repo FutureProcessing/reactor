@@ -4,7 +4,6 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.transform;
 import static java.util.Arrays.asList;
 import static org.apache.commons.beanutils.ConvertUtils.convert;
-import static org.reactor.request.ArgumentsParser.parseArguments;
 import static org.reactor.request.parser.ReactorRequestParameterDefinition.TO_CMD_LINE_OPTION;
 import static org.reactor.utils.ClassUtils.isPrimitive;
 import com.google.common.base.Function;
@@ -21,6 +20,7 @@ import org.apache.commons.cli.PosixParser;
 import org.reactor.annotation.ReactorRequestParameter;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.request.ReactorRequest;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.request.ReactorRequestParsingException;
 
 public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDataParser<T> {
@@ -67,10 +67,10 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
                 .toList();
     }
 
-    public ReactorRequest<T> parseRequestWithData(String sender, String trigger, String reactorInput) {
+    public ReactorRequest<T> parseRequestWithData(String sender, String trigger, ReactorRequestInput requestInput) {
         T requestData = prepareRequestDataInstance();
 
-        CommandLine commandLine = parseCommandLine(parseArguments(reactorInput));
+        CommandLine commandLine = parseCommandLine(requestInput.getArguments());
         for (ReactorRequestParameterDefinition requestParameterDefinition : requestParameters) {
             String parameterValue = commandLine.getOptionValue(requestParameterDefinition.getName());
             setRequestDataParameter(requestData, requestParameterDefinition, parameterValue);

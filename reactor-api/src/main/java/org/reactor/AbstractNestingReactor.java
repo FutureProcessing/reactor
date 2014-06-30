@@ -84,14 +84,15 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
 
     public final ReactorResponse doReact(ReactorRequest<String> reactorRequest) {
         ReactorRequestInput requestInput = new ReactorRequestInput(reactorRequest.getRequestData());
-        ReactorRequestInput subReactorInput = requestInput.subRequest();
+        ReactorRequestInput subReactorInput = requestInput.popArguments();
         if (subReactorInput.isEmpty()) {
             LOG.debug("No reactor input given, printing out sub reactors information");
             return new SubReactorsInformationResponse(this);
         }
         Optional<Reactor> subReactor = from(subReactors).filter(TRIGGER_MATCHES(subReactorInput)).first();
         if (subReactor.isPresent()) {
-            return subReactor.get().react(reactorRequest.getSender(), subReactorInput.getArguments());
+            ReactorRequestInput triggerStrippedInput = subReactorInput.popArguments();
+            return subReactor.get().react(reactorRequest.getSender(), triggerStrippedInput);
         }
         LOG.debug("Unable to find nested reactor for input data {}", subReactorInput.getArguments());
         return NO_RESPONSE;

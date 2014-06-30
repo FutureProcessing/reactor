@@ -1,12 +1,13 @@
 package org.reactor.request;
 
 import static com.google.common.base.Joiner.on;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.reactor.request.ArgumentsParser.parseArguments;
-import static org.reactor.utils.StringUtils.quotedIterable;
 import com.google.common.base.Predicate;
 import java.util.List;
 import org.reactor.Reactor;
+import org.reactor.utils.StringUtils;
 
 // TODO needs testing!
 public class ReactorRequestInput {
@@ -27,17 +28,17 @@ public class ReactorRequestInput {
         argumentsList = newArrayList(parseArguments(inputData));
     }
 
-    private ReactorRequestInput(List<String> inputDataArguments) {
-        argumentsList = inputDataArguments;
+    public ReactorRequestInput(String... inputDataArguments) {
+        argumentsList = newArrayList(inputDataArguments);
     }
 
-    public ReactorRequestInput subRequest() {
+    public ReactorRequestInput popArguments() {
         argumentsList.remove(0);
-        return new ReactorRequestInput(argumentsList);
+        return new ReactorRequestInput(getArguments());
     }
 
-    public String getArguments() {
-        return on(' ').join(quotedIterable(argumentsList));
+    public String[] getArguments() {
+        return from(argumentsList).toArray(String.class);
     }
 
     public boolean matchesTriggeringExpression(String triggeringExpression) {
@@ -53,5 +54,13 @@ public class ReactorRequestInput {
 
     public boolean isEmpty() {
         return argumentsList.isEmpty();
+    }
+
+    public int argumentsLength() {
+        return argumentsList.size();
+    }
+
+    public String getArgumentsAsString() {
+        return on(' ').join(StringUtils.quotedIterable(argumentsList));
     }
 }

@@ -28,8 +28,7 @@ public class ReactorController {
         collectReactors();
     }
 
-    public Optional<Reactor> reactorMatchingInput(String requestInputData) {
-        ReactorRequestInput requestInput = new ReactorRequestInput(requestInputData);
+    public Optional<Reactor> reactorMatchingInput(ReactorRequestInput requestInput) {
         return from(reactors).filter(TRIGGER_MATCHES(requestInput)).first();
     }
 

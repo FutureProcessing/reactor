@@ -11,6 +11,7 @@ import org.reactor.Reactor;
 import org.reactor.ReactorAnnotationMissingException;
 import org.reactor.TestAnnotatedNestingReactor;
 import org.reactor.TestNotAnnotatedNestingReactor;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
 
 public class AbstractNestingReactorTest extends AbstractUnitTest {
@@ -36,8 +37,8 @@ public class AbstractNestingReactorTest extends AbstractUnitTest {
         reactor = givenAnnotatedReactor();
 
         // when
-        ReactorResponse reactorResponse = reactor.react(SENDER_TEST,
-                "test singleArgument -a test");
+        ReactorResponse reactorResponse = reactor.react(SENDER_TEST, new ReactorRequestInput(
+            "test singleArgument -a test"));
 
         // then
         Writer stringWriter = new StringWriter();

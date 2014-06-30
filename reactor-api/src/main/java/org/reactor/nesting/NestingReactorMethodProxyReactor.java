@@ -7,6 +7,7 @@ import org.reactor.AbstractNestingReactor;
 import org.reactor.Reactor;
 import org.reactor.annotation.ReactOn;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
 
 public class NestingReactorMethodProxyReactor implements Reactor {
@@ -34,8 +35,8 @@ public class NestingReactorMethodProxyReactor implements Reactor {
     }
 
     @Override
-    public ReactorResponse react(String sender, String reactorInput) {
-        return typedReactor.react(sender, reactorInput);
+    public ReactorResponse react(String sender, ReactorRequestInput requestInput) {
+        return typedReactor.react(sender, requestInput);
     }
 
     @Override
