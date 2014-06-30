@@ -2,20 +2,29 @@ package org.reactor.filesystem;
 
 import static java.lang.String.format;
 import static org.reactor.filesystem.event.DirectoryChangedEvent.TO_RESPONSE;
-import java.io.File;
-import java.io.IOException;
+
 import org.reactor.AbstractNestingReactor;
+import org.reactor.ReactorProcessingException;
 import org.reactor.ReactorProperties;
 import org.reactor.annotation.ReactOn;
 import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.filesystem.event.DirectoryChangedEvent;
+import org.reactor.filesystem.request.FileNameMatchRequest;
+import org.reactor.filesystem.request.FileNameRequest;
 import org.reactor.filesystem.response.ListFilesResponse;
+import org.reactor.filesystem.response.RemoveFileResponse;
+import org.reactor.filesystem.response.TouchFileResponse;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @ReactOn(value = "fs",
          description = "Does some basic filesystem manipulation and informs about changes in given directory")
@@ -27,33 +36,33 @@ public class FilesystemReactor extends AbstractNestingReactor implements EventPr
     private boolean directoryListener;
 
     @ReactOn(value = "ls", description = "Prints list of files in given folder")
-    public ReactorResponse listFiles(ReactorRequest<Void> reactorRequest) {
-        return new ListFilesResponse(directory);
+    public ReactorResponse listFiles(ReactorRequest<FileNameMatchRequest> reactorRequest) {
+        return new ListFilesResponse(directory, reactorRequest.getRequestData().getFileNameMask());
     }
 
-    /*@ReactOn(value = "rm", description = "Removes file with given name")
-    public ReactorResponse removeFile(@ReactorRequestParameter(name = "file", shortName = "f", required = true) String fileName) {
-        File fileToRemove = new File(directory, fileName);
+    @ReactOn(value = "rm", description = "Removes file with given name")
+    public ReactorResponse removeFile(ReactorRequest<FileNameRequest> fileRequest) throws FileNotFoundException {
+        File fileToRemove = new File(directory, fileRequest.getRequestData().getFileName());
         if (!fileToRemove.exists()) {
-            throw new FileNotFoundException(fileName);
+            throw new FileNotFoundException(fileRequest.getRequestData().getFileName());
         }
-        return new RemoveFileResponse(fileName, fileToRemove.delete());
+        return new RemoveFileResponse(fileRequest.getRequestData().getFileName(), fileToRemove.delete());
     }
 
     @ReactOn(value = "touch", description = "Does the same as linux 'touch' command on given file")
-    public ReactorResponse touch(@ReactorRequestParameter(name = "file", shortName = "f", required = true) String fileName) {
+    public ReactorResponse touch(ReactorRequest<FileNameRequest> fileRequest) {
         try {
-            File fileToTouch = new File(directory, fileName);
+            File fileToTouch = new File(directory, fileRequest.getRequestData().getFileName());
             if (!fileToTouch.exists()) {
                 new FileOutputStream(fileToTouch).close();
-                return new TouchFileResponse(fileName, true);
+                return new TouchFileResponse(fileRequest.getRequestData().getFileName(), true);
             }
             boolean touched = fileToTouch.setLastModified(System.currentTimeMillis());
-            return new TouchFileResponse(fileName, touched);
+            return new TouchFileResponse(fileRequest.getRequestData().getFileName(), touched);
         } catch (IOException e) {
             throw new ReactorProcessingException(e);
         }
-    } */
+    }
 
     @Override
     public void initNestingReactor(ReactorProperties properties) {

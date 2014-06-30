@@ -3,6 +3,7 @@ package org.reactor.request;
 import static com.google.common.base.Joiner.on;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.reactor.request.ArgumentsParser.parseArguments;
+import static org.reactor.utils.StringUtils.quotedIterable;
 import com.google.common.base.Predicate;
 import java.util.List;
 import org.reactor.Reactor;
@@ -36,7 +37,7 @@ public class ReactorRequestInput {
     }
 
     public String getArguments() {
-        return on(' ').join(argumentsList);
+        return on(' ').join(quotedIterable(argumentsList));
     }
 
     public boolean matchesTriggeringExpression(String triggeringExpression) {

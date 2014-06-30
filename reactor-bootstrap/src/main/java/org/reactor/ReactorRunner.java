@@ -3,6 +3,7 @@ package org.reactor;
 import static com.google.common.base.Joiner.on;
 import static org.reactor.properties.PropertiesBuilder.propertiesBuilder;
 import static org.reactor.response.NoResponse.NO_RESPONSE;
+import static org.reactor.utils.StringUtils.quotedIterable;
 import com.google.common.base.Optional;
 import java.io.StringWriter;
 import org.reactor.reactor.ReactorController;
@@ -22,7 +23,7 @@ public class ReactorRunner {
             return NO_RESPONSE;
         }
         ReactorController reactorController = initializeController(reactorProperties);
-        return processWithReactorController(reactorController, on(' ').join(arguments));
+        return processWithReactorController(reactorController, on(' ').join(quotedIterable(arguments)));
     }
 
     private ReactorController initializeController(ReactorProperties reactorProperties) {

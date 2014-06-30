@@ -64,12 +64,12 @@
             <artifactId>reactor-filesystem</artifactId>
         </dependency>
 
-        <!-- dependency>
+        <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-skype</artifactId>
         </dependency>
 
-        <dependency>
+        <!-- dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-irc</artifactId>
         </dependency>
