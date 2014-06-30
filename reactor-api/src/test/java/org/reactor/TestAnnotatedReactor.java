@@ -10,7 +10,7 @@ import org.reactor.response.StringReactorResponse;
 public class TestAnnotatedReactor extends AbstractAnnotatedReactor<String> {
 
     public static final String ANNOTATED_REACTOR_DESCRIPTION = "Description";
-    public static final String ANNOTATED_REACTOR_TRIGGER = "!test";
+    public static final String ANNOTATED_REACTOR_TRIGGER = "test";
 
     public TestAnnotatedReactor() {
         super(String.class);

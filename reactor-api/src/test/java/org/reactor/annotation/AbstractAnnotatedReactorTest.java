@@ -3,24 +3,20 @@ package org.reactor.annotation;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_DESCRIPTION;
 import static org.reactor.TestAnnotatedReactor.ANNOTATED_REACTOR_TRIGGER;
-
+import java.io.StringWriter;
 import org.junit.Test;
 import org.reactor.AbstractAnnotatedReactor;
 import org.reactor.AbstractUnitTest;
 import org.reactor.ReactorAnnotationMissingException;
 import org.reactor.TestAnnotatedReactor;
 import org.reactor.TestNotAnnotatedReactor;
-import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
-
-import java.io.StringWriter;
 
 public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
 
     public static final String SENDER = "sender";
 
     private AbstractAnnotatedReactor reactor;
-    private ReactorRequest reactorRequest;
 
     @Test
     public void shouldThrowAnExceptionWhenReactOnAnnotationIsMissing() {
@@ -52,7 +48,7 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
         response.renderResponse(writer);
 
         // then
-        assertThat(writer.toString()).isEqualTo("one,two,three");
+        assertThat(writer.toString()).isEqualTo("one two three");
     }
 
     private AbstractAnnotatedReactor givenNotAnnotatedReactor() {

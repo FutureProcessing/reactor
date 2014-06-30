@@ -1,7 +1,9 @@
 package org.reactor.annotation;
 
 import static org.fest.assertions.Assertions.assertThat;
-
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.List;
 import org.junit.Test;
 import org.reactor.AbstractNestingReactor;
 import org.reactor.AbstractUnitTest;
@@ -11,11 +13,7 @@ import org.reactor.TestAnnotatedNestingReactor;
 import org.reactor.TestNotAnnotatedNestingReactor;
 import org.reactor.response.ReactorResponse;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.List;
-
-public class AbstractAnnotatedNestingReactorTest extends AbstractUnitTest {
+public class AbstractNestingReactorTest extends AbstractUnitTest {
 
     public static final String SENDER_TEST = "TEST";
     private AbstractNestingReactor reactor;
@@ -38,9 +36,8 @@ public class AbstractAnnotatedNestingReactorTest extends AbstractUnitTest {
         reactor = givenAnnotatedReactor();
 
         // when
-        /*ReactorResponse reactorResponse = reactor.react(parseRequest(SENDER_TEST,
-                "!test singleArgument -a test"));*/
-        ReactorResponse reactorResponse = null;
+        ReactorResponse reactorResponse = reactor.react(SENDER_TEST,
+                "test singleArgument -a test");
 
         // then
         Writer stringWriter = new StringWriter();
