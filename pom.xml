@@ -23,23 +23,39 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <properties>
+        <!-- Project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
 
-        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-
-        <com.bethecode.ascii-table.version>0.0.1</com.bethecode.ascii-table.version>
+        <!-- Logging -->
         <org.slf4j.version>1.7.1</org.slf4j.version>
         <org.slf4j.slf4j-log4j12.version>1.7.5</org.slf4j.slf4j-log4j12.version>
         <log4j.log4j.version>1.2.12</log4j.log4j.version>
-        <com.google.guava.version>15.0</com.google.guava.version>
+
+        <!-- Musties -->
+        <com.google.guava.version>16.0</com.google.guava.version>
+
+        <!-- Maven Plugins -->
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+
+        <!-- Testing -->
+        <junit.junit.version>4.8.1</junit.junit.version>
+        <org.mockito.version>1.9.0</org.mockito.version>
+        <fest-assert.version>1.4</fest-assert.version>
+
+        <!-- TODO: verify if those should be defined in the parent project -->
+        <com.offbytwo.jenkins.jenkins-client.version>0.2.2-SNAPSHOT</com.offbytwo.jenkins.jenkins-client.version>
+        <com.github.taksan.skype.version>1.5</com.github.taksan.skype.version>
+        <org.eclipse.jetty.version>8.1.10.v20130312</org.eclipse.jetty.version>
+        <com.bethecode.ascii-table.version>0.0.1</com.bethecode.ascii-table.version>
         <commons-beanutils.version>1.8.3</commons-beanutils.version>
         <commons-cli.version>1.2</commons-cli.version>
         <commons-io.version>2.4</commons-io.version>
@@ -48,16 +64,11 @@
         <org.webbitserver.webbit.version>0.4.15</org.webbitserver.webbit.version>
         <org.json.version>20140107</org.json.version>
 
-        <com.offbytwo.jenkins.jenkins-client.version>0.2.2-SNAPSHOT</com.offbytwo.jenkins.jenkins-client.version>
-        <com.github.taksan.skype.version>1.5</com.github.taksan.skype.version>
-        <org.eclipse.jetty.version>8.1.10.v20130312</org.eclipse.jetty.version>
-        <junit.junit.version>4.8.1</junit.junit.version>
-        <org.mockito.version>1.9.0</org.mockito.version>
-        <fest-assert.version>1.4</fest-assert.version>
-
+        <!-- TODO: what are those? -->
         <org.reactor.travelling.version>0.0.1</org.reactor.travelling.version>
         <org.reactor.type-visitor.version>0.0.1</org.reactor.type-visitor.version>
 
+        <!-- Modules -->
         <org.reactor.api.version>0.0.1</org.reactor.api.version>
         <org.reactor.jira.version>0.0.1</org.reactor.jira.version>
         <org.reactor.jenkins.version>0.0.1</org.reactor.jenkins.version>
@@ -67,6 +78,7 @@
         <org.reactor.transport-telnet.version>0.0.1</org.reactor.transport-telnet.version>
         <org.reactor.transport-websockets.version>0.0.1</org.reactor.transport-websockets.version>
         <org.reactor.transport-speech.version>0.0.1</org.reactor.transport-speech.version>
+
     </properties>
 
     <dependencyManagement>
