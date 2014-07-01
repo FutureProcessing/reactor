@@ -1,7 +1,9 @@
 package org.reactor;
 
 import static org.reactor.properties.PropertiesBuilder.propertiesBuilder;
+
 import com.google.common.base.Supplier;
+
 import org.reactor.event.DefaultReactorEventConsumerFactory;
 import org.reactor.reactor.ReactorController;
 import org.reactor.transport.DefaultTransportMessageProcessor;
@@ -29,7 +31,7 @@ public final class TransportRunner {
     }
 
     private void initTransportController(TransportProperties transportProperties) {
-        transportController = new TransportController();
+        transportController = TransportController.createAndLoadTransports();
         transportController.startTransports(transportProperties, new DefaultTransportMessageProcessor(
             new Supplier<ReactorController>() {
 

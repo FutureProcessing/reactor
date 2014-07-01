@@ -4,12 +4,16 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.util.concurrent.Futures.addCallback;
 import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static java.util.concurrent.Executors.newFixedThreadPool;
+
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ListeningExecutorService;
-import java.util.List;
-import java.util.ServiceLoader;
+
 import org.reactor.response.ReactorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.ServiceLoader;
 
 public class TransportController {
 
@@ -19,14 +23,18 @@ public class TransportController {
 
     private final List<ReactorMessageTransport> transports = newArrayList();
 
-    public TransportController() {
-        loadTransports();
+    public static TransportController createAndLoadTransports() {
+        TransportController transportController = new TransportController();
+        transportController.loadTransports();
+        return transportController;
     }
+
+    private TransportController() {}
 
     private void loadTransports() {
         ServiceLoader<ReactorMessageTransport> transportsLoader = ServiceLoader.load(ReactorMessageTransport.class);
         if (!transportsLoader.iterator().hasNext()) {
-             LOG.warn("No message transports found!");
+            LOG.warn("No message transports found!");
             return;
         }
         for (ReactorMessageTransport transport : transportsLoader) {
@@ -51,11 +59,11 @@ public class TransportController {
     }
 
     public final void stopTransports() {
-        for (ReactorMessageTransport transport : transports) {
+        transports.forEach(transport -> {
             LOG.debug("Shutting down transport: {}", transport.getClass().getName());
             transport.stopTransport();
             LOG.debug("Transport stopped: {}", transport.getClass().getName());
-        }
+        });
     }
 
     public void broadcast(ReactorResponse reactorResponse) {
@@ -73,5 +81,10 @@ public class TransportController {
             return false;
         }
         return true;
+    }
+
+    @VisibleForTesting
+    public void addTransport(ReactorMessageTransport transport) {
+        transports.add(transport);
     }
 }
