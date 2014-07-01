@@ -69,32 +69,10 @@
             <artifactId>reactor-transport-skype</artifactId>
         </dependency>
 
-        <!-- dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-irc</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-speech</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-teamspeak</artifactId>
-        </dependency-->
-
         <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-telnet</artifactId>
         </dependency>
-
-        <!--dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-websockets-jetty</artifactId>
-        </dependency -->
 
         <dependency>
             <groupId>org.slf4j</groupId>

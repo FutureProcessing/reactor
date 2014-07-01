@@ -5,10 +5,10 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES;
 import static org.reactor.utils.ClassUtils.PossibleTypeAction;
 import static org.reactor.utils.ClassUtils.tryCall;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
-import java.util.List;
-import java.util.ServiceLoader;
+
 import org.reactor.InitializingReactor;
 import org.reactor.Reactor;
 import org.reactor.ReactorProperties;
@@ -17,6 +17,9 @@ import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.request.ReactorRequestInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.ServiceLoader;
 
 public class ReactorController {
 
@@ -36,6 +39,7 @@ public class ReactorController {
         collectReactor(new ReactorControllerContentsReactor(this));
 
         ServiceLoader<Reactor> reactorsLoader = ServiceLoader.load(Reactor.class);
+
         for (Reactor reactor : reactorsLoader) {
             collectReactor(reactor);
         }
@@ -48,9 +52,7 @@ public class ReactorController {
     }
 
     public void initReactors(ReactorProperties reactorProperties) {
-        for (Reactor reactor : reactors) {
-            tryInitReactor(reactor, reactorProperties);
-        }
+        reactors.stream().forEach(reactor -> tryInitReactor(reactor, reactorProperties));
     }
 
     private void tryInitReactor(final Reactor reactor, final ReactorProperties reactorProperties) {
@@ -66,9 +68,7 @@ public class ReactorController {
     }
 
     public void initEventConsumers(ReactorEventConsumerFactory factory) {
-        for (Reactor reactor : reactors) {
-            createEventConsumers(reactor, factory);
-        }
+        reactors.stream().forEach(reactor -> createEventConsumers(reactor, factory));
     }
 
     private void createEventConsumers(Reactor reactor, final ReactorEventConsumerFactory factory) {
