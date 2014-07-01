@@ -73,7 +73,7 @@ public class TransportController {
     }
 
     @VisibleForTesting
-    public void addTransport(ReactorMessageTransport transport) {
+    void addTransport(ReactorMessageTransport transport) {
         transports.add(transport);
     }
 }
