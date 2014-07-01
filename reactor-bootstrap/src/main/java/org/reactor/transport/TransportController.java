@@ -45,10 +45,10 @@ public class TransportController {
 
     public final void startTransports(TransportProperties transportProperties,
                                       ReactorMessageTransportProcessor messageTransportProcessor) {
-        for (ReactorMessageTransport transport : transports) {
-            startTransport(transport, transportProperties, messageTransportProcessor);
-        }
+
+        transports.forEach(transport ->startTransport(transport, transportProperties, messageTransportProcessor));
         executorService.shutdown();
+
         new TransportsShutdownHook(this).initHook();
     }
 
@@ -67,20 +67,9 @@ public class TransportController {
     }
 
     public void broadcast(ReactorResponse reactorResponse) {
-        for (ReactorMessageTransport transport : transports) {
-            if (!validateTransportForBroadcast(transport)) {
-                continue;
-            }
-            transport.broadcast(reactorResponse);
-        }
-    }
-
-    private boolean validateTransportForBroadcast(ReactorMessageTransport transport) {
-        if (!transport.isRunning()) {
-            LOG.trace("Transport is not started up yet: {}", transport.getClass().getName());
-            return false;
-        }
-        return true;
+        transports.stream()
+                .filter(transport -> transport.isRunning())
+                .forEach(transport -> transport.broadcast(reactorResponse));
     }
 
     @VisibleForTesting
