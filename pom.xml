@@ -66,7 +66,6 @@
 
         <!-- TODO: what are those? -->
         <org.reactor.travelling.version>0.0.1</org.reactor.travelling.version>
-        <org.reactor.type-visitor.version>0.0.1</org.reactor.type-visitor.version>
 
         <!-- Modules -->
         <org.reactor.api.version>0.0.1</org.reactor.api.version>
