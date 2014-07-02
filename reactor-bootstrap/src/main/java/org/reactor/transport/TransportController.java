@@ -37,7 +37,7 @@ public class TransportController {
             LOG.warn("No message transports found!");
             return;
         }
-        transports.forEach(transport -> {
+        transportsLoader.forEach(transport -> {
             LOG.debug("Loading message transport: {}", transport.getClass().getName());
             addTransport(transport);
         });
