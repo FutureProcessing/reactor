@@ -21,13 +21,7 @@ public class SubReactorsInformationResponse extends ListReactorResponse<Reactor>
 
     @Override
     protected ListElementFormatter<Reactor> getElementFormatter() {
-        return new ListElementFormatter<Reactor>() {
-
-            @Override
-            public String formatListElement(long elementIndex, Reactor nestedReactor) {
-                return format("%s. %s - %s", elementIndex, nestedReactor.getTriggeringExpression(),
-                        nestedReactor.getDescription());
-            }
-        };
+        return (elementIndex, nestedReactor) -> format("%s. %s - %s", elementIndex, nestedReactor.getTriggeringExpression(),
+                nestedReactor.getDescription());
     }
 }

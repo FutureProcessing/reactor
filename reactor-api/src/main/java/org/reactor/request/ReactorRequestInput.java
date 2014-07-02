@@ -4,22 +4,16 @@ import static com.google.common.base.Joiner.on;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.reactor.request.ArgumentsParser.parseArguments;
+import static org.reactor.utils.StringUtils.quotedIterable;
 import com.google.common.base.Predicate;
 import java.util.List;
 import org.reactor.Reactor;
-import org.reactor.utils.StringUtils;
 
 // TODO needs testing!
 public class ReactorRequestInput {
 
     public final static Predicate<Reactor> TRIGGER_MATCHES(final ReactorRequestInput reactorInput) {
-        return new Predicate<Reactor>() {
-
-            @Override
-            public boolean apply(Reactor reactor) {
-                return reactorInput.matchesTriggeringExpression(reactor.getTriggeringExpression());
-            }
-        };
+        return reactor -> reactorInput.matchesTriggeringExpression(reactor.getTriggeringExpression());
     }
 
     private final List<String> argumentsList;
@@ -42,10 +36,7 @@ public class ReactorRequestInput {
     }
 
     public boolean matchesTriggeringExpression(String triggeringExpression) {
-        if (!validateArgumentsLength(argumentsList)) {
-            return false;
-        }
-        return triggeringExpression.matches(argumentsList.get(0));
+        return validateArgumentsLength(argumentsList) && triggeringExpression.matches(argumentsList.get(0));
     }
 
     private boolean validateArgumentsLength(List<String> argumentsList) {
@@ -61,6 +52,6 @@ public class ReactorRequestInput {
     }
 
     public String getArgumentsAsString() {
-        return on(' ').join(StringUtils.quotedIterable(argumentsList));
+        return on(' ').join(quotedIterable(argumentsList));
     }
 }
