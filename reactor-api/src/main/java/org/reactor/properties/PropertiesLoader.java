@@ -1,20 +1,14 @@
 package org.reactor.properties;
 
-import org.reactor.ReactorInitializationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import static java.lang.String.format;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import static java.lang.String.format;
+import org.reactor.ReactorInitializationException;
 
 public class PropertiesLoader {
 
     private String classResourcePath;
-
-    private final static Logger LOG = LoggerFactory.getLogger(PropertiesLoader.class);
 
     private PropertiesLoader() {
     }
@@ -43,7 +37,7 @@ public class PropertiesLoader {
     }
 
     private Properties loadPropertiesFromStream(InputStream propertiesStream) {
-        Properties loadedProperties = null;
+        Properties loadedProperties = new Properties();
         try {
             loadedProperties.load(propertiesStream);
         } catch (IOException ioe) {

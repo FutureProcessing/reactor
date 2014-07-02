@@ -37,16 +37,19 @@ public class TransportController {
             LOG.warn("No message transports found!");
             return;
         }
-        for (ReactorMessageTransport transport : transportsLoader) {
+        transports.forEach(transport -> {
             LOG.debug("Loading message transport: {}", transport.getClass().getName());
-            transports.add(transport);
-        }
+            addTransport(transport);
+        });
     }
 
     public final void startTransports(TransportProperties transportProperties,
                                       ReactorMessageTransportProcessor messageTransportProcessor) {
 
-        transports.forEach(transport ->startTransport(transport, transportProperties, messageTransportProcessor));
+        transports.forEach(transport -> {
+            LOG.debug("Starting up transport: {}", transport.getClass().getName());
+            startTransport(transport, transportProperties, messageTransportProcessor);
+        });
         executorService.shutdown();
 
         new TransportsShutdownHook(this).initHook();
@@ -68,7 +71,7 @@ public class TransportController {
 
     public void broadcast(ReactorResponse reactorResponse) {
         transports.stream()
-                .filter(transport -> transport.isRunning())
+                .filter(ReactorMessageTransport::isRunning)
                 .forEach(transport -> transport.broadcast(reactorResponse));
     }
 
