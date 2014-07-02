@@ -1,9 +1,6 @@
 package org.reactor;
 
-import static org.reactor.properties.PropertiesBuilder.propertiesBuilder;
-
 import com.google.common.base.Supplier;
-
 import org.reactor.event.DefaultReactorEventConsumerFactory;
 import org.reactor.reactor.ReactorController;
 import org.reactor.transport.DefaultTransportMessageProcessor;
@@ -11,6 +8,8 @@ import org.reactor.transport.TransportController;
 import org.reactor.transport.TransportProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.reactor.properties.PropertiesLoader.propertiesLoader;
 
 public final class TransportRunner {
 
@@ -33,20 +32,18 @@ public final class TransportRunner {
     private void initTransportController(TransportProperties transportProperties) {
         transportController = TransportController.createAndLoadTransports();
         transportController.startTransports(transportProperties, new DefaultTransportMessageProcessor(
-            new Supplier<ReactorController>() {
+                new Supplier<ReactorController>() {
 
-                @Override
-                public ReactorController get() {
-                    return reactorController;
-                }
-            }));
+                    @Override
+                    public ReactorController get() {
+                        return reactorController;
+                    }
+                }));
     }
 
     public final void start() throws Exception {
-        initTransportController(new TransportProperties(propertiesBuilder()
-            .loadFromResourceStream(TRANSPORT_PROPERTIES).build()));
-        initReactorController(new ReactorProperties(propertiesBuilder().loadFromResourceStream(REACTOR_PROPERTIES)
-            .build()));
+        initTransportController(new TransportProperties(propertiesLoader().fromResourceStream(TRANSPORT_PROPERTIES).load()));
+        initReactorController(new ReactorProperties(propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load()));
     }
 
     public static void main(String[] args) {
