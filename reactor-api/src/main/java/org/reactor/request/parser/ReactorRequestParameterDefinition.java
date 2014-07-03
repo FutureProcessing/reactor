@@ -15,12 +15,14 @@ public class ReactorRequestParameterDefinition {
                 DESCRIPTION_EMPTY);
             option.setRequired(parameterDefinition.isRequired());
             option.setType(parameterDefinition.getType());
+            option.setDescription(parameterDefinition.getDescription());
             return option;
         }
     };
 
     private String name;
     private String shortName;
+    private String description;
     private final Class<?> type;
     private boolean required;
 
@@ -77,5 +79,13 @@ public class ReactorRequestParameterDefinition {
         result = 31 * result + type.hashCode();
         result = 31 * result + (required ? 1 : 0);
         return result;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
