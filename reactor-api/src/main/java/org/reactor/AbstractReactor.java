@@ -29,7 +29,6 @@ public abstract class AbstractReactor<T> implements Reactor {
     }
 
     @Override
-    @SuppressWarnings("")
     public final ReactorResponse react(String sender, ReactorRequestInput requestInput) {
         try {
             return react(dataParser.parseRequestWithData(sender, getTriggeringExpression(), requestInput));
