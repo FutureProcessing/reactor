@@ -269,6 +269,7 @@
         <module>reactor-bootstrap</module>
         <module>reactor-jira</module>
         <module>reactor-jenkins</module>
+		<module>reactor-sonar</module>
         <module>reactor-filesystem</module>
 
         <module>reactor-transport-irc</module>

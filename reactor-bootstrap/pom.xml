@@ -64,10 +64,10 @@
             <artifactId>reactor-filesystem</artifactId>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-skype</artifactId>
-        </dependency>
+        </dependency> -->
 
         <!-- dependency>
             <groupId>org.reactor</groupId>
@@ -91,10 +91,10 @@
             <artifactId>reactor-transport-telnet</artifactId>
         </dependency>
 
-        <!--dependency>
+        <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-websockets-jetty</artifactId>
-        </dependency -->
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
