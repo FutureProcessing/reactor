@@ -2,7 +2,6 @@ package org.reactor.utils;
 
 import static com.google.common.base.CharMatcher.anyOf;
 import static java.lang.String.format;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class StringUtils {
@@ -14,7 +13,6 @@ public class StringUtils {
         private static final String WHITESPACE = " ";
         private final Iterator<String> strings;
         private final char escapeCharacter;
-        private int position;
 
         public EscapingStringsIterator(Iterable<String> strings, char escapeCharacter) {
             this.strings = strings.iterator();
@@ -41,16 +39,7 @@ public class StringUtils {
         }
     }
 
-    public static Iterable<String> quotedIterable(String[] strings) {
-        return quotedIterable(Arrays.asList(strings));
-    }
-
     public static Iterable<String> quotedIterable(final Iterable<String> strings) {
-        return new Iterable<String>() {
-            @Override
-            public Iterator<String> iterator() {
-                return new EscapingStringsIterator(strings, ESCAPE_QUOTE);
-            }
-        };
+        return () -> new EscapingStringsIterator(strings, ESCAPE_QUOTE);
     }
 }

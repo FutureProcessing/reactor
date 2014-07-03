@@ -1,27 +1,20 @@
 package org.reactor.transport.websockets;
 
-import static java.lang.Integer.parseInt;
-
-import com.google.common.base.Predicate;
-
 import org.reactor.transport.TransportProperties;
 
 import java.util.Properties;
 
+import static java.lang.Integer.parseInt;
+
 public class WebSocketsTransportProperties extends TransportProperties {
 
-    public static final String PREFIX = "reactor.transport.websockets";
+    private static final String PREFIX = "reactor.transport.websockets";
 
-    public static final String PROPERTY_PORT = PREFIX + ".port";
-    public static final String DEFAULT_PORT = "8080";
+    private static final String PROPERTY_PORT = PREFIX + ".port";
+    private static final String DEFAULT_PORT = "8080";
 
     public WebSocketsTransportProperties(Properties properties) {
-        super(properties, new Predicate<String>() {
-
-            public boolean apply(String propertyKey) {
-                return propertyKey.startsWith(PREFIX);
-            }
-        });
+        super(properties, propertyKeyStartPredicate(PREFIX));
     }
 
     public int getPortNumber() {

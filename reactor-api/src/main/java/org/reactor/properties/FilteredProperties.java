@@ -1,15 +1,19 @@
 package org.reactor.properties;
 
-import static com.google.common.collect.Iterables.filter;
-import com.google.common.base.Predicate;
 import java.util.Properties;
+import java.util.function.Predicate;
 
 public class FilteredProperties extends Properties {
 
+    public static final Predicate<String> propertyKeyStartPredicate(final String prefix) {
+        return propertyKey -> propertyKey.startsWith(prefix);
+    }
+
+
     public FilteredProperties(Properties properties, Predicate<String> propertyKeyPredicate) {
-        Iterable<String> filteredKeys = filter(properties.stringPropertyNames(), propertyKeyPredicate);
-        for (String filteredKey : filteredKeys) {
-            setProperty(filteredKey, properties.getProperty(filteredKey));
-        }
+        properties.stringPropertyNames().stream()
+                .filter(propertyKeyPredicate)
+                .forEach(filteredKey -> setProperty(filteredKey, properties.getProperty(filteredKey)));
+
     }
 }

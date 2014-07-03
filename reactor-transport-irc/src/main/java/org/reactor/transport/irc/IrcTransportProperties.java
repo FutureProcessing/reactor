@@ -1,13 +1,11 @@
 package org.reactor.transport.irc;
 
-import static com.google.common.base.Splitter.on;
-import static com.google.common.collect.Iterables.toArray;
-
-import com.google.common.base.Predicate;
-
 import org.reactor.transport.TransportProperties;
 
 import java.util.Properties;
+
+import static com.google.common.base.Splitter.on;
+import static com.google.common.collect.Iterables.toArray;
 
 public class IrcTransportProperties extends TransportProperties {
 
@@ -21,12 +19,7 @@ public class IrcTransportProperties extends TransportProperties {
     public static final char SEPARATOR = ',';
 
     public IrcTransportProperties(Properties properties) {
-        super(properties, new Predicate<String>() {
-
-            public boolean apply(String propertyKey) {
-                return propertyKey.startsWith(PREFIX);
-            }
-        });
+        super(properties, propertyKeyStartPredicate(PREFIX));
     }
 
     public String getServerHost() {
@@ -35,7 +28,7 @@ public class IrcTransportProperties extends TransportProperties {
 
     public String[] getJoinChannels() {
         return toArray(on(SEPARATOR)
-            .split(getProperty(PROPERTY_JOIN_CHANNELS, DEFAULT_JOIN_CHANNELS)), String.class);
+                .split(getProperty(PROPERTY_JOIN_CHANNELS, DEFAULT_JOIN_CHANNELS)), String.class);
     }
 
     public String getNickname() {

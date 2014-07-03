@@ -1,12 +1,10 @@
 package org.reactor.transport.speech;
 
-import static java.lang.Integer.parseInt;
-
-import com.google.common.base.Predicate;
-
 import org.reactor.transport.TransportProperties;
 
 import java.util.Properties;
+
+import static java.lang.Integer.parseInt;
 
 public class SpeechTransportProperties extends TransportProperties {
 
@@ -22,12 +20,7 @@ public class SpeechTransportProperties extends TransportProperties {
     public static final String DEFAULT_SAMPLERATE_VALUE = "44100";
 
     public SpeechTransportProperties(Properties properties) {
-        super(properties, new Predicate<String>() {
-
-            public boolean apply(String propertyKey) {
-                return propertyKey.startsWith(PREFIX);
-            }
-        });
+        super(properties, propertyKeyStartPredicate(PREFIX));
     }
 
     public String getApiKey() {

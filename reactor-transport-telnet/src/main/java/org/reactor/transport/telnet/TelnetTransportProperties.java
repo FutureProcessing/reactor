@@ -1,12 +1,10 @@
 package org.reactor.transport.telnet;
 
-import static java.lang.Integer.parseInt;
-
-import com.google.common.base.Predicate;
-
 import org.reactor.transport.TransportProperties;
 
 import java.util.Properties;
+
+import static java.lang.Integer.parseInt;
 
 public class TelnetTransportProperties extends TransportProperties {
 
@@ -16,12 +14,7 @@ public class TelnetTransportProperties extends TransportProperties {
     public static final String DEFAULT_PORT = "9999";
 
     public TelnetTransportProperties(Properties properties) {
-        super(properties, new Predicate<String>() {
-
-            public boolean apply(String propertyKey) {
-                return propertyKey.startsWith(PREFIX);
-            }
-        });
+        super(properties, propertyKeyStartPredicate(PREFIX));
     }
 
     public int getPortNumber() {

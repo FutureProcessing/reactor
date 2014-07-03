@@ -3,7 +3,6 @@ package org.reactor.reactor;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES;
-import static org.reactor.utils.ClassUtils.PossibleTypeAction;
 import static org.reactor.utils.ClassUtils.tryCall;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
@@ -36,9 +35,7 @@ public class ReactorController {
         collectReactor(new ReactorControllerContentsReactor(this));
 
         ServiceLoader<Reactor> reactorsLoader = ServiceLoader.load(Reactor.class);
-        for (Reactor reactor : reactorsLoader) {
-            collectReactor(reactor);
-        }
+        reactorsLoader.forEach(this::collectReactor);
     }
 
     @VisibleForTesting
@@ -48,37 +45,25 @@ public class ReactorController {
     }
 
     public void initReactors(ReactorProperties reactorProperties) {
-        for (Reactor reactor : reactors) {
-            tryInitReactor(reactor, reactorProperties);
-        }
+        reactors.stream().forEach(reactor -> tryInitReactor(reactor, reactorProperties));
     }
 
     private void tryInitReactor(final Reactor reactor, final ReactorProperties reactorProperties) {
-        tryCall(reactor, InitializingReactor.class, new PossibleTypeAction<InitializingReactor, Void>() {
-
-            @Override
-            public Void invokeAction(InitializingReactor subject) {
-                LOG.debug("Initializing reactor: {}", reactor.getClass().getName());
-                subject.initReactor(new ReactorProperties(reactorProperties));
-                return null;
-            }
+        tryCall(reactor, InitializingReactor.class, subject -> {
+            LOG.debug("Initializing reactor: {}", reactor.getClass().getName());
+            subject.initReactor(new ReactorProperties(reactorProperties));
+            return null;
         });
     }
 
     public void initEventConsumers(ReactorEventConsumerFactory factory) {
-        for (Reactor reactor : reactors) {
-            createEventConsumers(reactor, factory);
-        }
+        reactors.stream().forEach(reactor -> createEventConsumers(reactor, factory));
     }
 
     private void createEventConsumers(Reactor reactor, final ReactorEventConsumerFactory factory) {
-        tryCall(reactor, EventProducingReactor.class, new PossibleTypeAction<EventProducingReactor, Void>() {
-
-            @Override
-            public Void invokeAction(EventProducingReactor subject) {
-                subject.initReactorEventConsumers(factory);
-                return null;
-            }
+        tryCall(reactor, EventProducingReactor.class, subject -> {
+            subject.initReactorEventConsumers(factory);
+            return null;
         });
     }
 
