@@ -6,12 +6,7 @@ import java.util.function.Predicate;
 public class FilteredProperties extends Properties {
 
     public static final Predicate<String> propertyKeyStartPredicate(final String prefix) {
-        return new Predicate<String>() {
-            @Override
-            public boolean test(String propertyKey) {
-                return propertyKey.startsWith(prefix);
-            }
-        };
+        return propertyKey -> propertyKey.startsWith(prefix);
     }
 
 

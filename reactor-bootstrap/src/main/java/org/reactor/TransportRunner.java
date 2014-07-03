@@ -1,6 +1,6 @@
 package org.reactor;
 
-import com.google.common.base.Supplier;
+import static org.reactor.properties.PropertiesLoader.propertiesLoader;
 import org.reactor.event.DefaultReactorEventConsumerFactory;
 import org.reactor.reactor.ReactorController;
 import org.reactor.transport.DefaultTransportMessageProcessor;
@@ -8,8 +8,6 @@ import org.reactor.transport.TransportController;
 import org.reactor.transport.TransportProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.reactor.properties.PropertiesLoader.propertiesLoader;
 
 public final class TransportRunner {
 
@@ -32,13 +30,7 @@ public final class TransportRunner {
     private void initTransportController(TransportProperties transportProperties) {
         transportController = TransportController.createAndLoadTransports();
         transportController.startTransports(transportProperties, new DefaultTransportMessageProcessor(
-                new Supplier<ReactorController>() {
-
-                    @Override
-                    public ReactorController get() {
-                        return reactorController;
-                    }
-                }));
+                () -> reactorController));
     }
 
     public final void start() throws Exception {

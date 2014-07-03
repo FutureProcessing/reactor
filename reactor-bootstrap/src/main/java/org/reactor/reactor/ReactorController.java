@@ -3,12 +3,11 @@ package org.reactor.reactor;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES;
-import static org.reactor.utils.ClassUtils.PossibleTypeAction;
 import static org.reactor.utils.ClassUtils.tryCall;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
-
+import java.util.List;
+import java.util.ServiceLoader;
 import org.reactor.InitializingReactor;
 import org.reactor.Reactor;
 import org.reactor.ReactorProperties;
@@ -17,9 +16,6 @@ import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.request.ReactorRequestInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.ServiceLoader;
 
 public class ReactorController {
 
@@ -39,10 +35,7 @@ public class ReactorController {
         collectReactor(new ReactorControllerContentsReactor(this));
 
         ServiceLoader<Reactor> reactorsLoader = ServiceLoader.load(Reactor.class);
-
-        for (Reactor reactor : reactorsLoader) {
-            collectReactor(reactor);
-        }
+        reactorsLoader.forEach(this::collectReactor);
     }
 
     @VisibleForTesting
@@ -56,14 +49,10 @@ public class ReactorController {
     }
 
     private void tryInitReactor(final Reactor reactor, final ReactorProperties reactorProperties) {
-        tryCall(reactor, InitializingReactor.class, new PossibleTypeAction<InitializingReactor, Void>() {
-
-            @Override
-            public Void invokeAction(InitializingReactor subject) {
-                LOG.debug("Initializing reactor: {}", reactor.getClass().getName());
-                subject.initReactor(new ReactorProperties(reactorProperties));
-                return null;
-            }
+        tryCall(reactor, InitializingReactor.class, subject -> {
+            LOG.debug("Initializing reactor: {}", reactor.getClass().getName());
+            subject.initReactor(new ReactorProperties(reactorProperties));
+            return null;
         });
     }
 
@@ -72,13 +61,9 @@ public class ReactorController {
     }
 
     private void createEventConsumers(Reactor reactor, final ReactorEventConsumerFactory factory) {
-        tryCall(reactor, EventProducingReactor.class, new PossibleTypeAction<EventProducingReactor, Void>() {
-
-            @Override
-            public Void invokeAction(EventProducingReactor subject) {
-                subject.initReactorEventConsumers(factory);
-                return null;
-            }
+        tryCall(reactor, EventProducingReactor.class, subject -> {
+            subject.initReactorEventConsumers(factory);
+            return null;
         });
     }
 

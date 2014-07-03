@@ -2,14 +2,11 @@ package org.reactor.response;
 
 import static com.google.common.collect.Iterables.transform;
 import static org.reactor.request.parser.ReactorRequestParameterDefinition.TO_CMD_LINE_OPTION;
-
+import java.io.PrintWriter;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.reactor.Reactor;
 import org.reactor.request.parser.ReactorRequestParameterDefinition;
-
-import java.io.PrintWriter;
 
 public class CommandHelpResponse extends StringReactorResponse {
 
@@ -35,9 +32,7 @@ public class CommandHelpResponse extends StringReactorResponse {
     @Override
     protected void printResponse(PrintWriter printWriter) {
         Options commandLineOptions = new Options();
-        for (Option commandOption : transform(arguments, TO_CMD_LINE_OPTION)) {
-            commandLineOptions.addOption(commandOption);
-        }
+        transform(arguments, TO_CMD_LINE_OPTION).forEach(commandLineOptions::addOption);
         helpFormatter.printUsage(printWriter, TEXT_WIDTH, reactor.getTriggeringExpression(), commandLineOptions);
     }
 

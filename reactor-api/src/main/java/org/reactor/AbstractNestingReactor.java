@@ -7,13 +7,12 @@ import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES;
 import static org.reactor.response.NoResponse.NO_RESPONSE;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 
 import org.reactor.annotation.ReactOn;
-import org.reactor.nesting.PrintSubReactorsInformationReactor;
-import org.reactor.nesting.SubReactorsInformationResponse;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.nesting.NestingReactorMethodProxyReactor;
+import org.reactor.nesting.PrintSubReactorsInformationReactor;
+import org.reactor.nesting.SubReactorsInformationResponse;
 import org.reactor.request.ReactorRequest;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
@@ -22,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<String> implements InitializingReactor {
 
@@ -30,7 +30,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
     private final static Predicate<Method> REACTOR_METHOD = new Predicate<Method>() {
 
         @Override
-        public boolean apply(Method method) {
+        public boolean test(Method method) {
             return annotationPresent(method) && returnTypeMatches(method) && parametersMatch(method);
         }
 
@@ -68,18 +68,13 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
     }
 
     private void registerAnnotatedNestedReactors() {
-        List<Method> reactorMethods = from(asList(getClass().getMethods())).filter(REACTOR_METHOD).toList();
-        for (Method reactorMethod : reactorMethods) {
-            Reactor methodProxyReactor = newMethodProxyReactor(reactorMethod);
-
-            LOG.debug("Registering method proxy sub-reactor for method: {}.{}", getClass().getName(),
-                reactorMethod.getName());
-            registerNestedReactor(methodProxyReactor);
-        }
+        asList(getClass().getMethods()).stream().filter(REACTOR_METHOD).forEach(this::registerMethodProxyReactor);
     }
 
-    private Reactor newMethodProxyReactor(Method annotatedNestingReactorMethod) {
-        return new NestingReactorMethodProxyReactor(this, annotatedNestingReactorMethod);
+    private void registerMethodProxyReactor(Method reactorMethod) {
+        LOG.debug("Registering method proxy sub-reactor for method: {}.{}", getClass().getName(),
+                reactorMethod.getName());
+        registerNestedReactor(new NestingReactorMethodProxyReactor(this, reactorMethod));
     }
 
     public final ReactorResponse doReact(ReactorRequest<String> reactorRequest) {
@@ -115,9 +110,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
 
     @Override
     public void accept(ReactorTopologyDiscoveringVisitor topologyVisitor) {
-        for (Reactor subReactor : subReactors) {
-            topologyVisitor.visitSubReactor(subReactor);
-        }
+        subReactors.forEach(topologyVisitor::visitSubReactor);
     }
 
     @Override
@@ -129,5 +122,5 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
 
     protected void initNestingReactor(ReactorProperties properties) {
 
-    };
+    }
 }

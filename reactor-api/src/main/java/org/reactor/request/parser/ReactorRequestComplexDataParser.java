@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -71,10 +70,10 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
         T requestData = prepareRequestDataInstance();
 
         CommandLine commandLine = parseCommandLine(requestInput.getArguments());
-        for (ReactorRequestParameterDefinition requestParameterDefinition : requestParameters) {
+        requestParameters.forEach(requestParameterDefinition -> {
             String parameterValue = commandLine.getOptionValue(requestParameterDefinition.getName());
             setRequestDataParameter(requestData, requestParameterDefinition, parameterValue);
-        }
+        });
         return new ReactorRequest<>(sender, trigger, requestData);
     }
 
@@ -105,17 +104,12 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
     }
 
     private Options prepareCommandLineOptions() {
-        Options options;
-        options = new Options();
-        for (Option commandOption : transform(requestParameters, TO_CMD_LINE_OPTION)) {
-            options.addOption(commandOption);
-        }
+        Options options = new Options();
+        transform(requestParameters, TO_CMD_LINE_OPTION).forEach(options::addOption);
         return options;
     }
 
     public void accept(ReactorTopologyDiscoveringVisitor topologyVisitor) {
-        for (ReactorRequestParameterDefinition requestParameter : requestParameters) {
-            topologyVisitor.visitReactorRequestParameter(requestParameter.getName(), requestParameter.isRequired());
-        }
+        requestParameters.forEach(topologyVisitor::visitReactorRequestParameter);
     }
 }
