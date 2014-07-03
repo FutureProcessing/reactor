@@ -71,6 +71,7 @@
         <org.reactor.api.version>0.0.1</org.reactor.api.version>
         <org.reactor.jira.version>0.0.1</org.reactor.jira.version>
         <org.reactor.jenkins.version>0.0.1</org.reactor.jenkins.version>
+		<org.reactor.sonar.version>0.0.1</org.reactor.sonar.version>
         <org.reactor.filesystem.version>0.0.1</org.reactor.filesystem.version>
         <org.reactor.transport-irc.version>0.0.1</org.reactor.transport-irc.version>
         <org.reactor.transport-skype.version>0.0.1</org.reactor.transport-skype.version>
@@ -104,6 +105,12 @@
                 <groupId>org.reactor</groupId>
                 <artifactId>reactor-jenkins</artifactId>
                 <version>${org.reactor.jenkins.version}</version>
+            </dependency>
+			
+			<dependency>
+                <groupId>org.reactor</groupId>
+                <artifactId>reactor-sonar</artifactId>
+                <version>${org.reactor.sonar.version}</version>
             </dependency>
 
             <dependency>
