@@ -1,6 +1,6 @@
 package org.reactor.sonar;
 
-import static org.reactor.sonar.SonarFacade.forServerDetails;
+import static org.reactor.sonar.SonarService.forServerDetails;
 import org.reactor.AbstractNestingReactor;
 import org.reactor.ReactorInitializationException;
 import org.reactor.ReactorProperties;
@@ -13,15 +13,15 @@ import java.net.URISyntaxException;
 @ReactOn(value = "sonar", description = "Sonar reactor")
 public class SonarReactor extends AbstractNestingReactor {
 
-    private SonarFacade sonarFacade;
+    private SonarService sonarService;
     
-    protected void createdSonarFacade(String serverUrl, String username, String password) throws URISyntaxException {
-        sonarFacade = forServerDetails(serverUrl, username, password);
+    protected void createSonarService(String serverUrl, String username, String password) throws URISyntaxException {
+        sonarService = forServerDetails(serverUrl, username, password);
     }
     
     private void initNestingReactor(SonarReactorProperties reactorProperties) {
         try {
-            createdSonarFacade(reactorProperties.getUrl(), reactorProperties.getUsername(),
+            createSonarService(reactorProperties.getUrl(), reactorProperties.getUsername(),
                 reactorProperties.getPassword());
         } catch (URISyntaxException e) {
             throw new ReactorInitializationException(e);
@@ -35,9 +35,8 @@ public class SonarReactor extends AbstractNestingReactor {
     
     @ReactOn(value = "singleMetric", description = "Displays a single metric for a project key\n-k")
     public ReactorResponse getSonarSingleMetric(ReactorRequest<SonarRequestData> sonarRequest) {
-        String response = sonarFacade.getSingleMetric(sonarRequest.getRequestData().getProjectKey(), sonarRequest.getRequestData().getMetrics());
+        String response = sonarService.getSingleMetric(sonarRequest.getRequestData().getProjectKey(), sonarRequest.getRequestData().getMetrics());
         return new StringReactorResponse(response);
     }
-
 
 }

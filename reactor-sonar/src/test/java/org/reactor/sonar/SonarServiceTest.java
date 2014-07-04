@@ -15,60 +15,55 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 import java.util.List;
 
-
-public class SonarFacadeTest extends AbstractUnitTest {
+public class SonarServiceTest extends AbstractUnitTest {
 
     private static String ANY_PROJECT_KEY = "auriga:project";
     private static String ANY_METRIC = "blablabla";
     private static String METRIC_KNOWN = "complexity";
     private static Double COMPLEXITY = 123.0d;
-    
     @Mock
     private Sonar sonar;
-    
     @InjectMocks
-    private SonarFacade sonarFacade;
-    
-    
+    private SonarService sonarFacade;
+
     @Test
-    public void shouldGetSingleMetricThrowExceptionOnProjectKey() throws Exception {
-        //then
-        expectedException.expect(ReactorProcessingException.class);
-        expectedException.expectMessage(SonarFacade.UNKNOWN_PRODUCT_KEY);
-        
+    public void shouldGetSingleMetricThrowExceptionOnInvalidProjectKey() throws Exception {
         // given
         given(sonar.find(any(ResourceQuery.class))).willReturn(null);
-        
-        //when
-        sonarFacade.getSingleMetric(ANY_PROJECT_KEY, ANY_METRIC);
-        
-    }
-    
-    @Test
-    public void shouldGetSingleMetricThrowExceptionOnMetric() throws Exception {
+
         // then
         expectedException.expect(ReactorProcessingException.class);
-        expectedException.expectMessage(SonarFacade.UNKNOWN_METRIC);
-        
+        expectedException.expectMessage(SonarService.UNKNOWN_PRODUCT_KEY);
+
+        // when
+        sonarFacade.getSingleMetric(ANY_PROJECT_KEY, ANY_METRIC);
+    }
+
+    @Test
+    public void shouldGetSingleMetricThrowExceptionOnInvalidMetric() throws Exception {
+        // then
+        expectedException.expect(ReactorProcessingException.class);
+        expectedException.expectMessage(SonarService.UNKNOWN_METRIC);
+
         // given
         Resource resource = new Resource();
         resource.setMeasures(null);
         given(sonar.find(any(ResourceQuery.class))).willReturn(resource);
-        
-        //when
+
+        // when
         sonarFacade.getSingleMetric(ANY_PROJECT_KEY, ANY_METRIC);
     }
-    
+
     @Test
     public void shouldGetSingleMetricReturnValidResponse() {
         // given
         Resource resource = createResource();
         given(sonar.find(any(ResourceQuery.class))).willReturn(resource);
-        
-        //when
+
+        // when
         String result = sonarFacade.getSingleMetric(ANY_PROJECT_KEY, METRIC_KNOWN);
-        
-        //then
+
+        // then
         assertThat(result).isEqualTo(String.valueOf(COMPLEXITY));
     }
 
@@ -82,5 +77,5 @@ public class SonarFacadeTest extends AbstractUnitTest {
         resource.setMeasures(measures);
         return resource;
     }
-    
+
 }

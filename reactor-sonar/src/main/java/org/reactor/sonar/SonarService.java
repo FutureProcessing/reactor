@@ -1,6 +1,5 @@
 package org.reactor.sonar;
 
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang.StringUtils;
 import org.reactor.ReactorProcessingException;
 import org.sonar.wsclient.Sonar;
@@ -8,21 +7,19 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 import java.net.URISyntaxException;
 
-public class SonarFacade {
+public class SonarService {
     
-    @VisibleForTesting
-    static final String UNKNOWN_PRODUCT_KEY = "Unknown project key";
-    @VisibleForTesting
-    static final String UNKNOWN_METRIC = "Unknown metric";
+    public static final String UNKNOWN_PRODUCT_KEY = "Unknown project key";
+    public static final String UNKNOWN_METRIC = "Unknown metric";
 
     private Sonar sonar;
 
-    public static SonarFacade forServerDetails(String serverUrl, String username, String password)
+    public static SonarService forServerDetails(String serverUrl, String username, String password)
             throws URISyntaxException {
-        return new SonarFacade(serverUrl, username, password);
+        return new SonarService(serverUrl, username, password);
     }
     
-    private Sonar getSonarInstance(String serverUrl, String username, String password) {
+    private Sonar createSonarInstance(String serverUrl, String username, String password) {
         Sonar sonar = null;
         if (StringUtils.isEmpty(username)) {
             sonar = Sonar.create(serverUrl);
@@ -32,8 +29,8 @@ public class SonarFacade {
         return sonar;
     }
 
-    private SonarFacade(String serverUrl, String username, String password) {
-        sonar = getSonarInstance(serverUrl, username, password);
+    private SonarService(String serverUrl, String username, String password) {
+        sonar = createSonarInstance(serverUrl, username, password);
     }
     
     private Resource findResource(String projectKey, String manualMetricKey) {
