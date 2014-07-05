@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>reactor-parent</artifactId>
         <groupId>org.reactor</groupId>
@@ -61,6 +60,11 @@
 
         <dependency>
             <groupId>org.reactor</groupId>
+            <artifactId>reactor-sonar</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reactor</groupId>
             <artifactId>reactor-filesystem</artifactId>
         </dependency>
 
@@ -71,34 +75,7 @@
 
         <dependency>
             <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-irc</artifactId>
-        </dependency>
-
-
-        <!-- dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-speech</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-teamspeak</artifactId>
-        </dependency -->
-
-        <dependency>
-            <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-telnet</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-websockets-jetty</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-directinput</artifactId>
         </dependency>
 
         <dependency>
@@ -122,6 +99,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.reactor</groupId>
+            <artifactId>travelling</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -138,5 +120,6 @@
             <artifactId>fest-assert</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 </project>

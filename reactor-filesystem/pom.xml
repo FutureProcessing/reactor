@@ -16,5 +16,9 @@
             <groupId>org.reactor</groupId>
             <artifactId>reactor-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
     </dependencies>
 </project>

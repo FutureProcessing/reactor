@@ -4,12 +4,16 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.util.concurrent.Futures.addCallback;
 import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static java.util.concurrent.Executors.newFixedThreadPool;
+
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ListeningExecutorService;
-import java.util.List;
-import java.util.ServiceLoader;
+
 import org.reactor.response.ReactorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.ServiceLoader;
 
 public class TransportController {
 
@@ -17,60 +21,62 @@ public class TransportController {
 
     private final static ListeningExecutorService executorService = listeningDecorator(newFixedThreadPool(10));
 
-    private final ReactorMessageTransportProcessor transportProcessor;
-    private final TransportProperties transportProperties;
     private final List<ReactorMessageTransport> transports = newArrayList();
 
-    public TransportController(ReactorMessageTransportProcessor transportProcessor, TransportProperties transportProperties) {
-        this.transportProcessor = transportProcessor;
-        this.transportProperties = transportProperties;
-
-        loadTransports();
+    public static TransportController createAndLoadTransports() {
+        TransportController transportController = new TransportController();
+        transportController.loadTransports();
+        return transportController;
     }
+
+    private TransportController() {}
 
     private void loadTransports() {
         ServiceLoader<ReactorMessageTransport> transportsLoader = ServiceLoader.load(ReactorMessageTransport.class);
-        for (ReactorMessageTransport transport : transportsLoader) {
-            LOG.debug("Loading message transport: {}", transport.getClass().getName());
-            transports.add(transport);
+        if (!transportsLoader.iterator().hasNext()) {
+            LOG.warn("No message transports found!");
+            return;
         }
+        transportsLoader.forEach(transport -> {
+            LOG.debug("Loading message transport: {}", transport.getClass().getName());
+            addTransport(transport);
+        });
     }
 
-    public final void startTransports() {
-        for (ReactorMessageTransport transport : transports) {
-            startTransport(transport);
-        }
+    public final void startTransports(TransportProperties transportProperties,
+                                      ReactorMessageTransportProcessor messageTransportProcessor) {
+
+        transports.forEach(transport -> {
+            LOG.debug("Starting up transport: {}", transport.getClass().getName());
+            startTransport(transport, transportProperties, messageTransportProcessor);
+        });
         executorService.shutdown();
+
         new TransportsShutdownHook(this).initHook();
     }
 
-    private void startTransport(ReactorMessageTransport transport) {
+    private void startTransport(ReactorMessageTransport transport, TransportProperties transportProperties,
+                                ReactorMessageTransportProcessor messageTransportProcessor) {
         addCallback(executorService.submit(new TransportInitializationCallable(transport, transportProperties,
-            transportProcessor)), new TransportInitializationCallback(transport));
+            messageTransportProcessor)), new TransportInitializationCallback(transport));
     }
 
     public final void stopTransports() {
-        for (ReactorMessageTransport transport : transports) {
+        transports.forEach(transport -> {
             LOG.debug("Shutting down transport: {}", transport.getClass().getName());
             transport.stopTransport();
             LOG.debug("Transport stopped: {}", transport.getClass().getName());
-        }
+        });
     }
 
     public void broadcast(ReactorResponse reactorResponse) {
-        for (ReactorMessageTransport transport : transports) {
-            if (!validateTransportForBroadcast(transport)) {
-                continue;
-            }
-            transport.broadcast(reactorResponse);
-        }
+        transports.stream()
+                .filter(ReactorMessageTransport::isRunning)
+                .forEach(transport -> transport.broadcast(reactorResponse));
     }
 
-    private boolean validateTransportForBroadcast(ReactorMessageTransport transport) {
-        if (!transport.isRunning()) {
-            LOG.trace("Transport is not started up yet: {}", transport.getClass().getName());
-            return false;
-        }
-        return true;
+    @VisibleForTesting
+    void addTransport(ReactorMessageTransport transport) {
+        transports.add(transport);
     }
 }

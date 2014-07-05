@@ -1,15 +1,16 @@
 package org.reactor;
 
-import static org.reactor.properties.PropertiesBuilder.propertiesBuilder;
-import static org.reactor.request.ReactorRequestParser.parseRequestFromArguments;
-import static org.reactor.response.NoResponse.NO_RESPONSE;
-import static org.reactor.utils.ClassUtils.newInstance;
-import static org.reactor.utils.ClassUtils.tryCall;
-import java.io.StringWriter;
+import com.google.common.base.Optional;
+import org.reactor.reactor.ReactorController;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
-import org.reactor.utils.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.StringWriter;
+
+import static org.reactor.properties.PropertiesLoader.propertiesLoader;
+import static org.reactor.response.NoResponse.NO_RESPONSE;
 
 public class ReactorRunner {
 
@@ -17,40 +18,48 @@ public class ReactorRunner {
     private final static Logger LOG = LoggerFactory.getLogger(ReactorRunner.class);
     public static final String SENDER_SYSTEM = "SYSTEM";
 
-    private ReactorResponse runReactorCommand(ReactorProperties reactorProperties, String... commandArguments)
-            throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        if (!validateMinArgumentsLength(commandArguments, 1)) {
+    private ReactorResponse invokeReactorController(ReactorProperties reactorProperties,
+                                                    ReactorRequestInput requestInput) throws IllegalAccessException,
+            InstantiationException, ClassNotFoundException {
+        if (!validateMinArgumentsLength(requestInput, 1)) {
             return NO_RESPONSE;
         }
-        LOG.debug("Trying to use reactor implementation: {}", reactorProperties.getReactorImplementation());
-        Reactor reactor = newInstance(reactorProperties.getReactorImplementation(), Reactor.class);
-        tryInitReactor(reactor, reactorProperties);
-        return reactor.react(parseRequestFromArguments(SENDER_SYSTEM, commandArguments));
+        ReactorController reactorController = initializeController(reactorProperties);
+        return processWithReactorController(reactorController, requestInput);
     }
 
-    private void tryInitReactor(final Reactor reactor, final ReactorProperties reactorProperties) {
-        tryCall(reactor, InitializingReactor.class, new ClassUtils.PossibleTypeAction<InitializingReactor, Void>() {
-            @Override
-            public Void invokeAction(InitializingReactor subject) {
-                subject.initReactor(new ReactorProperties(reactorProperties));
-                return null;
-            }
-        });
+    private ReactorController initializeController(ReactorProperties reactorProperties) {
+        LOG.debug("Initializing Reactor Controller ...");
+        ReactorController reactorController = new ReactorController();
+        reactorController.initReactors(reactorProperties);
+        return reactorController;
     }
 
-    private boolean validateMinArgumentsLength(String[] arguments, int minLength) {
-        if (arguments.length < minLength) {
-            LOG.debug("Not enough arguments to process message: {}, required min length: {}", arguments.length,
-                minLength);
+    private ReactorResponse processWithReactorController(ReactorController reactorController,
+                                                         ReactorRequestInput requestInput) {
+        Optional<Reactor> reactorOptional = reactorController.reactorMatchingInput(requestInput);
+        if (reactorOptional.isPresent()) {
+            Reactor reactor = reactorOptional.get();
+            return reactor.react(SENDER_SYSTEM, requestInput);
+        }
+        LOG.warn("Unable to find reactor matching input: {}", requestInput.getArguments());
+        return NO_RESPONSE;
+    }
+
+    private boolean validateMinArgumentsLength(ReactorRequestInput arguments, int minLength) {
+        if (arguments.argumentsLength() < minLength) {
+            LOG.debug("Not enough arguments to process message: {}, required min length: {}",
+                    arguments.argumentsLength(), minLength);
             return false;
         }
         return true;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] arguments) {
         try {
-            ReactorResponse response = new ReactorRunner().runReactorCommand(new ReactorProperties(
-                propertiesBuilder().loadFromResourceStream(REACTOR_PROPERTIES).build()), args);
+            ReactorRequestInput requestInput = new ReactorRequestInput(arguments);
+            ReactorResponse response = new ReactorRunner().invokeReactorController(
+                    new ReactorProperties(propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load()),requestInput);
             StringWriter writer = new StringWriter();
             response.renderResponse(writer);
             System.out.println(writer.toString());

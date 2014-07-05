@@ -6,30 +6,29 @@ import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import org.reactor.InitializingReactor;
+import org.reactor.AbstractNestingReactor;
 import org.reactor.ReactorInitializationException;
 import org.reactor.ReactorProperties;
-import org.reactor.annotation.AbstractAnnotatedNestingReactor;
 import org.reactor.annotation.ReactOn;
-import org.reactor.annotation.ReactorRequestParameter;
-import org.reactor.command.PrintNestedReactorsReactor;
 import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.jenkins.event.JobActivityEvent;
 import org.reactor.jenkins.event.JobActivityEventListener;
+import org.reactor.jenkins.request.JenkinsJobDetailsRequestData;
 import org.reactor.jenkins.response.JobBuildQueuedResponse;
 import org.reactor.jenkins.response.JobDetailsResponse;
 import org.reactor.jenkins.response.JobsListResponse;
+import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 
-@ReactOn(value = "!jenkins", description = "Jenkins reactor")
-public class JenkinsReactor extends AbstractAnnotatedNestingReactor implements InitializingReactor, EventProducingReactor {
+@ReactOn(value = "jenkins", description = "Jenkins reactor")
+public class JenkinsReactor extends AbstractNestingReactor implements EventProducingReactor {
 
     private JenkinsServerFacade jenkinsServerFacade;
     private JobActivityEventListener jobActivityEventListener;
 
     @ReactOn(value = "jobs", description = "Prints list of defined jobs on given Jenkins instance")
-    public ReactorResponse listJobs() throws IOException {
+    public ReactorResponse listJobs(ReactorRequest reactorRequest) throws IOException {
         JobsListResponse listResponse = new JobsListResponse();
         Iterable<Job> jobs = jenkinsServerFacade.getJobs();
         for (Job job : jobs) {
@@ -39,15 +38,16 @@ public class JenkinsReactor extends AbstractAnnotatedNestingReactor implements I
     }
 
     @ReactOn(value = "job", description = "Prints basic information about given job")
-    public ReactorResponse getJobDetails(@ReactorRequestParameter(required = true, name = "jobName", shortName = "j") String jobName)
+    public ReactorResponse getJobDetails(ReactorRequest<JenkinsJobDetailsRequestData> jenkinsJobRequest)
             throws IOException {
-        JobWithDetails job = jenkinsServerFacade.getJob(jobName);
+        JobWithDetails job = jenkinsServerFacade.getJob(jenkinsJobRequest.getRequestData().getJobName());
         return new JobDetailsResponse(job);
     }
 
     @ReactOn(value = "run", description = "Triggers build of job with given name")
-    public ReactorResponse buildJob(@ReactorRequestParameter(required = true, name = "jobName", shortName = "j") String jobName)
+    public ReactorResponse buildJob(ReactorRequest<JenkinsJobDetailsRequestData> jenkinsJobRequest)
             throws IOException {
+        String jobName = jenkinsJobRequest.getRequestData().getJobName();
         jenkinsServerFacade.buildJob(jobName);
         return new JobBuildQueuedResponse(jobName);
     }
@@ -63,10 +63,8 @@ public class JenkinsReactor extends AbstractAnnotatedNestingReactor implements I
     }
 
     @Override
-    public void initReactor(ReactorProperties reactorProperties) {
+    public void initNestingReactor(ReactorProperties reactorProperties) {
         initJenkinsReactor(new JenkinsReactorProperties(reactorProperties));
-
-        registerNestedReactor(new PrintNestedReactorsReactor(this));
     }
 
     @Override

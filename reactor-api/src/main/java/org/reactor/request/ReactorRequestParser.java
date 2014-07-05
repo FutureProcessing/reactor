@@ -12,16 +12,12 @@ public class ReactorRequestParser {
     private final String[] requestArguments;
     private final String sender;
 
-    public static ReactorRequest parseRequestFromLine(String sender, String requestLine) {
-        return new ReactorRequestParser(sender, parseArguments(requestLine)).parseRequest();
+    public static <T> ReactorRequest<T> parseRequest(String sender, String requestString) {
+        return new ReactorRequestParser(sender, parseArguments(requestString)).parseRequest();
     }
 
-    public static ReactorRequest parseRequestFromArguments(String sender, String... requestArguments) {
-        return new ReactorRequestParser(sender, requestArguments).parseRequest();
-    }
-
-    public static ReactorRequest parseNestedRequest(ReactorRequest reactorRequest) {
-        return new ReactorRequestParser(reactorRequest.getSender(), reactorRequest.getArguments()).parseRequest();
+    public static <T> ReactorRequest<T> parseNestedRequest(ReactorRequest<String> reactorRequest) {
+        return new ReactorRequestParser(reactorRequest.getSender(), reactorRequest.getRequestData()).parseRequest();
     }
 
     private ReactorRequest parseRequest() {

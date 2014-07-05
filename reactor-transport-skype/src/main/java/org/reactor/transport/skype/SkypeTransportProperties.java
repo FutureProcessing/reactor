@@ -1,12 +1,10 @@
 package org.reactor.transport.skype;
 
-import static com.google.common.base.Splitter.on;
-
-import com.google.common.base.Predicate;
-
 import org.reactor.transport.TransportProperties;
 
 import java.util.Properties;
+
+import static com.google.common.base.Splitter.on;
 
 public class SkypeTransportProperties extends TransportProperties {
 
@@ -16,12 +14,7 @@ public class SkypeTransportProperties extends TransportProperties {
     private static final String DEFAULT_VALUE = "";
 
     public SkypeTransportProperties(Properties properties) {
-        super(properties, new Predicate<String>() {
-
-            public boolean apply(String propertyKey) {
-                return propertyKey.startsWith(PREFIX);
-            }
-        });
+        super(properties, propertyKeyStartPredicate(PREFIX));
     }
 
     public String getApplicationName() {
