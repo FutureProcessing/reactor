@@ -40,6 +40,6 @@ public class DirectInputProcessingRunnable implements Runnable {
 
     private void printCursor() {
         System.out.println();
-        System.out.print("direct> ");
+        System.out.print("reactor> ");
     }
 }
