@@ -11,5 +11,7 @@ public @interface ReactorRequestParameter {
 
     String shortName() default "";
 
+    String description() default "";
+
     boolean required() default false;
 }
