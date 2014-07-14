@@ -2,6 +2,7 @@ package org.reactor.transport.websockets;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.util.resource.Resource;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransport;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
@@ -44,8 +45,8 @@ public class WebSocketsMessageTransport implements ReactorMessageTransport {
 
     private ResourceHandler createResourceHandler() {
         ResourceHandler resourceHandler = new ResourceHandler();
-        //resourceHandler.setBaseResource(Resource.newClassPathResource(STATIC_DIR));
-        resourceHandler.setResourceBase(STATIC_DIR);
+        resourceHandler.setBaseResource(Resource.newClassPathResource(STATIC_DIR));
+        //resourceHandler.setResourceBase(STATIC_DIR);
         return resourceHandler;
     }
 
