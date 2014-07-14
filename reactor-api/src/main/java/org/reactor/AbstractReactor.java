@@ -3,7 +3,6 @@ package org.reactor;
 import static com.google.common.base.Throwables.getRootCause;
 import static org.reactor.request.parser.AbstractReactorRequestDataParser.forDataType;
 import static org.reactor.response.NoResponse.NO_RESPONSE;
-import org.reactor.discovery.ReactorParametersDiscoveringVisitor;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.request.ReactorRequest;
 import org.reactor.request.ReactorRequestInput;
@@ -31,13 +30,10 @@ public abstract class AbstractReactor<T> implements Reactor {
     @Override
     public final ReactorResponse react(String sender, ReactorRequestInput requestInput) {
         try {
-            return react(dataParser.parseRequestWithData(sender, getTriggeringExpression(), requestInput));
+            return react(dataParser.parseRequestWithData(sender, getTriggeringExpression(), requestInput.popArguments()));
         } catch (ReactorRequestParsingException e) {
-            ReactorParametersDiscoveringVisitor parametersVisitor = new ReactorParametersDiscoveringVisitor();
-            accept(parametersVisitor);
-
             LOG.error("An error occurred while parsing Request", e);
-            return new CommandHelpResponse(getRootCause(e).getMessage(), this, parametersVisitor.getParameters());
+            return new CommandHelpResponse(getRootCause(e).getMessage(), this);
         }
     }
 

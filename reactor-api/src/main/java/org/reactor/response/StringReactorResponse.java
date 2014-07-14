@@ -6,10 +6,16 @@ import java.io.Writer;
 
 public class StringReactorResponse implements ReactorResponse {
 
+    private static final String EMPTY_RESPONSE = "";
+
     private final StringBuffer response;
 
     public StringReactorResponse(String response) {
         this.response = new StringBuffer(response);
+    }
+
+    public StringReactorResponse() {
+        this(EMPTY_RESPONSE);
     }
 
     public StringReactorResponse(String responseTemplate, String... templateVariables) {

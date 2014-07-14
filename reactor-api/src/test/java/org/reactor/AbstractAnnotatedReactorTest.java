@@ -40,11 +40,11 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
 
         // when
         StringWriter writer = new StringWriter();
-        ReactorResponse response = reactor.react(SENDER, new ReactorRequestInput("one two three"));
+        ReactorResponse response = reactor.react(SENDER, new ReactorRequestInput("trigger arg1 arg2"));
         response.renderResponse(writer);
 
         // then
-        assertThat(writer.toString()).isEqualTo("one two three");
+        assertThat(writer.toString()).isEqualTo("arg1 arg2");
     }
 
     private AbstractAnnotatedReactor givenNotAnnotatedReactor() {
