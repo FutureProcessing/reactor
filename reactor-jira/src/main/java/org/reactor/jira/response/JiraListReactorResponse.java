@@ -6,22 +6,27 @@ import org.reactor.response.list.ListReactorResponse;
 import java.util.List;
 
 
-public class JiraListReactorResponse extends ListReactorResponse<JiraIssue> {
+public class JiraListReactorResponse<T> extends ListReactorResponse<T> {
 
-    List<JiraIssue> issues = Lists.newArrayList();
+    List<T> elements = Lists.newArrayList();
+    ListElementFormatter<T> formatter;
+    
+    private JiraListReactorResponse() {
+    }
     
     @Override
-    protected Iterable<JiraIssue> getElements() {
-        return issues;
+    protected Iterable<T> getElements() {
+        return elements;
     }
 
     @Override
-    protected ListElementFormatter<JiraIssue> getElementFormatter() {
-        return new JiraIssueFormatter();
+    protected ListElementFormatter<T> getElementFormatter() {
+        return formatter;
     }
 
-    public JiraListReactorResponse(List<JiraIssue> issues) {
-        this.issues = issues;
+    public JiraListReactorResponse(List<T> elements, ListElementFormatter<T> formatter) {
+        this.elements = elements;
+        this.formatter = formatter;
     }
-
+    
 }

@@ -11,27 +11,8 @@
     <artifactId>reactor-jira</artifactId>
 
     <properties>
-        <jira.version>2.0.0-m2</jira.version>
-        <jira.client.version>2.0.0-m25</jira.client.version>
-
-        <jersey.client.version>1.9</jersey.client.version>
+        <jira.client.greenhopper>0.5-SNAPSHOT</jira.client.greenhopper>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>atlassian-public</id>
-            <url>https://m2proxy.atlassian.com/repository/public</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -56,24 +37,10 @@
         </dependency>
 
         <dependency>
-            <groupId>com.atlassian.jira</groupId>
-            <artifactId>jira-rest-java-client-api</artifactId>
-            <version>${jira.client.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.jira</groupId>
-            <artifactId>jira-rest-java-client-core</artifactId>
-            <version>${jira.client.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.jira</groupId>
-            <artifactId>jira-rest-java-client-plugin</artifactId>
-            <version>${jira.client.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jettison</groupId>
-            <artifactId>jettison</artifactId>
-            <version>1.0.1</version>
+            <groupId>net.rcarz</groupId>
+            <artifactId>jira-client</artifactId>
+            <version>${jira.client.greenhopper}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

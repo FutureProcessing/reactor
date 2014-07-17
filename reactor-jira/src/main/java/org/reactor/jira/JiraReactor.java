@@ -9,11 +9,13 @@ import org.reactor.jira.command.EnvironmentVariableReactor;
 import org.reactor.jira.command.PingReactor;
 import org.reactor.jira.request.UppercaseRequestData;
 import org.reactor.jira.response.JiraIssue;
+import org.reactor.jira.response.JiraIssueFormatter;
 import org.reactor.jira.response.JiraListReactorResponse;
+import org.reactor.jira.response.JiraSprint;
+import org.reactor.jira.response.JiraSprintFormatter;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.StringReactorResponse;
-import org.reactor.jira.JiraService;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -48,6 +50,12 @@ public class JiraReactor extends AbstractNestingReactor {
     @ReactOn(value = "issues", description = "List all issues")
     public ReactorResponse listAllIssues(ReactorRequest<Void> reactorRequest) {
         List<JiraIssue> issues = jiraService.getAllIssues();
-        return new JiraListReactorResponse(issues);
+        return new JiraListReactorResponse<JiraIssue>(issues, new JiraIssueFormatter());
+    }
+    
+    @ReactOn(value = "sprints", description = "List all sprints")
+    public ReactorResponse listAllSprints(ReactorRequest<Void> reactorRequest) {
+        List<JiraSprint> issues = jiraService.getAllSprints();
+        return new JiraListReactorResponse<JiraSprint>(issues, new JiraSprintFormatter());
     }
 }
