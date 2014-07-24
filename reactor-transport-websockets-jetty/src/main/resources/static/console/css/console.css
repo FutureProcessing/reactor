@@ -1,7 +1,8 @@
 html,
+
 body {
   height: 100%;
-  /*overflow: hidden;*/
+  overflow: hidden;
 }
 
 body {
@@ -9,7 +10,7 @@ body {
   background: #FFFFFF;
   margin: 0px;
   padding: 0px;
-  color: #555555;
+  color: #555555;  
   text-rendering: optimizeLegibility;
   min-width: 320px;
 }
@@ -29,7 +30,6 @@ body {
 /*-------------------
         Sidebar
 --------------------*/
-
 #feed .sidebar {
   overflow: visible;
 }
@@ -89,10 +89,10 @@ p.right {
 }
 
 
-.launch.button {
+.toggle.button {
     position: fixed;
     z-index: 500;
-    right: 50px;
+    right: 10px;
 }
 
 /*******************************
@@ -110,4 +110,36 @@ p.right {
   #feed .left.column > .menu .item {
     font-size: 1rem;
   }
+}
+
+/*-----------------------------
+          Gridster
+-------------------------------*/
+.gridster .gs-w {
+    /*background: #FFF;*/
+    cursor: pointer;
+    /*-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);*/
+}
+
+.ui.segment.gridster {
+  margin: 0px !important;
+  position: absolute !important;
+  border-radius: 0;
+  background: #FFF;
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.ui.segment.gridster > p {
+  font-size: auto;
+}
+
+.gridster .ui.top.attached.header {
+  border-radius: 0 !important;
+}
+
+.gridster .ui.segment.attached {
+  box-shadow: none;
 }

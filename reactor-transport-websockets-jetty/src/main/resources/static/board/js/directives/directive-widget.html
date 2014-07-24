@@ -1,0 +1,19 @@
+<li data-widget-id="{{widget.id}}" class="ui no-margin segment center aligned dimmable ng-class:getWidgetDecoration()">
+       <div class="ui dimmer">
+            <div class="content">
+                <div class="center">
+                    <div class="ui circular icon positive button mini" data-ng-click="editWidget()">
+                        <i class="setting icon"></i>
+                    </div>
+                    <div class="ui circular icon negative button mini" data-ng-click="removeWidget()">
+                        <i class="remove icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="ui dividing header">
+            {{widget.visual.title}}
+        </h5>
+        <p class="ng-class:widget.visual.fontSize">{{widget.reactor.input}}</p>     
+</li>  

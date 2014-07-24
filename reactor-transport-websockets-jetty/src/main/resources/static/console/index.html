@@ -7,13 +7,15 @@
 
     <title>Reactor Console</title>
 
-    <script src="js/jquery.js"></script>
-    <script src="js/angular.min.js"></script>
-    <script src="js/feed.js"></script>
-    <script src="js/semantic.js"></script>
-    <script src="js/ngStorage.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/angular.min.js"></script>
+    <script src="../js/semantic.js"></script>
+    <script src="../js/ngStorage.js"></script>
+    <script src="../js/reconnecting-websocket.js"></script>
+
+    <script src="js/console.js"></script>
+    
     <script src="js/jquery.terminal-0.8.7.min.js"></script>
-    <script src="js/reconnecting-websocket.js"></script>
 
     <script src="js/services/service-configuration.js"></script>
     <script src="js/services/service-websockets.js"></script>
@@ -27,9 +29,10 @@
     <script src="js/directives/directive-sidebar.js"></script>
     <script src="js/directives/directive-connection-monitor.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="../css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/fonts.css">
+
     <link rel="stylesheet" type="text/css" href="css/feed.css">
-    <link rel="stylesheet" type="text/css" href="css/fonts.css">
-    <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.terminal.css">
 </head>
 <body id="feed">
@@ -37,19 +40,6 @@
 <div class="ui basic modal" data-connection-monitor>
     <div class="header">
         Unable to connect to Reactor Server, reconnecting ...
-    </div>
-</div>
-
-<div class="ui purple launch bottom attached icon button floating" data-ng-controller="SidebarButtonController" data-ng-click="toggleSidebar()">
-    <i class="icon setting"></i>
-</div>
-
-<div class="ui top floating sidebar" data-sidebar>
-    <div class="ui purple inverted menu">
-        <a class="item">
-            <i class="checkmark icon red"></i>
-            Enable HTML5 Desktop Notifications
-        </a>
     </div>
 </div>
 
