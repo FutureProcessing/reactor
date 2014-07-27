@@ -75,7 +75,7 @@
 
         <dependency>
             <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-websockets-jetty</artifactId>
+            <artifactId>reactor-transport-http-jetty</artifactId>
         </dependency>
 
         <dependency>
