@@ -1,4 +1,4 @@
-<li data-widget-id="{{widget.id}}" class="ui no-margin segment center aligned dimmable ng-class:getWidgetDecoration()">
+<li data-widget-id="{{widget.id}}" class="ui no-margin segment dimmable ng-class:getWidgetDecoration()">
    <div class="ui dimmer" data-ng-hide="processing">
         <div class="content">
             <div class="center">
@@ -24,8 +24,8 @@
         </div>
     </div>
 
-    <h5 class="ui dividing header">
+    <h4 class="ui dividing header">
         {{widget.visual.title}}
-    </h5>
-    <p class="ng-class:widget.visual.fontSize">{{widgetContent}}</p>     
+    </h4>
+    <p class="nowrap ng-class:widget.visual.fontSize">{{widgetContent}}</p>
 </li>  
