@@ -2,6 +2,7 @@ app.directive('reactorConsole', function(WebSocketService) {
 
     this.terminal = {};
     this.onMessageReceived = function(message) {
+        console.log(message);
         terminal.echo(message);
     }
 
@@ -10,7 +11,8 @@ app.directive('reactorConsole', function(WebSocketService) {
             term.echo(WebSocketService.push(command));
         }, {
             prompt: '> ',
-            greetings: "Welcome in Reactor Console, type 'help' to get list of available commands"
+            greetings: "Welcome in Reactor Console, type 'help' to get list of available commands",
+            width: '100%'
         });
     };
 

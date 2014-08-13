@@ -29,6 +29,7 @@ body {
 
 #board .nowrap {
     white-space: pre;
+    word-wrap: break-word;
 }
 
 /*-------------------

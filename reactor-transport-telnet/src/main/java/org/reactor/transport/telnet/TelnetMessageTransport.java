@@ -32,10 +32,10 @@ public class TelnetMessageTransport extends KeepAliveReactorMessageTransport {
     private NioSocketAcceptor acceptor;
 
     private void startTelnetTransport(TelnetTransportProperties transportProperties,
-                                      ReactorMessageTransportProcessor messageTransport) {
+                                      ReactorMessageTransportProcessor messageTransportProcessor) {
         LOG.debug("Starting telnet message transport on port {} ...", transportProperties.getPortNumber());
         acceptor = new NioSocketAcceptor();
-        acceptor.setHandler(new TelnetMessageProcessorHandler(messageTransport));
+        acceptor.setHandler(new TelnetMessageProcessorHandler(messageTransportProcessor));
 
         configureFilterChain(acceptor.getFilterChain());
         configureSession(acceptor.getSessionConfig());

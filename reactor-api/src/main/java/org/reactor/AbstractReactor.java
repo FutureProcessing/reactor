@@ -30,7 +30,7 @@ public abstract class AbstractReactor<T> implements Reactor {
     @Override
     public final ReactorResponse react(String sender, ReactorRequestInput requestInput) {
         try {
-            return react(dataParser.parseRequestWithData(sender, getTriggeringExpression(), requestInput.popArguments()));
+            return react(dataParser.parseRequestWithData(sender, getTriggeringExpression(), requestInput));
         } catch (ReactorRequestParsingException e) {
             LOG.error("An error occurred while parsing Request", e);
             return new CommandHelpResponse(getRootCause(e).getMessage(), this);

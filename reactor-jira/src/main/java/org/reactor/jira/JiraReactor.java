@@ -19,6 +19,11 @@ public class JiraReactor extends AbstractNestingReactor {
 
     private final static Logger LOG = LoggerFactory.getLogger(JiraReactor.class);
 
+    @ReactOn(value = "time", description = "Displays current system time in milliseconds")
+    public ReactorResponse currentTime(ReactorRequest<Void> request) {
+        return new StringReactorResponse(System.currentTimeMillis() + "");
+    }
+
     @ReactOn(value = "uppercase", description = "Prints given text in uppercase")
     public ReactorResponse uppercase(ReactorRequest<UppercaseRequestData> message) {
         sleep(message.getRequestData().getSecondsDelay());

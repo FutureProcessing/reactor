@@ -75,6 +75,11 @@
 
         <dependency>
             <groupId>org.reactor</groupId>
+            <artifactId>reactor-transport-skype</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reactor</groupId>
             <artifactId>reactor-transport-http-jetty</artifactId>
         </dependency>
 
@@ -120,6 +125,5 @@
             <artifactId>fest-assert</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 </project>
