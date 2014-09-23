@@ -33,10 +33,10 @@ public class ReactorController {
     }
 
     private void collectReactors() {
-        collectReactor(new PrintReactorsInformationReactor(() -> reactors));
-
         ServiceLoader<Reactor> reactorsLoader = ServiceLoader.load(Reactor.class);
         reactorsLoader.forEach(this::collectReactor);
+
+        collectReactor(new PrintReactorsInformationReactor(reactors));
     }
 
     @VisibleForTesting
