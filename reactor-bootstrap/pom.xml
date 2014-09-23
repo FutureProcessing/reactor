@@ -70,12 +70,12 @@
 
         <dependency>
             <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-skype</artifactId>
+            <artifactId>reactor-transport-telnet</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-telnet</artifactId>
+            <artifactId>reactor-transport-websockets-jetty</artifactId>
         </dependency>
 
         <dependency>

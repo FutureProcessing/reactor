@@ -12,7 +12,7 @@ import org.reactor.Reactor;
 // TODO needs testing!
 public class ReactorRequestInput {
 
-    public final static Predicate<Reactor> TRIGGER_MATCHES(final ReactorRequestInput reactorInput) {
+    public static Predicate<Reactor> TRIGGER_MATCHES(final ReactorRequestInput reactorInput) {
         return reactor -> reactorInput.matchesTriggeringExpression(reactor.getTriggeringExpression());
     }
 
@@ -27,7 +27,9 @@ public class ReactorRequestInput {
     }
 
     public ReactorRequestInput popArguments() {
-        argumentsList.remove(0);
+        if (argumentsLength() > 0) {
+            argumentsList.remove(0);
+        }
         return new ReactorRequestInput(getArguments());
     }
 

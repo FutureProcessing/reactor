@@ -8,6 +8,7 @@ public class SonarReactorProperties extends ReactorProperties {
     public static final String PROPERTY_URL = "reactor.sonar.url";
     public static final String PROPERTY_USERNAME = "reactor.sonar.username";
     public static final String PROPERTY_PASSWORD = "reactor.sonar.password";
+    public static final String PROPERTY_PROJECT = "reactor.sonar.project";
 
     public SonarReactorProperties(Properties properties) {
         super(properties);
@@ -23,6 +24,10 @@ public class SonarReactorProperties extends ReactorProperties {
 
     public String getPassword() {
         return getProperty(PROPERTY_PASSWORD);
+    }
+
+    public String getProject() {
+        return getProperty(PROPERTY_PROJECT);
     }
 
 }
