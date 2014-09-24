@@ -1,12 +1,10 @@
 package org.reactor.travelling.step.forking;
 
 import static com.google.common.collect.Maps.newHashMap;
-
+import java.util.Map;
 import org.reactor.travelling.step.AbstractJourneyStep;
 import org.reactor.travelling.step.AbstractJourneyStepDirection;
-import org.reactor.travelling.step.direction.ForkJourneyStepDirection;
-
-import java.util.Map;
+import org.reactor.travelling.step.JourneyStepVisitor;
 
 public abstract class AbstractForkingJourneyStep<SUBJECT> extends AbstractJourneyStep<SUBJECT> {
 
@@ -28,8 +26,13 @@ public abstract class AbstractForkingJourneyStep<SUBJECT> extends AbstractJourne
     protected abstract AbstractJourneyStepDirection<SUBJECT> doForkingJourneyStep(String stepInput,
                                                                                   SUBJECT journeySubject);
 
-    protected final AbstractJourneyStepDirection<SUBJECT> fork(ForkingStepOutcome<SUBJECT> forkingStepOutcome) {
-        return new ForkJourneyStepDirection<>(forkingStepOutcome);
+    protected final AbstractJourneyStepDirection<SUBJECT> fork(final ForkingStepOutcome<SUBJECT> forkingStepOutcome) {
+        return new AbstractJourneyStepDirection<SUBJECT>() {
+            @Override
+            public void followDirection(JourneyStepVisitor<SUBJECT> journeyStepVisitor) {
+                journeyStepVisitor.fork(forkingStepOutcome);
+            }
+        };
     }
 
 }

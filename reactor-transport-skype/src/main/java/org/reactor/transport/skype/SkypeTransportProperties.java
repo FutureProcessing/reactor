@@ -8,11 +8,10 @@ import static com.google.common.base.Splitter.on;
 
 public class SkypeTransportProperties extends TransportProperties {
 
-    public static final String PREFIX = "reactor.transport.skype";
-
-    public static final String PROPERTY_APPLICATION_NAME = PREFIX + ".applicationName";
-    public static final String PROPERTY_BROADCAST_LIST = PREFIX + ".broadcastList";
-    public static final String DEFAULT_VALUE = "";
+    private static final String PREFIX = "reactor.transport.skype";
+    private static final String PROPERTY_APPLICATION_NAME = PREFIX + ".applicationName";
+    private static final String PROPERTY_BROADCAST_LIST = PREFIX + ".broadcastList";
+    private static final String DEFAULT_VALUE = "";
 
     public SkypeTransportProperties(Properties properties) {
         super(properties, propertyKeyStartPredicate(PREFIX));
