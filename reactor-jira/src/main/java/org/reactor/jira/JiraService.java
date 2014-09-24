@@ -20,40 +20,36 @@ public class JiraService {
 
     private static final int RAPID_VIEW_FIRST = 1;
     private static final String STATUS_UNKNOWN = "Unknown";
-    private GreenHopperClient greenHopperClient;
-    private JiraClient jiraClient;
-    private String projectName;
+
+    private final GreenHopperClient greenHopperClient;
+    private final JiraClient jiraClient;
+    private final String projectName;
 
     public static JiraService forServerDetails(String serverUrl, String username, String password, String projectName)
             throws URISyntaxException {
         return new JiraService(serverUrl, username, password, projectName);
     }
 
-    private JiraService() {}
-
-    public JiraService(String serverUrl, String username, String password, String projectName)
+    private JiraService(String serverUrl, String username, String password, String projectName)
             throws URISyntaxException {
         this.projectName = projectName;
-        BasicCredentials creds = new BasicCredentials(username, password);
-        jiraClient = new JiraClient(serverUrl, creds);
+        jiraClient = new JiraClient(serverUrl, new BasicCredentials(username, password));
         greenHopperClient = new GreenHopperClient(jiraClient);
     }
 
     public List<JiraIssue> getAllIssues() {
         List<JiraIssue> result = newArrayList();
-        SearchResult searchResult = null;
         try {
-            searchResult = jiraClient.searchIssues("project=" + projectName);
+            SearchResult searchResult = jiraClient.searchIssues("project=" + projectName);
+            for (Issue issue : searchResult.issues) {
+                JiraIssue jiraIssue = new JiraIssue(issue.getKey(), issue.getSummary(), issue.getDescription(), issue
+                        .getStatus() != null ? issue.getStatus().getName() : STATUS_UNKNOWN);
+                result.add(jiraIssue);
+            }
+            return result;
         } catch (JiraException e) {
             throw new ReactorProcessingException(e);
         }
-
-        for (Issue issue : searchResult.issues) {
-            JiraIssue jiraIssue = new JiraIssue(issue.getKey(), issue.getSummary(), issue.getDescription(), issue
-                .getStatus() != null ? issue.getStatus().getName() : STATUS_UNKNOWN);
-            result.add(jiraIssue);
-        }
-        return result;
     }
 
     public List<JiraSprint> getAllSprints() {
