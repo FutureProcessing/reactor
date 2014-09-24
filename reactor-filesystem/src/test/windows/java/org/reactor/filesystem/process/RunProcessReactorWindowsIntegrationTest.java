@@ -1,11 +1,12 @@
 package org.reactor.filesystem.process;
 
-import java.io.IOException;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 import org.reactor.AbstractUnitTest;
 
-public class RunProcessReactorTest extends AbstractUnitTest {
+import java.io.IOException;
+
+public class RunProcessReactorWindowsIntegrationTest extends AbstractUnitTest {
 
     private RunProcessReactor reactor;
 
@@ -15,10 +16,10 @@ public class RunProcessReactorTest extends AbstractUnitTest {
         givenRunProcessReactor();
 
         // when
-        String processResult = reactor.runProcess("uname", "-a");
+        String processResult = reactor.runProcess("ver");
 
         // then
-        Assertions.assertThat(processResult).contains("Linux");
+        Assertions.assertThat(processResult).contains("Windows");
 
     }
 

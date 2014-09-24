@@ -35,7 +35,6 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
             return hasNoParameters(method) || (hasOnlyOneParameter(method) && inputTypeMatches(method));
         }
 
-
         private boolean hasNoParameters(Method method) {
             return method.getParameterTypes().length == 0;
         }
