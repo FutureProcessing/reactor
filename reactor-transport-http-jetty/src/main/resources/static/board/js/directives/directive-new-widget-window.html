@@ -1,0 +1,161 @@
+<div class="header" data-ng-show="isNewWidget()">
+    Add new widget
+</div>
+<div class="header" data-ng-show="!isNewWidget()">
+    Update widget
+</div>
+<div class="content">
+    <div class="ui two column grid">
+        <div class="column">
+            <h3 class="ui dividing header">
+            Widget visual settings
+            </h3>
+            <div class="ui form">
+                <div class="eight wide field">
+                    <label>Widget title:</label>
+                    <div class="ui left labeled input">
+                        <input type="text" name="title" data-ng-model="widgetData.visual.title">
+                        <div class="ui corner label">
+                            <i class="icon asterisk"></i>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="fields">
+                    <div class="eight wide field">
+                        <label>Font size:</label>
+                        <div class="ui fluid dropdown selection" data-ng-model="widgetData.visual.fontSize">
+                            <div class="default text">Default</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item" data-value="">Default</div>
+                                <div class="item" data-value="widget-font-xx-small">XX Small</div>
+                                <div class="item" data-value="widget-font-x-small">X Small</div>
+                                <div class="item" data-value="widget-font-smaller">Smaller</div>
+                                <div class="item" data-value="widget-font-small">Small</div>
+                                <div class="item" data-value="widget-font-large">Large</div>
+                                <div class="item" data-value="widget-font-larger">Larger</div>
+                                <div class="item" data-value="widget-font-x-large">X Large</div>
+                                <div class="item" data-value="widget-font-xx-large">XX Large</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="eight wide field">
+                        <label>Widget color:</label>
+
+                        <div class="ui fluid dropdown selection" data-ng-model="widgetData.visual.color">
+                            <div class="default text">Default</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item" data-value="">Default</div>
+                                <div class="item" data-value="green">Green</div>
+                                <div class="item" data-value="red">Red</div>
+                                <div class="item" data-value="blue">Blue</div>
+                                <div class="item" data-value="purple">Purple</div>
+                                <div class="item" data-value="orange">Orange</div>
+                                <div class="item" data-value="teal">Teal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="column">
+            <h3 class="ui dividing header">
+                Layout settings
+            </h3>
+            <div class="ui form">
+                <div class="fields">
+                    <div class="eight wide field">
+                        <label>Grid X size:</label>
+                        <div class="ui left labeled input">
+                            <input type="text" name="gridX" data-ng-model="widgetData.layout.gridX">
+                            <div class="ui corner label">
+                                <i class="icon asterisk"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="eight wide field">
+                        <label>Grid Y size:</label>
+                        <div class="ui left labeled input">
+                            <input type="text" name="gridY" data-ng-model="widgetData.layout.gridY">
+                            <div class="ui corner label">
+                                <i class="icon asterisk"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui form">
+        <div class="fields">
+            <div class="four wide field">
+                <div class="ui input">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" id="dropShadow" data-ng-model="widgetData.visual.dropShadow">
+                        <label for="dropShadow">Drop shadow</label>
+                    </div>
+                    <label></label>
+                </div>
+            </div>
+            <div class="four wide field">
+                <div class="ui input">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" id="invertedColors" data-ng-model="widgetData.visual.inverted">
+                        <label for="invertedColors">Inverted colors</label>
+                    </div>
+                    <label></label>
+                </div>
+            </div>
+            <div class="six wide field">
+                <div class="ui input">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" id="showDimmerLoading" data-ng-model="widgetData.visual.showDimmerLoading">
+                        <label for="showDimmerLoading">Show dimmer when loading data</label>
+                    </div>
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="ui dividing header">
+        Reactor settings
+    </h3>
+    <div class="ui form">
+        <div class="fields">
+            <div class="twelve wide field">
+                <label>Reactor input:</label>
+                <div class="ui left labeled input">
+                    <input type="text" name="reactorInput" data-ng-model="widgetData.reactor.input">
+                    <div class="ui corner label">
+                        <i class="icon asterisk"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="four wide field">
+                <label>Refresh interval:</label>
+                <div class="ui left labeled input">
+                    <input type="text" name="interval" placeholder="1" data-ng-model="widgetData.reactor.interval">
+                    <div class="ui corner label">
+                        <i class="icon asterisk"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <div class="ui button">
+        Cancel
+    </div>
+    <div class="ui positive button" data-ng-show="isNewWidget()">
+        Add widget
+    </div>
+    <div class="ui positive button" data-ng-show="!isNewWidget()">
+        Update widget
+    </div>
+</div>

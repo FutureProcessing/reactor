@@ -1,0 +1,145 @@
+html,
+
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background: #FFFFFF;
+  margin: 0px;
+  padding: 0px;
+  color: #555555;  
+  text-rendering: optimizeLegibility;
+  min-width: 320px;
+}
+
+.ui.header {
+  font-family: 'Source Sans Pro', "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+.truncate {
+  width: 100%;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: table-cell;
+}
+
+/*-------------------
+        Sidebar
+--------------------*/
+#feed .sidebar {
+  overflow: visible;
+}
+
+/*-------------------
+        Grid
+--------------------*/
+
+#feed .grid.full {
+  height: 100%;
+}
+
+#feed > .grid.full > .column {
+  height: 100%;
+}
+
+#feed > .grid.full > .column > .scrolling {
+  overflow-y: auto;
+  height: 100%;
+}
+
+/*-------------------
+       Inbox
+--------------------*/
+
+#feed .inbox.tab {
+  background-color: #FFFFFF;
+}
+
+#feed .inbox.tab .item {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+#feed .inbox.tab .item .rating {
+  margin-top: 0.2rem;
+}
+
+#feed .inbox.tab .item .description {
+  margin-left: 2em;
+}
+
+#feed .page {
+  float: right;
+}
+
+#feed .right.column {
+  background-color: #000;
+}
+
+/*-------------------
+   Text formatting
+--------------------*/
+
+p.right {
+    text-align: right;
+}
+
+
+.toggle.button {
+    position: fixed;
+    z-index: 500;
+    right: 10px;
+}
+
+/*******************************
+          Responsive
+*******************************/
+
+@media only screen and (max-width : 1000px) {
+  #feed .inbox .date {
+    float: none;
+    margin-bottom: 0.5em;
+  }
+}
+
+@media only screen and (max-width : 1250px) {
+  #feed .left.column > .menu .item {
+    font-size: 1rem;
+  }
+}
+
+/*-----------------------------
+          Gridster
+-------------------------------*/
+.gridster .gs-w {
+    /*background: #FFF;*/
+    cursor: pointer;
+    /*-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);*/
+}
+
+.ui.segment.gridster {
+  margin: 0px !important;
+  position: absolute !important;
+  border-radius: 0;
+  background: #FFF;
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.ui.segment.gridster > p {
+  font-size: auto;
+}
+
+.gridster .ui.top.attached.header {
+  border-radius: 0 !important;
+}
+
+.gridster .ui.segment.attached {
+  box-shadow: none;
+}

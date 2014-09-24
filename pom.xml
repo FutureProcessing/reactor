@@ -76,7 +76,7 @@
         <org.reactor.transport-irc.version>0.0.1</org.reactor.transport-irc.version>
         <org.reactor.transport-skype.version>0.0.1</org.reactor.transport-skype.version>
         <org.reactor.transport-telnet.version>0.0.1</org.reactor.transport-telnet.version>
-        <org.reactor.transport-websockets.version>0.0.1</org.reactor.transport-websockets.version>
+        <org.reactor.transport-http.version>0.0.1</org.reactor.transport-http.version>
         <org.reactor.transport-speech.version>0.0.1</org.reactor.transport-speech.version>
 
     </properties>
@@ -139,8 +139,8 @@
 
             <dependency>
                 <groupId>org.reactor</groupId>
-                <artifactId>reactor-transport-websockets-jetty</artifactId>
-                <version>${org.reactor.transport-websockets.version}</version>
+                <artifactId>reactor-transport-http-jetty</artifactId>
+                <version>${org.reactor.transport-http.version}</version>
             </dependency>
 
             <dependency>
@@ -302,7 +302,7 @@
         <module>reactor-transport-irc</module>
         <module>reactor-transport-skype</module>
         <module>reactor-transport-telnet</module>
-        <module>reactor-transport-websockets-jetty</module>
+        <module>reactor-transport-http-jetty</module>
         <module>reactor-transport-speech</module>
 
         <module>travelling</module>

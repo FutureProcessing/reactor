@@ -61,7 +61,5 @@ public class CommandHelpResponse extends StringReactorResponse {
     void setArguments(List<ReactorRequestParameterDefinition> arguments) {
         this.arguments.clear();
         this.arguments.addAll(arguments);
-
     }
-
 }
