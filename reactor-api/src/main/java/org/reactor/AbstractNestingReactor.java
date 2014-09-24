@@ -5,23 +5,20 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES;
 import static org.reactor.response.NoResponse.NO_RESPONSE;
-
 import com.google.common.base.Optional;
-
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.function.Predicate;
 import org.reactor.annotation.ReactOn;
 import org.reactor.discovery.ReactorTopologyDiscoveringVisitor;
 import org.reactor.nesting.NestingReactorMethodProxyReactor;
-import org.reactor.nesting.PrintSubReactorsInformationReactor;
-import org.reactor.nesting.SubReactorsInformationResponse;
+import org.reactor.nesting.PrintReactorsInformationReactor;
+import org.reactor.nesting.ReactorsInformationResponse;
 import org.reactor.request.ReactorRequest;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.function.Predicate;
 
 public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<String> implements InitializingReactor {
 
@@ -79,17 +76,15 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
 
     public final ReactorResponse doReact(ReactorRequest<String> reactorRequest) {
         ReactorRequestInput requestInput = new ReactorRequestInput(reactorRequest.getRequestData());
-        ReactorRequestInput subReactorInput = requestInput.popArguments();
-        if (subReactorInput.isEmpty()) {
+        if (requestInput.isEmpty()) {
             LOG.debug("No reactor input given, printing out sub reactors information");
-            return new SubReactorsInformationResponse(this);
+            return new ReactorsInformationResponse(subReactors);
         }
-        Optional<Reactor> subReactor = from(subReactors).filter(TRIGGER_MATCHES(subReactorInput)).first();
+        Optional<Reactor> subReactor = from(subReactors).filter(TRIGGER_MATCHES(requestInput)).first();
         if (subReactor.isPresent()) {
-            ReactorRequestInput triggerStrippedInput = subReactorInput.popArguments();
-            return subReactor.get().react(reactorRequest.getSender(), triggerStrippedInput);
+            return subReactor.get().react(reactorRequest.getSender(), requestInput);
         }
-        LOG.debug("Unable to find nested reactor for input data {}", subReactorInput.getArgumentsAsString());
+        LOG.debug("Unable to find nested reactor for input data {}", requestInput.getArgumentsAsString());
         return NO_RESPONSE;
     }
 
@@ -115,7 +110,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
 
     @Override
     public final void initReactor(ReactorProperties properties) {
-        registerNestedReactor(new PrintSubReactorsInformationReactor(this));
+        registerNestedReactor(new PrintReactorsInformationReactor(subReactors));
 
         initNestingReactor(properties);
     }

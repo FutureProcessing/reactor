@@ -33,7 +33,8 @@ public class CommandHelpResponseTest extends AbstractUnitTest {
     public void shouldIncludeAllParametersOnHelpText() {
         // given
         givenReactor();
-        givenCommandHelpResponse(givenArguments());
+        givenCommandHelpResponse();
+        givenCommandHelpParameters();
 
         // when
         PrintWriter writer = spy(new PrintWriter(System.out));
@@ -48,15 +49,16 @@ public class CommandHelpResponseTest extends AbstractUnitTest {
         given(reactor.getTriggeringExpression()).willReturn(TRIGGERING_EXPRESSION);
     }
 
-    private void givenCommandHelpResponse(Iterable<ReactorRequestParameterDefinition> arguments) {
-        commandHelpResponse = new CommandHelpResponse(REASON, reactor, arguments);
+
+    private void givenCommandHelpResponse() {
+        commandHelpResponse = new CommandHelpResponse(REASON, reactor);
     }
 
-    private Iterable<ReactorRequestParameterDefinition> givenArguments() {
-        return newArrayList(
-            givenParameterDefinition(PARAM1_NAME, PARAM1_SHORT_NAME, PARAM1_DESCRIPTION, String.class, true),
-            givenParameterDefinition(PARAM2_NAME, PARAM2_SHORT_NAME, PARAM2_DESCRIPTION, int.class, true),
-            givenParameterDefinition(PARAM3_NAME, PARAM3_SHORT_NAME, PARAM3_DESCRIPTION, boolean.class, true));
+    private void givenCommandHelpParameters() {
+        commandHelpResponse.setArguments(newArrayList(
+                givenParameterDefinition(PARAM1_NAME, PARAM1_SHORT_NAME, PARAM1_DESCRIPTION, String.class, true),
+                givenParameterDefinition(PARAM2_NAME, PARAM2_SHORT_NAME, PARAM2_DESCRIPTION, int.class, true),
+                givenParameterDefinition(PARAM3_NAME, PARAM3_SHORT_NAME, PARAM3_DESCRIPTION, boolean.class, true)));
     }
 
     private ReactorRequestParameterDefinition givenParameterDefinition(String name, String shortName,

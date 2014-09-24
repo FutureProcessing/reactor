@@ -41,7 +41,7 @@ public class NestingReactorMethodProxyReactor implements Reactor {
 
     @Override
     public void accept(ReactorTopologyDiscoveringVisitor topologyVisitor) {
-        // do nothing
+        typedReactor.accept(topologyVisitor);
     }
 
     @Override

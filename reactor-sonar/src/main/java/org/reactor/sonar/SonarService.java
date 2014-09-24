@@ -1,52 +1,63 @@
 package org.reactor.sonar;
 
-import org.apache.commons.lang.StringUtils;
-import org.reactor.ReactorProcessingException;
-import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
+import static com.google.common.base.Objects.firstNonNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.lang.String.format;
+import static org.reactor.sonar.resource.EmptyValueResource.emptyResource;
+import static org.sonar.wsclient.services.MetricQuery.all;
+import static org.sonar.wsclient.services.MetricQuery.byKey;
+import static org.sonar.wsclient.services.ResourceQuery.createForMetrics;
 import java.net.URISyntaxException;
+import java.util.List;
+import org.reactor.ReactorProcessingException;
+import org.reactor.sonar.data.MetricWithValueResource;
+import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.Metric;
+import org.sonar.wsclient.services.Resource;
 
 public class SonarService {
     
-    public static final String UNKNOWN_PRODUCT_KEY = "Unknown project key";
-    public static final String UNKNOWN_METRIC = "Unknown metric";
+    public static final String UNKNOWN_METRIC = "Unknown metric: %s";
+    private final String project;
 
     private Sonar sonar;
 
-    public static SonarService forServerDetails(String serverUrl, String username, String password)
+    public static SonarService forServerDetails(String serverUrl, String username, String password, String project)
             throws URISyntaxException {
-        return new SonarService(serverUrl, username, password);
+        return new SonarService(serverUrl, username, password, project);
     }
     
     private Sonar createSonarInstance(String serverUrl, String username, String password) {
-        Sonar sonar = null;
-        if (StringUtils.isEmpty(username)) {
-            sonar = Sonar.create(serverUrl);
+        if (isNullOrEmpty(username)) {
+            return Sonar.create(serverUrl);
         } else {
-            sonar = Sonar.create(serverUrl, username, password);
+            return Sonar.create(serverUrl, username, password);
         }
-        return sonar;
     }
 
-    private SonarService(String serverUrl, String username, String password) {
+    private SonarService(String serverUrl, String username, String password, String project) {
+        this.project = project;
         sonar = createSonarInstance(serverUrl, username, password);
     }
     
-    private Resource findResource(String projectKey, String manualMetricKey) {
-        return sonar.find(ResourceQuery.createForMetrics(projectKey, manualMetricKey));
+    private Resource findResource(String manualMetricKey) {
+        return sonar.find(createForMetrics(project, manualMetricKey).setAllDepths());
     }
 
-    public String getSingleMetric(String projectKey, String manualMetricKey) {
-        Resource resource = findResource(projectKey, manualMetricKey);
-        if(resource == null) {
-            throw new ReactorProcessingException(String.format(UNKNOWN_PRODUCT_KEY, ": %s", projectKey));
-        }
-        Double value = resource.getMeasureValue(manualMetricKey);
-        if(value == null) {
-            throw new ReactorProcessingException(String.format(UNKNOWN_METRIC, ": %s", manualMetricKey));
-        }
-        return String.valueOf(value);
+    private Metric findMetric(String manualMetricKey) {
+        return sonar.find(byKey(manualMetricKey));
     }
 
+    public MetricWithValueResource getSingleMetricValueResource(String manualMetricKey) {
+        Metric metric = findMetric(manualMetricKey);
+        if (metric == null) {
+            throw new ReactorProcessingException(format(UNKNOWN_METRIC, manualMetricKey));
+        }
+        Resource resource = findResource(manualMetricKey);
+        return new MetricWithValueResource(metric, firstNonNull(resource, emptyResource()));
+    }
+
+    public List<Metric> listAllMetrics() {
+        return sonar.findAll(all());
+    }
 }

@@ -1,81 +1,75 @@
 package org.reactor.sonar;
 
+import static java.lang.String.format;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import com.google.common.collect.Lists;
+import static org.mockito.Matchers.isA;
+import static org.reactor.sonar.SonarService.UNKNOWN_METRIC;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.reactor.AbstractUnitTest;
 import org.reactor.ReactorProcessingException;
+import org.reactor.sonar.data.MetricWithValueResource;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Metric;
+import org.sonar.wsclient.services.MetricQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
-import java.util.List;
 
 public class SonarServiceTest extends AbstractUnitTest {
 
-    private static String ANY_PROJECT_KEY = "auriga:project";
-    private static String ANY_METRIC = "blablabla";
-    private static String METRIC_KNOWN = "complexity";
-    private static Double COMPLEXITY = 123.0d;
+    private static final String ANY_METRIC = "blablabla";
+    private static final String METRIC_KNOWN = "complexity";
+    private static final double COMPLEXITY = 123.0d;
+
+    @Mock
+    private Metric metric;
+    @Mock
+    private Resource resource;
     @Mock
     private Sonar sonar;
     @InjectMocks
-    private SonarService sonarFacade;
-
-    @Test
-    public void shouldGetSingleMetricThrowExceptionOnInvalidProjectKey() throws Exception {
-        // given
-        given(sonar.find(any(ResourceQuery.class))).willReturn(null);
-
-        // then
-        expectedException.expect(ReactorProcessingException.class);
-        expectedException.expectMessage(SonarService.UNKNOWN_PRODUCT_KEY);
-
-        // when
-        sonarFacade.getSingleMetric(ANY_PROJECT_KEY, ANY_METRIC);
-    }
+    private SonarService sonarService;
 
     @Test
     public void shouldGetSingleMetricThrowExceptionOnInvalidMetric() throws Exception {
         // then
         expectedException.expect(ReactorProcessingException.class);
-        expectedException.expectMessage(SonarService.UNKNOWN_METRIC);
+        expectedException.expectMessage(format(UNKNOWN_METRIC, ANY_METRIC));
 
         // given
-        Resource resource = new Resource();
-        resource.setMeasures(null);
-        given(sonar.find(any(ResourceQuery.class))).willReturn(resource);
+        givenInvalidMetric();
 
         // when
-        sonarFacade.getSingleMetric(ANY_PROJECT_KEY, ANY_METRIC);
+        sonarService.getSingleMetricValueResource(ANY_METRIC);
     }
 
     @Test
     public void shouldGetSingleMetricReturnValidResponse() {
         // given
-        Resource resource = createResource();
-        given(sonar.find(any(ResourceQuery.class))).willReturn(resource);
+        givenResource();
+        givenMetric();
 
         // when
-        String result = sonarFacade.getSingleMetric(ANY_PROJECT_KEY, METRIC_KNOWN);
+        MetricWithValueResource result = sonarService.getSingleMetricValueResource(METRIC_KNOWN);
 
         // then
-        assertThat(result).isEqualTo(String.valueOf(COMPLEXITY));
+        assertThat(result.getMetricValue()).isEqualTo(COMPLEXITY);
     }
 
-    private Resource createResource() {
-        Resource resource = new Resource();
-        Measure measure = new Measure();
-        measure.setMetricKey(METRIC_KNOWN);
-        measure.setValue(COMPLEXITY);
-        List<Measure> measures = Lists.newArrayList(measure);
-        measures.add(measure);
-        resource.setMeasures(measures);
-        return resource;
+    private void givenMetric() {
+        given(metric.getKey()).willReturn(METRIC_KNOWN);
+        given(sonar.find(isA(MetricQuery.class))).willReturn(metric);
     }
 
+    private void givenResource() {
+        given(resource.getMeasureValue(METRIC_KNOWN)).willReturn(COMPLEXITY);
+        given(sonar.find(isA(ResourceQuery.class))).willReturn(resource);
+    }
+
+    private void givenInvalidMetric() {
+        given(sonar.find(any(MetricQuery.class))).willReturn(null);
+    }
 }

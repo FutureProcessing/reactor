@@ -16,7 +16,6 @@ public class WebSocketsMessageTransport implements ReactorMessageTransport {
     private final static Logger LOG = LoggerFactory.getLogger(WebSocketsMessageTransport.class);
 
     public static final String STATIC_DIR = "static";
-    //public static final String STATIC_DIR = "/opt/java/projects/reactor/reactor-transport-websockets-jetty/src/main/resources/static";
 
     private Server server;
     private ReactorWebsocketHandler webSocketHandler;

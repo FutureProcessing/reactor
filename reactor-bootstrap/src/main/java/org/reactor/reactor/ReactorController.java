@@ -13,6 +13,7 @@ import org.reactor.Reactor;
 import org.reactor.ReactorProperties;
 import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
+import org.reactor.nesting.PrintReactorsInformationReactor;
 import org.reactor.request.ReactorRequestInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,10 @@ public class ReactorController {
     }
 
     private void collectReactors() {
-        collectReactor(new ReactorControllerContentsReactor(this));
-
         ServiceLoader<Reactor> reactorsLoader = ServiceLoader.load(Reactor.class);
         reactorsLoader.forEach(this::collectReactor);
+
+        collectReactor(new PrintReactorsInformationReactor(reactors));
     }
 
     @VisibleForTesting
@@ -45,7 +46,7 @@ public class ReactorController {
     }
 
     public void initReactors(ReactorProperties reactorProperties) {
-        reactors.stream().forEach(reactor -> tryInitReactor(reactor, reactorProperties));
+        reactors.forEach(reactor -> tryInitReactor(reactor, reactorProperties));
     }
 
     private void tryInitReactor(final Reactor reactor, final ReactorProperties reactorProperties) {
@@ -65,9 +66,5 @@ public class ReactorController {
             subject.initReactorEventConsumers(factory);
             return null;
         });
-    }
-
-    List<Reactor> getReactors() {
-        return reactors;
     }
 }
