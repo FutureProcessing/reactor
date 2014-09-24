@@ -25,7 +25,7 @@ public class DefaultTransportMessageProcessor implements ReactorMessageTransport
             ReactorRequestInput requestInput = new ReactorRequestInput(messageText);
             Optional<Reactor> reactor = reactorControllerSupplier.get().reactorMatchingInput(requestInput);
             if (reactor.isPresent()) {
-                ReactorResponse response = reactor.get().react(sender, requestInput.popArguments());
+                ReactorResponse response = reactor.get().react(sender, requestInput);
                 response.renderResponse(responseWriter);
                 return;
             }
