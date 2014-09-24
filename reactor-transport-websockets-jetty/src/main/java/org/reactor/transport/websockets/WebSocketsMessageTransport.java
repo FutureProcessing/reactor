@@ -45,6 +45,7 @@ public class WebSocketsMessageTransport implements ReactorMessageTransport {
     private ResourceHandler createResourceHandler() {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setBaseResource(Resource.newClassPathResource(STATIC_DIR));
+        //resourceHandler.setResourceBase(STATIC_DIR);
         return resourceHandler;
     }
 
@@ -68,4 +69,5 @@ public class WebSocketsMessageTransport implements ReactorMessageTransport {
     public boolean isRunning() {
         return server != null && server.isRunning();
     }
+
 }
