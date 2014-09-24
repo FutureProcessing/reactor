@@ -1,49 +1,65 @@
 package org.reactor.jira;
 
-import static java.lang.System.currentTimeMillis;
 import org.reactor.AbstractNestingReactor;
+import org.reactor.ReactorInitializationException;
 import org.reactor.ReactorProperties;
 import org.reactor.annotation.ReactOn;
 import org.reactor.jira.command.BeHappyReactor;
 import org.reactor.jira.command.EnvironmentVariableReactor;
 import org.reactor.jira.command.PingReactor;
 import org.reactor.jira.request.UppercaseRequestData;
+import org.reactor.jira.response.JiraIssue;
+import org.reactor.jira.response.JiraIssueFormatter;
+import org.reactor.jira.response.JiraListReactorResponse;
+import org.reactor.jira.response.JiraSprint;
+import org.reactor.jira.response.JiraSprintFormatter;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.StringReactorResponse;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+import org.reactor.response.list.ListElementFormatter;
+import org.reactor.response.list.ListReactorResponse;
+
+import java.net.URISyntaxException;
+import java.util.List;
 
 @ReactOn(value = "jira", description = "Jira reactor - some description will be here")
 public class JiraReactor extends AbstractNestingReactor {
 
-    private final static Logger LOG = LoggerFactory.getLogger(JiraReactor.class);
-
-    @ReactOn(value = "time", description = "Displays current system time in milliseconds")
-    public ReactorResponse currentTime(ReactorRequest<Void> request) {
-        return new StringReactorResponse(System.currentTimeMillis() + "");
-    }
+    private JiraService jiraService;
 
     @ReactOn(value = "uppercase", description = "Prints given text in uppercase")
     public ReactorResponse uppercase(ReactorRequest<UppercaseRequestData> message) {
-        sleep(message.getRequestData().getSecondsDelay());
-        return new StringReactorResponse(String.format("%s %d", message.getRequestData().getMessage().toUpperCase(), currentTimeMillis()));
+        return new StringReactorResponse(message.getRequestData().getMessage().toUpperCase());
     }
 
-    private void sleep(int delayInSeconds) {
-        if (delayInSeconds > 0) {
-            try {
-                Thread.sleep(delayInSeconds * 1000);
-            } catch (InterruptedException e) {
-                LOG.error("An error occurred while pausing delay", e);
-            }
-        }
-    }
-
-    @Override
-    public void initNestingReactor(ReactorProperties reactorProperties) {
+    public void initNestingJiraReactorReactor(JiraReactorProperties reactorProperties) {
         registerNestedReactor(new BeHappyReactor());
         registerNestedReactor(new EnvironmentVariableReactor());
         registerNestedReactor(new PingReactor());
+        try {
+            jiraService = JiraService.forServerDetails(reactorProperties.getUrl(), reactorProperties.getUsername(),
+                reactorProperties.getPassword(), reactorProperties.getProjectName());
+        } catch (URISyntaxException e) {
+            throw new ReactorInitializationException(e);
+        }
+
     }
+
+    @Override
+    protected void initNestingReactor(ReactorProperties properties) {
+        initNestingJiraReactorReactor(new JiraReactorProperties(properties));
+    }
+
+    @ReactOn(value = "issues", description = "Lists all issues")
+    public ReactorResponse listAllIssues(ReactorRequest<Void> reactorRequest) {
+        List<JiraIssue> issues = jiraService.getAllIssues();
+        return new JiraListReactorResponse<JiraIssue>(issues, new JiraIssueFormatter());
+    }
+    
+    @ReactOn(value = "sprints", description = "Lists all sprints (started and completed)")
+    public ReactorResponse listAllSprints(ReactorRequest<Void> reactorRequest) {
+        List<JiraSprint> issues = jiraService.getAllSprints();
+        return new JiraListReactorResponse<JiraSprint>(issues, new JiraSprintFormatter());
+    }
+
 }
