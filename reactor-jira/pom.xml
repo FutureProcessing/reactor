@@ -11,7 +11,10 @@
     <artifactId>reactor-jira</artifactId>
 
     <properties>
-        <jira.client.greenhopper>0.5-SNAPSHOT</jira.client.greenhopper>
+        <jira.client.greenhopper.version>0.5-SNAPSHOT</jira.client.greenhopper.version>
+        <jersey.json.version>1.5</jersey.json.version>
+        <jersey.client.version>1.9</jersey.client.version>
+        <jersey-core.version>1.9</jersey-core.version>
     </properties>
 
     <dependencies>
@@ -23,29 +26,28 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
-            <version>1.5</version>
+            <version>${jersey.json.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.9</version>
+            <version>${jersey.client.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-core</artifactId>
-            <version>1.9</version>
+            <version>${jersey-core.version}</version>
         </dependency>
 
         <dependency>
             <groupId>net.rcarz</groupId>
             <artifactId>jira-client</artifactId>
-            <version>${jira.client.greenhopper}</version>
+            <version>${jira.client.greenhopper.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.6.4</version>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>

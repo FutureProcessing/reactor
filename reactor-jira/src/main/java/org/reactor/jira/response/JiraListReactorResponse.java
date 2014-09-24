@@ -8,8 +8,8 @@ import java.util.List;
 
 public class JiraListReactorResponse<T> extends ListReactorResponse<T> {
 
-    List<T> elements = Lists.newArrayList();
-    ListElementFormatter<T> formatter;
+    private List<T> elements = Lists.newArrayList();
+    private ListElementFormatter<T> formatter;
     
     private JiraListReactorResponse() {
     }
