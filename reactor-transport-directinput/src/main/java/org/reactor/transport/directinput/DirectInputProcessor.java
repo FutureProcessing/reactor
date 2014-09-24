@@ -1,39 +1,41 @@
 package org.reactor.transport.directinput;
 
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 import org.reactor.transport.ReactorMessageTransportProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class DirectInputProcessor {
 
-    private final static Logger LOG = LoggerFactory.getLogger(DirectInputProcessor.class);
+    private static final String SENDER_DIRECT = "DIRECT";
+    private static final Logger LOG = LoggerFactory.getLogger(DirectInputProcessor.class);
     private final ReactorMessageTransportProcessor messageProcessor;
+    private final Executor executorService;
     private boolean processing;
 
     public DirectInputProcessor(ReactorMessageTransportProcessor messageProcessor) {
         this.messageProcessor = messageProcessor;
+        executorService = Executors.newSingleThreadExecutor();
         startProcessing();
     }
 
     private void startProcessing() {
         LOG.debug("Starting direct input processing:");
         processing = true;
-        new Thread(new DirectInputProcessingRunnable(new DirectInputListener() {
 
-            @Override
-            public void directInputGiven(String inputValue) {
-                messageProcessor.processTransportMessage(inputValue, "DIRECT", new BufferedWriter(
-                    new OutputStreamWriter(System.out)));
-            }
-        }) {
+        executorService.execute(new DirectInputProcessingRunnable(
+                inputValue -> messageProcessor.processTransportMessage(inputValue, SENDER_DIRECT, new BufferedWriter(
+                        new OutputStreamWriter(System.out)))) {
 
             @Override
             protected boolean isProcessing() {
-                return super.isProcessing();
+                return processing;
             }
-        }).start();
+        });
     }
 
     public void stopProcessing() {
