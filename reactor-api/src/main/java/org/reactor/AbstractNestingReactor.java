@@ -78,7 +78,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
         ReactorRequestInput requestInput = new ReactorRequestInput(reactorRequest.getRequestData());
         if (requestInput.isEmpty()) {
             LOG.debug("No reactor input given, printing out sub reactors information");
-            return new ReactorsInformationResponse(() -> subReactors);
+            return new ReactorsInformationResponse(subReactors);
         }
         Optional<Reactor> subReactor = from(subReactors).filter(TRIGGER_MATCHES(requestInput)).first();
         if (subReactor.isPresent()) {
@@ -110,7 +110,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
 
     @Override
     public final void initReactor(ReactorProperties properties) {
-        registerNestedReactor(new PrintReactorsInformationReactor(() -> subReactors));
+        registerNestedReactor(new PrintReactorsInformationReactor(subReactors));
 
         initNestingReactor(properties);
     }
