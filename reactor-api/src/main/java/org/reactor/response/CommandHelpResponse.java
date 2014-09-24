@@ -49,6 +49,10 @@ public class CommandHelpResponse extends StringReactorResponse {
     protected void printResponse(PrintWriter printWriter) {
         Options commandLineOptions = new Options();
         transform(arguments, TO_CMD_LINE_OPTION).forEach(commandLineOptions::addOption);
+        printHelp(helpFormatter, printWriter, triggeringExpression, commandLineOptions);
+    }
+
+    private void printHelp(HelpFormatter helpFormatter, PrintWriter printWriter, String triggeringExpression, Options commandLineOptions) {
         helpFormatter.printHelp(printWriter, TEXT_WIDTH, triggeringExpression, HELP_HEADER, commandLineOptions, LEFT_PAD, DESC_PAD, HELP_FOOTER, AUTO_USAGE);
     }
 

@@ -1,8 +1,8 @@
 package org.reactor.sonar.response;
 
 import static com.google.common.base.Objects.firstNonNull;
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 import static org.reactor.utils.StringUtils.matchesWildcard;
 import java.util.List;
 import org.reactor.response.list.ListElementFormatter;
@@ -22,7 +22,7 @@ public class SonarMetricsListResponse extends ListReactorResponse<Metric> {
 
     @Override
     protected Iterable<Metric> getElements() {
-        return newArrayList(metricList.stream().filter(metric -> matchesWildcard(metric.getKey(), filter)).iterator());
+        return metricList.stream().filter(metric -> matchesWildcard(metric.getKey(), filter)).collect(toList());
     }
 
     @Override

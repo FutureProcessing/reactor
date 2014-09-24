@@ -5,7 +5,6 @@ import static org.reactor.response.NoResponse.NO_RESPONSE;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import org.reactor.AbstractAnnotatedReactor;
 import org.reactor.Reactor;
 import org.reactor.annotation.ReactOn;
@@ -20,19 +19,19 @@ public class PrintReactorsInformationReactor extends AbstractAnnotatedReactor<St
         return reactor -> reactor.getTriggeringExpression().equals(trigger);
     }
 
-    private final Supplier<List<Reactor>> reactorsSupplier;
+    private final List<Reactor> reactors;
 
-    public PrintReactorsInformationReactor(Supplier<List<Reactor>> reactorsSupplier) {
+    public PrintReactorsInformationReactor(List<Reactor> reactors) {
         super(String.class);
-        this.reactorsSupplier = reactorsSupplier;
+        this.reactors = reactors;
     }
 
     @Override
     public ReactorResponse doReact(ReactorRequest<String> request) {
         if (isNullOrEmpty(request.getRequestData())) {
-            return new ReactorsInformationResponse("Available reactors", reactorsSupplier);
+            return new ReactorsInformationResponse("Available reactors", reactors);
         }
-        Optional<Reactor> subReactorOptional = reactorsSupplier.get().stream().filter(TRIGGER_EQUALS(request.getRequestData())).findFirst();
+        Optional<Reactor> subReactorOptional = reactors.stream().filter(TRIGGER_EQUALS(request.getRequestData())).findFirst();
         if (subReactorOptional.isPresent()) {
             return prepareHelpResponse(subReactorOptional);
         }
