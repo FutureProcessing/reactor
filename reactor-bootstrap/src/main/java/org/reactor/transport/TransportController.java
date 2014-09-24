@@ -34,7 +34,7 @@ public class TransportController {
     private void loadTransports() {
         ServiceLoader<ReactorMessageTransport> transportsLoader = ServiceLoader.load(ReactorMessageTransport.class);
         if (!transportsLoader.iterator().hasNext()) {
-            LOG.warn("No message transports found!");
+            LOG.warn("No message transport found!");
             return;
         }
         transportsLoader.forEach(transport -> {

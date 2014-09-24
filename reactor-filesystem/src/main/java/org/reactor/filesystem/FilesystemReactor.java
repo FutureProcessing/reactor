@@ -2,7 +2,10 @@ package org.reactor.filesystem;
 
 import static java.lang.String.format;
 import static org.reactor.filesystem.event.DirectoryChangedEvent.TO_RESPONSE;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import org.reactor.AbstractNestingReactor;
 import org.reactor.ReactorProcessingException;
 import org.reactor.ReactorProperties;
@@ -20,11 +23,6 @@ import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 @ReactOn(value = "fs",
          description = "Does some basic filesystem manipulation and informs about changes in given directory")

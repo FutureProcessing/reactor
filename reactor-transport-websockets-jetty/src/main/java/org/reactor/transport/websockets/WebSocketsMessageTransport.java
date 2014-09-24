@@ -2,6 +2,7 @@ package org.reactor.transport.websockets;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.util.resource.Resource;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransport;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
@@ -15,7 +16,6 @@ public class WebSocketsMessageTransport implements ReactorMessageTransport {
     private final static Logger LOG = LoggerFactory.getLogger(WebSocketsMessageTransport.class);
 
     public static final String STATIC_DIR = "static";
-    //public static final String STATIC_DIR = "/opt/java/projects/reactor/reactor-transport-websockets-jetty/src/main/resources/static";
 
     private Server server;
     private ReactorWebsocketHandler webSocketHandler;
@@ -44,8 +44,8 @@ public class WebSocketsMessageTransport implements ReactorMessageTransport {
 
     private ResourceHandler createResourceHandler() {
         ResourceHandler resourceHandler = new ResourceHandler();
-        //resourceHandler.setBaseResource(Resource.newClassPathResource(STATIC_DIR));
-        resourceHandler.setResourceBase(STATIC_DIR);
+        resourceHandler.setBaseResource(Resource.newClassPathResource(STATIC_DIR));
+        //resourceHandler.setResourceBase(STATIC_DIR);
         return resourceHandler;
     }
 
@@ -69,4 +69,5 @@ public class WebSocketsMessageTransport implements ReactorMessageTransport {
     public boolean isRunning() {
         return server != null && server.isRunning();
     }
+
 }

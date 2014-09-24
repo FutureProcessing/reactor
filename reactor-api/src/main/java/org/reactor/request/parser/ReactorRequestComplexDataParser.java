@@ -41,6 +41,7 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
                 ReactorRequestParameter parameterAnnotation = field.getAnnotation(ReactorRequestParameter.class);
                 parameterDefinition.setShortName(parameterAnnotation.shortName());
                 parameterDefinition.setRequired(parameterAnnotation.required());
+                parameterDefinition.setDescription(parameterAnnotation.description());
             }
         }
     };
@@ -62,8 +63,8 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
 
     public ReactorRequestComplexDataParser(Class<T> dataType) {
         this.dataType = dataType;
-        this.requestParameters = from(asList(dataType.getDeclaredFields())).filter(PRIMITIVE_WITH_ANNOTATION).transform(FROM_FIELD)
-                .toList();
+        this.requestParameters = from(asList(dataType.getDeclaredFields())).filter(PRIMITIVE_WITH_ANNOTATION)
+            .transform(FROM_FIELD).toList();
     }
 
     public ReactorRequest<T> parseRequestWithData(String sender, String trigger, ReactorRequestInput requestInput) {
@@ -77,15 +78,17 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
         return new ReactorRequest<>(sender, trigger, requestData);
     }
 
-    private void setRequestDataParameter(T requestData, ReactorRequestParameterDefinition requestParameterDefinition, String parameterValue) {
+    private void setRequestDataParameter(T requestData, ReactorRequestParameterDefinition requestParameterDefinition,
+                                         String parameterValue) {
         try {
-            BeanUtils.setProperty(requestData, requestParameterDefinition.getName(), convert(parameterValue, requestParameterDefinition.getType()));
+            BeanUtils.setProperty(requestData, requestParameterDefinition.getName(),
+                convert(parameterValue, requestParameterDefinition.getType()));
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new ReactorRequestParsingException(e);
         }
     }
 
-    private T prepareRequestDataInstance()  {
+    private T prepareRequestDataInstance() {
         try {
             // TODO very naive, do it better
             return dataType.newInstance();

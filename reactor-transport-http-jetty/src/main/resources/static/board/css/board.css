@@ -1,0 +1,157 @@
+html,
+body {
+  height: 100%;
+  /*overflow: hidden;*/
+}
+
+body {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background: #FFFFFF;
+  margin: 0px;
+  padding: 0px;
+  color: #555555;  
+  text-rendering: optimizeLegibility;
+  min-width: 320px;
+  background: url(http://subtlepatterns.com/patterns/purty_wood.png);
+}
+
+#board .ui.header {
+  font-family: 'Source Sans Pro', "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+#board .no-margin {
+  margin: 0 !important;
+}
+
+#board .ui.modal > .content {
+  padding-top: 0px;
+}
+
+#board .nowrap {
+    white-space: pre;
+    word-wrap: break-word;
+}
+
+/*-------------------
+        Sidebar
+--------------------*/
+#board .sidebar {
+  overflow: visible;
+}
+
+#board .toggle.button {
+    position: fixed;
+    z-index: 999;
+    right: 20px;
+}
+
+/*-------------------
+        Grid
+--------------------*/
+
+#board .ui.grid {
+  padding-top: 10px;
+}
+
+#board .grid.full {
+  height: 100%;
+}
+
+#board > .grid.full > .column {
+  height: 100%;
+}
+
+#board > .grid.full > .column > .scrolling {
+  overflow-y: auto;
+  height: 100%;
+}
+
+/*-----------------------------
+          Gridster
+-------------------------------*/
+#board .ui-draggable {
+    cursor: pointer; 
+    cursor: hand;
+}
+
+#board .gridster .preview-holder {
+  border-radius: 5px 5px 5px 5px;
+}
+
+#board .ui-icon-gripsmall-diagonal-se {
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg08IS0tIEdlbmVyYXRvcjogQWRvYmUgRmlyZXdvcmtzIENTNiwgRXhwb3J0IFNWRyBFeHRlbnNpb24gYnkgQWFyb24gQmVhbGwgKGh0dHA6Ly9maXJld29ya3MuYWJlYWxsLmNvbSkgLiBWZXJzaW9uOiAwLjYuMSAgLS0+DTwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DTxzdmcgaWQ9IlVudGl0bGVkLVBhZ2UlMjAxIiB2aWV3Qm94PSIwIDAgNiA2IiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHZlcnNpb249IjEuMSINCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiDQl4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjZweCIgaGVpZ2h0PSI2cHgiDT4NCTxnIG9wYWNpdHk9IjAuMzAyIj4NCQk8cGF0aCBkPSJNIDYgNiBMIDAgNiBMIDAgNC4yIEwgNCA0LjIgTCA0LjIgNC4yIEwgNC4yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iI0ZGRkZGRiIvPg0JPC9nPg08L3N2Zz4=');
+    z-index: 1001 !important;
+    background-position: 0px 0px;
+}
+
+#board .gridster .gridster-item {
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/*-----------------------------
+          Labeling
+-------------------------------*/
+#board .ui.segment > .ui.corner.right.label {
+  top: 0px;
+  right: 0px;
+}
+
+#board .ui.segment > .ui.corner.left.label {
+  top: 0px;
+  left: 0px;
+}
+
+.show_on_hover {
+  display: none ;
+}
+
+/*-----------------------------
+          Fonts
+-------------------------------*/
+.widget-font-default {
+  font-size: initial;
+}
+
+.widget-font-xx-small {
+  font-size: 30%;
+}
+
+.widget-font-x-small {
+  font-size: 50%;
+}
+
+.widget-font-smaller {
+  font-size: 70%;
+}
+
+.widget-font-small {
+  font-size: 80%;
+}
+
+.widget-font-large {
+  font-size: 200%;
+}
+
+.widget-font-larger {
+  font-size: 300%;
+}
+
+.widget-font-x-large {
+  font-size: 400%;
+}
+
+.widget-font-xx-large {
+  font-size: 500%;
+}
+
+/*-----------------------------
+          Shadows
+-------------------------------*/
+
+.ui.segment.shadow {
+ -webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1) !important;
+}
