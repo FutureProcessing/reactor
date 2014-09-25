@@ -10,34 +10,49 @@
 
     <artifactId>reactor-bootstrap</artifactId>
 
+    <properties>
+        <appassembler.version>1.1.1</appassembler.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>appassembler-maven-plugin</artifactId>
-                <version>1.1.1</version>
+                <version>${appassembler.version}</version>
                 <configuration>
-                    <programs>
-                        <program>
-                            <mainClass>org.reactor.ReactorRunner</mainClass>
-                            <name>run-cmd</name>
-                        </program>
-                        <program>
-                            <mainClass>org.reactor.TransportRunner</mainClass>
-                            <name>run-bot</name>
-                        </program>
-                    </programs>
-                    <repositoryLayout>flat</repositoryLayout>
-                    <repositoryName>lib</repositoryName>
-                    <assembleDirectory>${project.build.directory}/dist</assembleDirectory>
-                    <platforms>
-                        <platform>unix</platform>
-                    </platforms>
                     <target>${project.build.directory}/target/dist</target>
-                    <copyConfigurationDirectory>true</copyConfigurationDirectory>
-                    <configurationDirectory>etc</configurationDirectory>
-                    <configurationSourceDirectory>${project.basedir}/src/main/resources</configurationSourceDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>app-assemble</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                        <configuration>
+                            <programs>
+                                <program>
+                                    <mainClass>org.reactor.ReactorRunner</mainClass>
+                                    <name>run-cmd</name>
+                                </program>
+                                <program>
+                                    <mainClass>org.reactor.TransportRunner</mainClass>
+                                    <name>run-bot</name>
+                                </program>
+                            </programs>
+                            <repositoryLayout>flat</repositoryLayout>
+                            <repositoryName>lib</repositoryName>
+                            <assembleDirectory>${project.build.directory}/dist</assembleDirectory>
+                            <platforms>
+                                <platform>unix</platform>
+                            </platforms>
+                            <copyConfigurationDirectory>true</copyConfigurationDirectory>
+                            <configurationDirectory>etc</configurationDirectory>
+                            <configurationSourceDirectory>${project.basedir}/src/main/resources</configurationSourceDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
