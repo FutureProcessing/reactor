@@ -29,14 +29,14 @@
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <div class="item" data-value="">Default</div>
-                                <div class="item" data-value="widget-font-xx-small">XX Small</div>
-                                <div class="item" data-value="widget-font-x-small">X Small</div>
-                                <div class="item" data-value="widget-font-smaller">Smaller</div>
-                                <div class="item" data-value="widget-font-small">Small</div>
-                                <div class="item" data-value="widget-font-large">Large</div>
-                                <div class="item" data-value="widget-font-larger">Larger</div>
-                                <div class="item" data-value="widget-font-x-large">X Large</div>
-                                <div class="item" data-value="widget-font-xx-large">XX Large</div>
+                                <div class="item" data-value="widget-font-xx-small">Mini</div>
+                                <!--<div class="item" data-value="widget-font-x-small">X Small</div>-->
+                                <div class="item" data-value="widget-font-smaller">Small</div>
+                                <!--<div class="item" data-value="widget-font-small">Small</div>-->
+                                <!--<div class="item" data-value="widget-font-large">Large</div>-->
+                                <div class="item" data-value="widget-font-larger">Large</div>
+                                <!--<div class="item" data-value="widget-font-x-large">X Large</div>-->
+                                <div class="item" data-value="widget-font-xx-large">Huge</div>
                             </div>
                         </div>
                     </div>
@@ -82,6 +82,21 @@
                             <input type="text" name="gridY" data-ng-model="widgetData.layout.gridY">
                             <div class="ui corner label">
                                 <i class="icon asterisk"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="sixteen wide field">
+                        <label>Text alignment:</label>
+
+                        <div class="ui fluid dropdown selection" data-ng-model="widgetData.visual.textAlign">
+                            <div class="default text">Left</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item" data-value="widget-align-left">Left</div>
+                                <div class="item" data-value="widget-align-center">Center</div>
+                                <div class="item" data-value="widget-align-right">Right</div>
                             </div>
                         </div>
                     </div>

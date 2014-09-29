@@ -8,7 +8,9 @@ public class IssuesMetricResponse extends AbstractMetricValueResponse {
     private final MetricWithValueResource allIssuesMetric;
     private final MetricWithValueResource infoIssuesMetric;
 
-    public IssuesMetricResponse(MetricWithValueResource allIssuesMetric, MetricWithValueResource infoIssuesMetric) {
+    public IssuesMetricResponse(MetricWithValueResource allIssuesMetric, MetricWithValueResource infoIssuesMetric,
+                                boolean valueOnly) {
+        super(valueOnly);
         this.allIssuesMetric = allIssuesMetric;
         this.infoIssuesMetric = infoIssuesMetric;
     }

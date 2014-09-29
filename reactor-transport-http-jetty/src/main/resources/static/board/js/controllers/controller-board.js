@@ -6,8 +6,8 @@ var ReactorBoardController = function($scope, $widgetsService, $widgetsService) 
         pushing: true,
 		floating: true,
 		colWidth: 190,
-		rowHeight: 140,
-		defaultSizeX: 1, 
+		rowHeight: 110,
+		defaultSizeX: 1,
         defaultSizeY: 1
     };
 
@@ -41,7 +41,7 @@ var ReactorBoardController = function($scope, $widgetsService, $widgetsService) 
     	});
     };
 
-    var initwidgetRemovedListener = function($scope, $widgetsService) {
+    var initWidgetRemovedListener = function($scope, $widgetsService) {
         $widgetsService.onWidgetRemoved(function($widgetToRemove) {
             $scope.removeWidget($widgetToRemove);
         });
@@ -71,7 +71,7 @@ var ReactorBoardController = function($scope, $widgetsService, $widgetsService) 
 
     initWidgetChangedListener($scope, $widgetsService);
     initWidgetAddedListener($scope, $widgetsService);
-    initwidgetRemovedListener($scope, $widgetsService);
+    initWidgetRemovedListener($scope, $widgetsService);
 };
 
 app.controller("ReactorBoardController", ReactorBoardController);

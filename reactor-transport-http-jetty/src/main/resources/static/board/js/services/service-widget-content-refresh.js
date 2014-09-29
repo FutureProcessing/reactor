@@ -6,17 +6,17 @@ var WidgetContentRefreshService = function($http, $widgetsService) {
         	widgetData: $widget,
         	refreshListener: $dataRefreshListener,
             timeoutId: false,
-        	refreshData: function() {
+        	refreshData: function(delay) {
                 this.timeoutId = setTimeout($.proxy(function() {
                     this.refreshListener.onDataRefreshStarted();
                     $http.post('/rest/', this.widgetData.reactor.input).success($.proxy(function($data) {
                         this.refreshListener.onDataRefreshFinished($data);
-                        this.refreshData();
+                        this.refreshData(this.widgetData.reactor.interval * 1000);
                     }, this)).error($.proxy(function() {
                         this.refreshListener.onDataRefreshFailed();
-                        this.refreshData();
+                        this.refreshData(this.widgetData.reactor.interval * 1000);
                     }, this));
-                }, this), this.widgetData.reactor.interval * 1000);
+                }, this), delay);
         	}
         });
     };
@@ -50,7 +50,7 @@ var WidgetContentRefreshService = function($http, $widgetsService) {
         if ($dataRefreshListener.timeoutId !== false) {
             return;
         }
-        $dataRefreshListener.refreshData();
+        $dataRefreshListener.refreshData(0);
     };
 
     this.initWidgetRemovedListener = function() {

@@ -6,8 +6,18 @@ import org.reactor.response.StringReactorResponse;
 
 public abstract class AbstractMetricValueResponse extends StringReactorResponse {
 
+    private boolean valueOnly;
+
+    public AbstractMetricValueResponse(boolean valueOnly) {
+        this.valueOnly = valueOnly;
+    }
+
     @Override
     protected void printResponse(PrintWriter printWriter) {
+        if (valueOnly) {
+            printWriter.print(getMetricValue());
+            return;
+        }
         printWriter.print(format("%s = %s", getMetricValueDescription(), getMetricValue()));
     }
 

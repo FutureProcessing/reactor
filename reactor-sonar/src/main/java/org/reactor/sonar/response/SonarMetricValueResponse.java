@@ -6,7 +6,8 @@ public class SonarMetricValueResponse extends AbstractMetricValueResponse {
 
     private final MetricWithValueResource metricValueResource;
 
-    public SonarMetricValueResponse(MetricWithValueResource metricValueResource) {
+    public SonarMetricValueResponse(MetricWithValueResource metricValueResource, boolean valueOnly) {
+        super(valueOnly);
         this.metricValueResource = metricValueResource;
     }
 
@@ -17,7 +18,7 @@ public class SonarMetricValueResponse extends AbstractMetricValueResponse {
 
     @Override
     protected String getMetricValueDescription() {
-        return metricValueResource.getMetricDesription();
+        return metricValueResource.getMetricDescription();
     }
 
 }

@@ -1,52 +1,79 @@
 package org.reactor.jira;
 
+import static com.google.common.base.Objects.firstNonNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
-import org.reactor.ReactorProcessingException;
-import org.reactor.jira.response.JiraIssue;
-import org.reactor.jira.response.JiraSprint;
-import net.rcarz.jiraclient.BasicCredentials;
-import net.rcarz.jiraclient.Issue;
-import net.rcarz.jiraclient.Issue.SearchResult;
-import net.rcarz.jiraclient.JiraClient;
-import net.rcarz.jiraclient.JiraException;
-import net.rcarz.jiraclient.greenhopper.GreenHopperClient;
-import net.rcarz.jiraclient.greenhopper.RapidView;
-import net.rcarz.jiraclient.greenhopper.Sprint;
+import static org.reactor.jira.JiraQueryBuilder.forProject;
+
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 
+import net.rcarz.jiraclient.*;
+import net.rcarz.jiraclient.Issue.SearchResult;
+import net.rcarz.jiraclient.greenhopper.GreenHopperClient;
+import net.rcarz.jiraclient.greenhopper.RapidView;
+import net.rcarz.jiraclient.greenhopper.Sprint;
+import net.rcarz.jiraclient.greenhopper.SprintReport;
+
+import org.reactor.ReactorProcessingException;
+import org.reactor.jira.model.JiraIssue;
+import org.reactor.jira.model.JiraIssueWithDetails;
+import org.reactor.jira.model.JiraSprint;
+
 public class JiraService {
 
-    private static final int RAPID_VIEW_FIRST = 1;
     private static final String STATUS_UNKNOWN = "Unknown";
+    private static final String QUERY_STATUS = "status";
 
     private final GreenHopperClient greenHopperClient;
     private final JiraClient jiraClient;
     private final String projectName;
+    private final int agileBoardId;
 
-    public static JiraService forServerDetails(String serverUrl, String username, String password, String projectName)
-            throws URISyntaxException {
-        return new JiraService(serverUrl, username, password, projectName);
-    }
-
-    private JiraService(String serverUrl, String username, String password, String projectName)
+    private JiraService(String serverUrl, String username, String password, String projectName, int agileBoardId)
             throws URISyntaxException {
         this.projectName = projectName;
+        this.agileBoardId = agileBoardId;
+
         jiraClient = new JiraClient(serverUrl, new BasicCredentials(username, password));
         greenHopperClient = new GreenHopperClient(jiraClient);
     }
 
-    public List<JiraIssue> getAllIssues() {
+    public static JiraService forProperties(String serverUrl, String username, String password, String projectName,
+                                            int agileBoardId) throws URISyntaxException {
+        return new JiraService(serverUrl, username, password, projectName, agileBoardId);
+    }
+
+    public List<JiraIssue> findIssues(String status) {
         List<JiraIssue> result = newArrayList();
         try {
-            SearchResult searchResult = jiraClient.searchIssues("project=" + projectName);
-            for (Issue issue : searchResult.issues) {
-                JiraIssue jiraIssue = new JiraIssue(issue.getKey(), issue.getSummary(), issue.getDescription(), issue
-                        .getStatus() != null ? issue.getStatus().getName() : STATUS_UNKNOWN);
-                result.add(jiraIssue);
+            JiraQueryBuilder queryBuilder = forProject(projectName);
+            if (!isNullOrEmpty(status)) {
+                queryBuilder.andFor(QUERY_STATUS, status);
+            }
+            SearchResult searchResult = jiraClient.searchIssues(queryBuilder.build());
+            for (Issue foundIssue : searchResult.issues) {
+                result.add(new JiraIssue(foundIssue.getKey(), foundIssue.getSummary(),
+                    foundIssue.getStatus() != null ? foundIssue.getStatus().getName() : STATUS_UNKNOWN));
             }
             return result;
+        } catch (JiraException e) {
+            throw new ReactorProcessingException(e);
+        }
+    }
+
+    public JiraIssueWithDetails getIssueWithDetails(String issueKey) {
+        try {
+            Issue foundIssue = jiraClient.getIssue(issueKey);
+            User asignee = foundIssue.getAssignee();
+
+            JiraIssueWithDetails jiraIssueWithDetails = new JiraIssueWithDetails(issueKey, foundIssue.getSummary(),
+                foundIssue.getDescription(), foundIssue.getStatus().getName());
+            if (asignee != null) {
+                jiraIssueWithDetails.setAsignee(asignee.getDisplayName());
+            }
+            return jiraIssueWithDetails;
         } catch (JiraException e) {
             throw new ReactorProcessingException(e);
         }
@@ -55,18 +82,20 @@ public class JiraService {
     public List<JiraSprint> getAllSprints() {
         List<JiraSprint> result = newArrayList();
         try {
-            RapidView board = greenHopperClient.getRapidView(RAPID_VIEW_FIRST);
+            RapidView board = greenHopperClient.getRapidView(agileBoardId);
+
             List<Sprint> sprints = board.getSprints();
             for (Sprint sprint : sprints) {
-                Date startDate = sprint.getStartDate() != null ? sprint.getStartDate().toDate() : null;
-                Date completeDate = sprint.getCompleteDate() != null ? sprint.getCompleteDate().toDate() : null;
-                JiraSprint jiraSprint = new JiraSprint(sprint.getName(), startDate, completeDate);
-                result.add(jiraSprint);
+                SprintReport sprintReport = board.getSprintReport(sprint);
+                Sprint sprintData = firstNonNull(sprintReport.getSprint(), sprint);
+
+                Date startDate = sprintData.getStartDate() != null ? sprintData.getStartDate().toDate() : null;
+                Date completeDate = sprintData.getCompleteDate() != null ? sprintData.getCompleteDate().toDate() : null;
+                result.add(new JiraSprint(sprintData.getName(), startDate, completeDate, !sprintData.isClosed()));
             }
         } catch (JiraException e) {
             throw new ReactorProcessingException(e);
         }
         return result;
     }
-
 }

@@ -10,6 +10,7 @@ var NewWidgetWindowController = function($scope, $widgetPopupService, $widgetsSe
                 title: '',
                 fontSize: '',
                 color: '',
+                textAlign: 'widget-align-left',
                 dropShadow: false,
                 inverted: false,
                 showDimmerLoading: true
@@ -19,6 +20,7 @@ var NewWidgetWindowController = function($scope, $widgetPopupService, $widgetsSe
                 row: 0,
                 gridX: 1,
                 gridY: 1
+
             },
             reactor: {
                 input: '',

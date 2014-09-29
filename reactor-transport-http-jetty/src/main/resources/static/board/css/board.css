@@ -109,8 +109,21 @@ body {
 }
 
 /*-----------------------------
-          Fonts
+          Widget visuals
 -------------------------------*/
+
+.widget-align-left {
+    text-align: left !important;
+}
+
+.widget-align-center {
+    text-align: center !important;
+}
+
+.widget-align-right {
+    text-align: right !important;
+}
+
 .widget-font-default {
   font-size: initial;
 }
@@ -145,6 +158,10 @@ body {
 
 .widget-font-xx-large {
   font-size: 500%;
+}
+
+.widget .ui.header {
+    margin: 0em 0em 1rem;
 }
 
 /*-----------------------------

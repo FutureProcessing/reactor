@@ -1,8 +1,11 @@
 package org.reactor.jira;
 
-import org.reactor.ReactorProperties;
 import com.google.common.annotations.VisibleForTesting;
+import org.reactor.ReactorProperties;
+
 import java.util.Properties;
+
+import static java.lang.Integer.parseInt;
 
 public class JiraReactorProperties extends ReactorProperties {
 
@@ -14,6 +17,9 @@ public class JiraReactorProperties extends ReactorProperties {
     static final String PROPERTY_PASSWORD = "reactor.jira.password";
     @VisibleForTesting
     static final String PROPERTY_PROJECT_NAME = "reactor.jira.projectName";
+    @VisibleForTesting
+    static final String PROPERTY_BOARD_ID = "reactor.jira.agile.boardId";
+    private final static String DEFAULT_PROPERTY_BOARD_ID = "1";
 
     public JiraReactorProperties(Properties properties) {
         super(properties);
@@ -34,5 +40,7 @@ public class JiraReactorProperties extends ReactorProperties {
     public String getProjectName() {
         return getProperty(PROPERTY_PROJECT_NAME);
     }
+
+    public int getAgileBoardId() { return parseInt(getProperty(PROPERTY_BOARD_ID, DEFAULT_PROPERTY_BOARD_ID)); }
 
 }

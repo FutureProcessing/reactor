@@ -7,7 +7,6 @@ import org.sonar.wsclient.services.Resource;
 public class MetricWithValueResource {
 
     private static final double DEFAULT_VALUE = 0d;
-    private static final String DEFAULT_FORMATTED_VALUE = "";
 
     private final Metric metric;
     private final Resource resource;
@@ -17,12 +16,8 @@ public class MetricWithValueResource {
         this.resource = resource;
     }
 
-    public String getMetricDesription() {
+    public String getMetricDescription() {
         return metric.getDescription();
-    }
-
-    public String getFormattedMetricValue() {
-        return resource.getMeasureFormattedValue(metric.getKey(), DEFAULT_FORMATTED_VALUE);
     }
 
     public double getMetricValue() {
