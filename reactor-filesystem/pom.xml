@@ -9,6 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <zt-exec.version>1.7</zt-exec.version>
+    </properties>
     <artifactId>reactor-filesystem</artifactId>
 
     <dependencies>
@@ -25,6 +28,12 @@
             <groupId>org.easytesting</groupId>
             <artifactId>fest-assert</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-exec</artifactId>
+            <version>${zt-exec.version}</version>
         </dependency>
     </dependencies>
 
