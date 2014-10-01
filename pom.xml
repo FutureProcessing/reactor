@@ -72,7 +72,7 @@
         <org.reactor.jira.version>0.0.1</org.reactor.jira.version>
         <org.reactor.jenkins.version>0.0.1</org.reactor.jenkins.version>
         <org.reactor.sonar.version>0.0.1</org.reactor.sonar.version>
-        <org.reactor.filesystem.version>0.0.1</org.reactor.filesystem.version>
+        <org.reactor.system.version>0.0.1</org.reactor.system.version>
         <org.reactor.transport-irc.version>0.0.1</org.reactor.transport-irc.version>
         <org.reactor.transport-skype.version>0.0.1</org.reactor.transport-skype.version>
         <org.reactor.transport-telnet.version>0.0.1</org.reactor.transport-telnet.version>
@@ -116,8 +116,8 @@
 
             <dependency>
                 <groupId>org.reactor</groupId>
-                <artifactId>reactor-filesystem</artifactId>
-                <version>${org.reactor.filesystem.version}</version>
+                <artifactId>reactor-system</artifactId>
+                <version>${org.reactor.system.version}</version>
             </dependency>
 
             <dependency>
