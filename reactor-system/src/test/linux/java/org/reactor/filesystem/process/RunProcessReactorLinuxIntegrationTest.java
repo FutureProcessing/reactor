@@ -1,16 +1,18 @@
 package org.reactor.filesystem.process;
 
-import java.io.IOException;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 import org.reactor.AbstractUnitTest;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class RunProcessReactorLinuxIntegrationTest extends AbstractUnitTest {
 
     private RunProcessReactor reactor;
 
     @Test
-    public void shouldGetSomeTextAfterRunningSystemProcess() throws IOException, InterruptedException {
+    public void shouldGetSomeTextAfterRunningSystemProcess() throws IOException, InterruptedException, TimeoutException {
         // given
         givenRunProcessReactor();
 
