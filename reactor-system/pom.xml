@@ -12,7 +12,7 @@
     <properties>
         <zt-exec.version>1.7</zt-exec.version>
     </properties>
-    <artifactId>reactor-filesystem</artifactId>
+    <artifactId>reactor-system</artifactId>
 
     <dependencies>
         <dependency>
