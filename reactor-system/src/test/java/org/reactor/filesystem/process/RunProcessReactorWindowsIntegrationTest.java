@@ -1,16 +1,24 @@
 package org.reactor.filesystem.process;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.reactor.AbstractUnitTest;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import static java.lang.System.getProperty;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 public class RunProcessReactorWindowsIntegrationTest extends AbstractUnitTest {
 
     private RunProcessReactor reactor;
+
+    @Before
+    public void runIfWindows() {
+        assumeTrue(getProperty("os.name").contains("Windows"));
+    }
 
     @Test
     public void shouldGetSomeTextAfterRunningSystemProcess() throws IOException, InterruptedException, TimeoutException {
