@@ -13,8 +13,10 @@ import org.reactor.jira.model.JiraIssue;
 import org.reactor.jira.model.JiraSprint;
 import org.reactor.jira.request.IssueDetailsRequestData;
 import org.reactor.jira.request.ListIssuesRequestData;
+import org.reactor.jira.request.SprintDetailsRequestData;
 import org.reactor.jira.response.JiraIssueDetailsResponse;
 import org.reactor.jira.response.JiraListReactorResponse;
+import org.reactor.jira.response.JiraSprintDetailsResponse;
 import org.reactor.jira.response.format.JiraIssueFormatter;
 import org.reactor.jira.response.format.JiraSprintFormatter;
 import org.reactor.request.ReactorRequest;
@@ -29,7 +31,7 @@ public class JiraReactor extends AbstractNestingReactor {
         try {
             jiraService = forProperties(reactorProperties.getUrl(), reactorProperties.getUsername(),
                 reactorProperties.getPassword(), reactorProperties.getProjectName(),
-                reactorProperties.getAgileBoardId());
+                reactorProperties.getAgileBoardId(), reactorProperties.getServerLocale());
         } catch (URISyntaxException e) {
             throw new ReactorInitializationException(e);
         }
@@ -46,7 +48,7 @@ public class JiraReactor extends AbstractNestingReactor {
         return new JiraListReactorResponse<>(issues, new JiraIssueFormatter());
     }
 
-    @ReactOn(value = "issue", description = "Displays details of issue with given id")
+    @ReactOn(value = "issue", description = "Displays details of issue with given key")
     public ReactorResponse issueDetails(ReactorRequest<IssueDetailsRequestData> reactorRequest) {
         IssueDetailsRequestData requestData = reactorRequest.getRequestData();
         return new JiraIssueDetailsResponse(jiraService.getIssueWithDetails(requestData.getIssueKey()),
@@ -54,8 +56,13 @@ public class JiraReactor extends AbstractNestingReactor {
     }
 
     @ReactOn(value = "sprints", description = "Lists all sprints (started and completed)")
-    public ReactorResponse listAllSprints(ReactorRequest<Void> reactorRequest) {
-        List<JiraSprint> issues = jiraService.getAllSprints();
-        return new JiraListReactorResponse<JiraSprint>(issues, new JiraSprintFormatter());
+    public ReactorResponse listSprints(ReactorRequest<Void> reactorRequest) {
+        List<JiraSprint> sprints = jiraService.getAllSprints();
+        return new JiraListReactorResponse<>(sprints, new JiraSprintFormatter());
+    }
+
+    @ReactOn(value = "sprint", description = "Displays details of sprint with given id")
+    public ReactorResponse sprintDetails(ReactorRequest<SprintDetailsRequestData> reactorRequest) {
+        return new JiraSprintDetailsResponse(jiraService.getSprintWithDetails(reactorRequest.getRequestData().getSprintId()));
     }
 }

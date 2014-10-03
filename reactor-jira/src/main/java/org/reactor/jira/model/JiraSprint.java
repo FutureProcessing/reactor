@@ -1,18 +1,14 @@
 package org.reactor.jira.model;
 
-import java.util.Date;
-
 public class JiraSprint {
 
+    private int id;
     private String name;
-    private Date startDate;
-    private Date completeDate;
     private boolean active;
 
-    public JiraSprint(String name, Date startDate, Date completeDate, boolean active) {
+    public JiraSprint(int id, String name, boolean active) {
+        this.id = id;
         this.name = name;
-        this.startDate = startDate;
-        this.completeDate = completeDate;
         this.active = active;
     }
 
@@ -20,19 +16,11 @@ public class JiraSprint {
         return name;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getCompleteDate() {
-        return completeDate;
-    }
-
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public int getId() {
+        return id;
     }
 }

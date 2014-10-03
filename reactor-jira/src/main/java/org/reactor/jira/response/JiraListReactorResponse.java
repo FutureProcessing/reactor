@@ -11,9 +11,6 @@ public class JiraListReactorResponse<T> extends ListReactorResponse<T> {
     private List<T> elements = Lists.newArrayList();
     private ListElementFormatter<T> formatter;
     
-    private JiraListReactorResponse() {
-    }
-    
     @Override
     protected Iterable<T> getElements() {
         return elements;
@@ -28,5 +25,4 @@ public class JiraListReactorResponse<T> extends ListReactorResponse<T> {
         this.elements = elements;
         this.formatter = formatter;
     }
-    
 }
