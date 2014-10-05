@@ -24,6 +24,7 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
         if ($scope.widget.visual.dropShadow === true) {
             decoration = decoration + ' shadow';
         }
+        decoration = decoration + ' ' + $scope.widget.visual.textAlign;
         return decoration;
     };
 

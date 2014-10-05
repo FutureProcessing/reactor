@@ -143,3 +143,10 @@ p.right {
 .gridster .ui.segment.attached {
   box-shadow: none;
 }
+
+/*-----------------------------
+          Console
+-------------------------------*/
+.terminal, .cmd {
+    font-family: Ubuntu Mono, FreeMono, monospace;
+}

@@ -11,7 +11,7 @@
     <artifactId>reactor-jira</artifactId>
 
     <properties>
-        <jira.client.greenhopper.version>0.5-SNAPSHOT</jira.client.greenhopper.version>
+        <jira.client.greenhopper.version>0.7-SNAPSHOT</jira.client.greenhopper.version>
         <jersey.json.version>1.18.1</jersey.json.version>
         <jersey.client.version>1.18.1</jersey.client.version>
         <jersey-core.version>1.18.1</jersey-core.version>

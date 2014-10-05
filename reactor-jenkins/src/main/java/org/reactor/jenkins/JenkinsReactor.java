@@ -15,6 +15,7 @@ import org.reactor.event.ReactorEventConsumerFactory;
 import org.reactor.jenkins.event.JobActivityEvent;
 import org.reactor.jenkins.event.JobActivityEventListener;
 import org.reactor.jenkins.request.JenkinsJobDetailsRequestData;
+import org.reactor.jenkins.request.JenkinsJobRequestData;
 import org.reactor.jenkins.response.JobBuildQueuedResponse;
 import org.reactor.jenkins.response.JobDetailsResponse;
 import org.reactor.jenkins.response.JobsListResponse;
@@ -28,7 +29,7 @@ public class JenkinsReactor extends AbstractNestingReactor implements EventProdu
     private JobActivityEventListener jobActivityEventListener;
 
     @ReactOn(value = "jobs", description = "Prints list of defined jobs on given Jenkins instance")
-    public ReactorResponse listJobs(ReactorRequest reactorRequest) throws IOException {
+    public ReactorResponse listJobs(ReactorRequest<Void> reactorRequest) throws IOException {
         JobsListResponse listResponse = new JobsListResponse();
         Iterable<Job> jobs = jenkinsServerFacade.getJobs();
         for (Job job : jobs) {
@@ -45,7 +46,7 @@ public class JenkinsReactor extends AbstractNestingReactor implements EventProdu
     }
 
     @ReactOn(value = "run", description = "Triggers build of job with given name")
-    public ReactorResponse buildJob(ReactorRequest<JenkinsJobDetailsRequestData> jenkinsJobRequest)
+    public ReactorResponse buildJob(ReactorRequest<JenkinsJobRequestData> jenkinsJobRequest)
             throws IOException {
         String jobName = jenkinsJobRequest.getRequestData().getJobName();
         jenkinsServerFacade.buildJob(jobName);
