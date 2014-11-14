@@ -37,6 +37,19 @@ Having a given flow diagram the process can be explained as following:
 
 [IN PROGRESS]
 
- 
+Building up and running
+-----------------------
+Whole build process is quite straightforward and required only maven to be available in system binaries path, then just navigate to downloaded source code folder and run:
+
+```
+mvn clean install
+```
+
+It will then process every module, compile it and build binary package for each of them. When you want to start up the system there are basically two options available:
+- run script **run-cmd** that will pass command line parameters as an reactor input and print out results into terminal output,
+- run script **run-reactor** which results in starting up all transports and reactors available in system classpath.
+
+Those two scripts are located under **reactor-bootstrap/target/dist/bin* folder in two operating system flavors (windows and linux).
+
 
 [![Build Status](https://snap-ci.com/activey/reactor/branch/master/build_image)](https://snap-ci.com/activey/reactor/branch/master)
