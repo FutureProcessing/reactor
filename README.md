@@ -29,13 +29,18 @@ Reactor system have been divided into two layers whereas each of them manages en
 
 Each entity type, be it [ReactorMessageTransport](https://github.com/activey/reactor/blob/master/reactor-api/src/main/java/org/reactor/transport/ReactorMessageTransport.java) or [Reactor](https://github.com/activey/reactor/blob/master/reactor-api/src/main/java/org/reactor/Reactor.java), is being loaded from application classpath using JDK ServiceLoader factory object and glued together in system initialization phase.
 
+System usage concept
+--------------------
+
+:hourglass: **IN PROGRESS**
+
 Transport - Reactor interaction
 -------------------------------
 Because of generic nature of the system, there is only one interaction process suitable for any message transport or reactor that takes a part in a communication act. 
 
 Having a given flow diagram the process can be explained as following:
 
-[IN PROGRESS]
+:hourglass: **IN PROGRESS**
 
 Project structure
 -----------------
@@ -52,7 +57,7 @@ Project folder structure consist of several maven project modules located in fol
 - [reactor-transport-telnet](https://github.com/activey/reactor/tree/master/reactor-transport-telnet) -
 - [reactor-transport-speech](https://github.com/activey/reactor/tree/master/reactor-transport-speech) -
 
-[IN PROGRESS]
+:hourglass: **IN PROGRESS**
 
 Building up and running
 -----------------------
@@ -75,5 +80,6 @@ There are two configuration files provided for all message transports and reacto
 - reactor.properties - consists of setting entries for all reactors out there, where each entry has a dedicated prefix recognized by a given reactor implementation, eg: all entries starting with string **reactor.sonar** will be passed over to [Sonar Reactor](https://github.com/activey/reactor/tree/master/reactor-sonar) in system initialization phase,
 - transport.properties - 
 
+:hourglass: **IN PROGRESS**
 
 [![Build Status](https://snap-ci.com/activey/reactor/branch/master/build_image)](https://snap-ci.com/activey/reactor/branch/master)
