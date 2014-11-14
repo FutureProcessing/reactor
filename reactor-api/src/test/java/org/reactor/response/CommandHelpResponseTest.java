@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.reactor.AbstractUnitTest;
 import org.reactor.Reactor;
-import org.reactor.request.parser.ReactorRequestParameterDefinition;
+import org.reactor.request.parser.ReactorRequestInputParameterDefinition;
 
 public class CommandHelpResponseTest extends AbstractUnitTest {
 
@@ -61,9 +61,9 @@ public class CommandHelpResponseTest extends AbstractUnitTest {
                 givenParameterDefinition(PARAM3_NAME, PARAM3_SHORT_NAME, PARAM3_DESCRIPTION, boolean.class, true)));
     }
 
-    private ReactorRequestParameterDefinition givenParameterDefinition(String name, String shortName,
+    private ReactorRequestInputParameterDefinition givenParameterDefinition(String name, String shortName,
                                                                        String description, Class type, boolean required) {
-        ReactorRequestParameterDefinition parameterDefinition = mock(ReactorRequestParameterDefinition.class);
+        ReactorRequestInputParameterDefinition parameterDefinition = mock(ReactorRequestInputParameterDefinition.class);
         given(parameterDefinition.getName()).willReturn(name);
         given(parameterDefinition.getShortName()).willReturn(shortName);
         given(parameterDefinition.getDescription()).willReturn(description);

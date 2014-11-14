@@ -95,7 +95,7 @@
 
         <dependency>
             <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-skype</artifactId>
+            <artifactId>reactor-transport-speech</artifactId>
         </dependency>
 
         <dependency>

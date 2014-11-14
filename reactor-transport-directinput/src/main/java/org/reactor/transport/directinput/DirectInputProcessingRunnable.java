@@ -31,7 +31,11 @@ public class DirectInputProcessingRunnable implements Runnable {
     private void processDirectInput() {
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(in));
         try {
-            inputListener.directInputGiven(bufferRead.readLine());
+            String inputLine = bufferRead.readLine();
+            if (inputLine == null) {
+                return;
+            }
+            inputListener.directInputGiven(inputLine);
         } catch (IOException e) {
             LOG.error("An error occurred while processing direct input", e);
         }

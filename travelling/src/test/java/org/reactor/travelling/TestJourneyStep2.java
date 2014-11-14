@@ -13,12 +13,12 @@ public class TestJourneyStep2 extends AbstractJourneyStep<StringBuffer> {
     }
 
     @Override
-    protected void doBeforeStep() {
+    public void doBeforeStep() {
         journal.logJournalEntry("Please enter second value");
     }
 
     @Override
-    public AbstractJourneyStepDirection<StringBuffer> doJourneyStep(String stepInput, StringBuffer journeySubject) {
+    public AbstractJourneyStepDirection<StringBuffer> doStep(String stepInput, StringBuffer journeySubject) {
         journeySubject.append(" # " + stepInput);
         return forward();
     }

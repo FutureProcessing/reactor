@@ -1,25 +1,26 @@
 package org.reactor.transport.directinput;
 
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+
+import java.util.concurrent.Executor;
+
+import org.reactor.request.ReactorRequestInput;
+import org.reactor.transport.ReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 public class DirectInputProcessor {
 
-    private static final String SENDER_DIRECT = "DIRECT";
     private static final Logger LOG = LoggerFactory.getLogger(DirectInputProcessor.class);
-    private final ReactorMessageTransportProcessor messageProcessor;
+
+    private static final String SENDER_DIRECT = "DIRECT";
+    private final ReactorRequestHandler messageProcessor;
     private final Executor executorService;
     private boolean processing;
 
-    public DirectInputProcessor(ReactorMessageTransportProcessor messageProcessor) {
+    public DirectInputProcessor(ReactorRequestHandler messageProcessor) {
         this.messageProcessor = messageProcessor;
-        executorService = Executors.newSingleThreadExecutor();
+        executorService = newSingleThreadExecutor();
         startProcessing();
     }
 
@@ -27,9 +28,12 @@ public class DirectInputProcessor {
         LOG.debug("Starting direct input processing:");
         processing = true;
 
-        executorService.execute(new DirectInputProcessingRunnable(
-                inputValue -> messageProcessor.processTransportMessage(inputValue, SENDER_DIRECT, new BufferedWriter(
-                        new OutputStreamWriter(System.out)))) {
+        executorService.execute(new DirectInputProcessingRunnable(inputValue -> {
+            ReactorRequestInput requestInput = new ReactorRequestInput(inputValue);
+            requestInput.setInteractive(true);
+
+            messageProcessor.handleReactorRequest(requestInput, SENDER_DIRECT, new DirectInputResponseWriter());
+        }) {
 
             @Override
             protected boolean isProcessing() {

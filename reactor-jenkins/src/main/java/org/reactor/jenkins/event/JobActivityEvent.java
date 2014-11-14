@@ -9,13 +9,7 @@ import org.reactor.response.ReactorResponse;
 
 public class JobActivityEvent implements ReactorEvent {
 
-    public static final Function<JobActivityEvent, ReactorResponse> TO_RESPONSE = new Function<JobActivityEvent, ReactorResponse>() {
-
-        @Override
-        public ReactorResponse apply(JobActivityEvent input) {
-            return new JobActivityEventResponse(input);
-        }
-    };
+    public static final Function<JobActivityEvent, ReactorResponse> TO_RESPONSE = JobActivityEventResponse::new;
 
     public static final Function<JSONObject, JobActivityEvent> FROM_JSON = new Function<JSONObject, JobActivityEvent>() {
 

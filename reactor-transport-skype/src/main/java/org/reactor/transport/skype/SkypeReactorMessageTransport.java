@@ -7,7 +7,7 @@ import com.skype.Skype;
 import com.skype.SkypeException;
 
 import org.reactor.response.ReactorResponse;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
 import org.reactor.transport.alive.KeepAliveReactorMessageTransport;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class SkypeReactorMessageTransport extends KeepAliveReactorMessageTranspo
     private Iterable<String> broadcastList;
 
     private void startSkypeTransport(SkypeTransportProperties transportProperties,
-                                     ReactorMessageTransportProcessor messageTransport) {
+                                     ReactorRequestHandler messageTransport) {
         LOG.debug("Starting Skype message transport ...");
         initializeSkypeConnection(transportProperties);
         initializeMessageListener(messageTransport);
@@ -39,7 +39,7 @@ public class SkypeReactorMessageTransport extends KeepAliveReactorMessageTranspo
         LOG.debug("Request accepted :)");
     }
 
-    private void initializeMessageListener(ReactorMessageTransportProcessor messageTransport) {
+    private void initializeMessageListener(ReactorRequestHandler messageTransport) {
         try {
             Skype.addChatMessageListener(new SkypeMessageProcessorChatMessageListener(messageTransport));
         } catch (SkypeException e) {
@@ -52,13 +52,13 @@ public class SkypeReactorMessageTransport extends KeepAliveReactorMessageTranspo
     }
 
     @Override
-    public void startTransportKeptAlive(TransportProperties transportProperties,
-                                        ReactorMessageTransportProcessor messageProcessor) {
-        startSkypeTransport(new SkypeTransportProperties(transportProperties), messageProcessor);
+    protected void startTransportKeptAlive(TransportProperties transportProperties,
+                                        ReactorRequestHandler requestHandler) {
+        startSkypeTransport(new SkypeTransportProperties(transportProperties), requestHandler);
     }
 
     @Override
-    public void stopTransport() {
+    protected void stopTransportKeptAlive() {
         try {
             skypeApplication.finish();
             skypeApplication = null;

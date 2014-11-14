@@ -3,6 +3,7 @@ package org.reactor.reactor;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES;
+import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES_INPUT;
 import static org.reactor.utils.ClassUtils.tryCall;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
@@ -29,7 +30,11 @@ public class ReactorController {
     }
 
     public Optional<Reactor> reactorMatchingInput(ReactorRequestInput requestInput) {
-        return from(reactors).filter(TRIGGER_MATCHES(requestInput)).first();
+        return from(reactors).filter(TRIGGER_MATCHES_INPUT(requestInput)).first();
+    }
+
+    public Optional<Reactor> reactorMatchingTrigger(String reactorTrigger) {
+        return from(reactors).filter(TRIGGER_MATCHES(reactorTrigger)).first();
     }
 
     private void collectReactors() {
@@ -49,10 +54,10 @@ public class ReactorController {
         reactors.forEach(reactor -> tryInitReactor(reactor, reactorProperties));
     }
 
-    private void tryInitReactor(final Reactor reactor, final ReactorProperties reactorProperties) {
+    private void tryInitReactor(Reactor reactor, ReactorProperties reactorProperties) {
         tryCall(reactor, InitializingReactor.class, subject -> {
             LOG.debug("Initializing reactor: {}", reactor.getClass().getName());
-            subject.initReactor(new ReactorProperties(reactorProperties));
+            subject.initReactor(reactorProperties);
             return null;
         });
     }
@@ -61,7 +66,7 @@ public class ReactorController {
         reactors.stream().forEach(reactor -> createEventConsumers(reactor, factory));
     }
 
-    private void createEventConsumers(Reactor reactor, final ReactorEventConsumerFactory factory) {
+    private void createEventConsumers(Reactor reactor, ReactorEventConsumerFactory factory) {
         tryCall(reactor, EventProducingReactor.class, subject -> {
             subject.initReactorEventConsumers(factory);
             return null;

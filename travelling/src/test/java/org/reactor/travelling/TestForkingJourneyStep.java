@@ -2,7 +2,6 @@ package org.reactor.travelling;
 
 import static java.lang.String.format;
 
-import org.reactor.travelling.step.AbstractJourneyStepDirection;
 import org.reactor.travelling.step.forking.AbstractForkingJourneyStep;
 
 public class TestForkingJourneyStep extends AbstractForkingJourneyStep<StringBuffer> {
@@ -16,15 +15,13 @@ public class TestForkingJourneyStep extends AbstractForkingJourneyStep<StringBuf
     }
 
     @Override
-    protected AbstractJourneyStepDirection<StringBuffer> doForkingJourneyStep(String stepInput, StringBuffer journeySubject) {
+    protected void doBeforeForking(String stepInput, StringBuffer journeySubject) {
         journal.logJournalEntry(format("Just entered: %s", stepInput));
         journeySubject.append(" ! " + stepInput);
-
-        return finish();
     }
 
     @Override
-    protected void doBeforeStep() {
+    public void doBeforeStep() {
         journal.logJournalEntry("Please enter third and last value, type lol go go deeper");
     }
 }

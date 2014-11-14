@@ -53,7 +53,7 @@ public class JourneyScenarioBuilderTest extends AbstractUnitTest {
     public void shouldForkJourneyScenarioAndAppendTextAtProperPlace() {
         // given
         scenarioSubject = givenScenarioSubject();
-        journeyScenarioBuilder  = givenForkingScenarioBuilder();
+        journeyScenarioBuilder = givenForkingScenarioBuilder();
 
         // when
         JourneyScenario<StringBuffer> journeyScenario = journeyScenarioBuilder.build();
@@ -66,21 +66,29 @@ public class JourneyScenarioBuilderTest extends AbstractUnitTest {
 
         // then
         assertThat(journeyScenario.hasJourneyEnded()).isTrue();
-        assertThat(scenarioSubject.toString()).isEqualTo(" - first # second-TROLOLOLO--BLE- ! third");
+        assertThat(scenarioSubject.toString()).isEqualTo(" - first # second ! lol-TROLOLOLO--BLE-");
     }
 
+    @Test
+    public void shouldEndJourneyWhenThereAreNoSteps() {
+        // given
+        scenarioSubject = givenScenarioSubject();
+        journeyScenarioBuilder = givenEmptyScenarioBuilder();
+
+        // when
+        JourneyScenario<StringBuffer> journeyScenario = journeyScenarioBuilder.build();
+        journeyScenario.answer("anything");
+
+        // then
+        assertThat(journeyScenario.hasJourneyEnded()).isTrue();
+    }
 
     private StringBuffer givenScenarioSubject() {
         return new StringBuffer();
     }
 
     private JourneyJournal givenJournal() {
-        return new JourneyJournal() {
-            @Override
-            public void logJournalEntry(String entryContents) {
-                System.out.println("journal> " + entryContents);
-            }
-        };
+        return entryContents -> System.out.println("journal> " + entryContents);
     }
 
     private JourneyScenarioBuilder<StringBuffer> givenForkingScenarioBuilder() {
@@ -108,4 +116,7 @@ public class JourneyScenarioBuilderTest extends AbstractUnitTest {
                 .journeyStep(new TestJourneyStep3(journal));
     }
 
+    private JourneyScenarioBuilder<StringBuffer> givenEmptyScenarioBuilder() {
+        return forSubject(scenarioSubject);
+    }
 }

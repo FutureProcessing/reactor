@@ -1,12 +1,8 @@
 package org.reactor;
 
 import org.reactor.annotation.ReactOn;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AbstractAnnotatedReactor<T> extends AbstractReactor<T> {
-
-    private final static Logger LOG = LoggerFactory.getLogger(AbstractAnnotatedReactor.class);
 
     private String reactorTrigger;
     private String reactorDescription;

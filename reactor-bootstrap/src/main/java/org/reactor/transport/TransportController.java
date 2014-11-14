@@ -17,7 +17,7 @@ import java.util.ServiceLoader;
 
 public class TransportController {
 
-    private final static Logger LOG = LoggerFactory.getLogger(TransportController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TransportController.class);
 
     private final static ListeningExecutorService executorService = listeningDecorator(newFixedThreadPool(10));
 
@@ -34,20 +34,20 @@ public class TransportController {
     private void loadTransports() {
         ServiceLoader<ReactorMessageTransport> transportsLoader = ServiceLoader.load(ReactorMessageTransport.class);
         if (!transportsLoader.iterator().hasNext()) {
-            LOG.warn("No message transport found!");
+            LOGGER.warn("No message transport found!");
             return;
         }
         transportsLoader.forEach(transport -> {
-            LOG.debug("Loading message transport: {}", transport.getClass().getName());
+            LOGGER.debug("Loading message transport: {}", transport.getClass().getName());
             addTransport(transport);
         });
     }
 
     public final void startTransports(TransportProperties transportProperties,
-                                      ReactorMessageTransportProcessor messageTransportProcessor) {
+                                      ReactorRequestHandler messageTransportProcessor) {
 
         transports.forEach(transport -> {
-            LOG.debug("Starting up transport: {}", transport.getClass().getName());
+            LOGGER.debug("Starting up transport: {}", transport.getClass().getName());
             startTransport(transport, transportProperties, messageTransportProcessor);
         });
         executorService.shutdown();
@@ -56,16 +56,16 @@ public class TransportController {
     }
 
     private void startTransport(ReactorMessageTransport transport, TransportProperties transportProperties,
-                                ReactorMessageTransportProcessor messageTransportProcessor) {
+                                ReactorRequestHandler messageTransportProcessor) {
         addCallback(executorService.submit(new TransportInitializationCallable(transport, transportProperties,
             messageTransportProcessor)), new TransportInitializationCallback(transport));
     }
 
     public final void stopTransports() {
         transports.forEach(transport -> {
-            LOG.debug("Shutting down transport: {}", transport.getClass().getName());
+            LOGGER.debug("Shutting down transport: {}", transport.getClass().getName());
             transport.stopTransport();
-            LOG.debug("Transport stopped: {}", transport.getClass().getName());
+            LOGGER.debug("Transport stopped: {}", transport.getClass().getName());
         });
     }
 

@@ -3,21 +3,14 @@ package org.reactor.request.parser;
 import com.google.common.base.Function;
 import org.apache.commons.cli.Option;
 
-public class ReactorRequestParameterDefinition {
+public class ReactorRequestInputParameterDefinition {
 
-    public static final Function<ReactorRequestParameterDefinition, Option> TO_CMD_LINE_OPTION = new Function<ReactorRequestParameterDefinition, Option>() {
-
-        private static final String DESCRIPTION_EMPTY = "";
-
-        @Override
-        public Option apply(ReactorRequestParameterDefinition parameterDefinition) {
-            Option option = new Option(parameterDefinition.getShortName(), parameterDefinition.getName(), true,
-                DESCRIPTION_EMPTY);
-            option.setRequired(parameterDefinition.isRequired());
-            option.setType(parameterDefinition.getType());
-            option.setDescription(parameterDefinition.getDescription());
-            return option;
-        }
+    public static final Function<ReactorRequestInputParameterDefinition, Option> TO_CMD_LINE_OPTION = parameterDefinition -> {
+        Option option = new Option(parameterDefinition.getShortName(), parameterDefinition.getName(), true,
+                parameterDefinition.getDescription());
+        option.setRequired(parameterDefinition.isRequired());
+        option.setType(parameterDefinition.getType());
+        return option;
     };
 
     private String name;
@@ -26,7 +19,7 @@ public class ReactorRequestParameterDefinition {
     private final Class<?> type;
     private boolean required;
 
-    public ReactorRequestParameterDefinition(String name, String shortName, boolean required, Class<?> type) {
+    public ReactorRequestInputParameterDefinition(String name, String shortName, boolean required, Class<?> type) {
         this.name = name;
         this.shortName = shortName;
         this.required = required;
@@ -62,7 +55,7 @@ public class ReactorRequestParameterDefinition {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ReactorRequestParameterDefinition that = (ReactorRequestParameterDefinition) o;
+        ReactorRequestInputParameterDefinition that = (ReactorRequestInputParameterDefinition) o;
 
         if (required != that.required) return false;
         if (!name.equals(that.name)) return false;

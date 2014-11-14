@@ -8,7 +8,7 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransport;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
 import org.reactor.transport.http.rest.RestHandler;
 import org.reactor.transport.http.websockets.ReactorWebsocketsHandler;
@@ -29,12 +29,12 @@ public class HttpMessageTransport implements ReactorMessageTransport {
     private ReactorWebsocketsHandler webSocketHandler;
 
     @Override
-    public void startTransport(TransportProperties transportProperties, ReactorMessageTransportProcessor messageProcessor) {
+    public void startTransport(TransportProperties transportProperties, ReactorRequestHandler messageProcessor) {
         startWebSocketsTransport(new HttpTransportProperties(transportProperties), messageProcessor);
     }
 
     private void startWebSocketsTransport(HttpTransportProperties transportProperties,
-                                          ReactorMessageTransportProcessor messageProcessor) {
+                                          ReactorRequestHandler messageProcessor) {
         try {
             server = new Server(transportProperties.getPortNumber());
             server.setHandler(createHandlersCollection(messageProcessor));
@@ -44,7 +44,7 @@ public class HttpMessageTransport implements ReactorMessageTransport {
         }
     }
 
-    private ContextHandlerCollection createHandlersCollection(ReactorMessageTransportProcessor messageProcessor) {
+    private ContextHandlerCollection createHandlersCollection(ReactorRequestHandler messageProcessor) {
         ContextHandlerCollection handlerCollection = new ContextHandlerCollection();
         handlerCollection.addHandler(createStaticResourcesHandler());
         handlerCollection.addHandler(createRestHandler(messageProcessor));
@@ -61,7 +61,7 @@ public class HttpMessageTransport implements ReactorMessageTransport {
         return contextHandler;
     }
 
-    private ContextHandler createWebSocketsHandler(ReactorMessageTransportProcessor messageProcessor) {
+    private ContextHandler createWebSocketsHandler(ReactorRequestHandler messageProcessor) {
         webSocketHandler = new ReactorWebsocketsHandler(messageProcessor);
         ContextHandler contextHandler = new ContextHandler();
         contextHandler.setContextPath(CONTEXT_PATH_WEBSOCKETS);
@@ -69,7 +69,7 @@ public class HttpMessageTransport implements ReactorMessageTransport {
         return contextHandler;
     }
 
-    private ContextHandler createRestHandler(ReactorMessageTransportProcessor messageProcessor) {
+    private ContextHandler createRestHandler(ReactorRequestHandler messageProcessor) {
         ContextHandler contextHandler = new ContextHandler();
         contextHandler.setContextPath(CONTEXT_PATH_REST);
         contextHandler.setHandler(new RestHandler(messageProcessor));

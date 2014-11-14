@@ -3,7 +3,7 @@ package org.reactor;
 import static org.reactor.properties.PropertiesLoader.propertiesLoader;
 import org.reactor.event.DefaultReactorEventConsumerFactory;
 import org.reactor.reactor.ReactorController;
-import org.reactor.transport.DefaultTransportMessageProcessor;
+import org.reactor.transport.DefaultReactorRequestHandler;
 import org.reactor.transport.TransportController;
 import org.reactor.transport.TransportProperties;
 import org.slf4j.Logger;
@@ -19,30 +19,30 @@ public final class TransportRunner {
     private TransportController transportController;
     private ReactorController reactorController;
 
-    private void initReactorController(ReactorProperties reactorProperties) throws IllegalAccessException,
-            InstantiationException, ClassNotFoundException {
-        LOG.debug("Initializing Reactor Controller ...");
-        reactorController = new ReactorController();
-        reactorController.initReactors(reactorProperties);
-        reactorController.initEventConsumers(new DefaultReactorEventConsumerFactory(transportController));
+    public final void start() {
+        initReactorController(new ReactorProperties(propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load()));
+        initTransportController(new TransportProperties(propertiesLoader().fromResourceStream(TRANSPORT_PROPERTIES).load()));
+
+        initReactorControllerEventConsumers();
     }
 
     private void initTransportController(TransportProperties transportProperties) {
+        LOG.debug("Initializing Transport Controller ...");
         transportController = TransportController.createAndLoadTransports();
-        transportController.startTransports(transportProperties, new DefaultTransportMessageProcessor(
-                () -> reactorController));
+        transportController.startTransports(transportProperties, new DefaultReactorRequestHandler(reactorController));
     }
 
-    public final void start() throws Exception {
-        initTransportController(new TransportProperties(propertiesLoader().fromResourceStream(TRANSPORT_PROPERTIES).load()));
-        initReactorController(new ReactorProperties(propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load()));
+    private void initReactorController(ReactorProperties reactorProperties) {
+        LOG.debug("Initializing Reactor Controller ...");
+        reactorController = new ReactorController();
+        reactorController.initReactors(reactorProperties);
+    }
+
+    private void initReactorControllerEventConsumers() {
+        reactorController.initEventConsumers(new DefaultReactorEventConsumerFactory(transportController));
     }
 
     public static void main(String[] args) {
-        try {
-            new TransportRunner().start();
-        } catch (Exception e) {
-            LOG.error("", e);
-        }
+        new TransportRunner().start();
     }
 }

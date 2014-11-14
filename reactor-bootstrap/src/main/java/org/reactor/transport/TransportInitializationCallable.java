@@ -7,11 +7,11 @@ public class TransportInitializationCallable implements Callable<ReactorMessageT
 
     private final ReactorMessageTransport transport;
     private final TransportProperties transportProperties;
-    private final ReactorMessageTransportProcessor messageProcessor;
+    private final ReactorRequestHandler messageProcessor;
 
     public TransportInitializationCallable(ReactorMessageTransport transport,
                                            TransportProperties transportProperties,
-                                           ReactorMessageTransportProcessor messageProcessor) {
+                                           ReactorRequestHandler messageProcessor) {
         this.transport = transport;
         this.transportProperties = transportProperties;
         this.messageProcessor = messageProcessor;

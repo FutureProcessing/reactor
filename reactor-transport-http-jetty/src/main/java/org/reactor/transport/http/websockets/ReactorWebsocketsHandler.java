@@ -6,7 +6,7 @@ import static org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.reactor.response.ReactorResponse;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.transport.ReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,15 +18,15 @@ public class ReactorWebsocketsHandler extends WebSocketHandler implements WebSoc
 
     private final static Logger LOG = LoggerFactory.getLogger(ReactorWebsocketsHandler.class);
     private static final List<Connection> CONNECTIONS = newArrayList();
-    private final ReactorMessageTransportProcessor messageProcessor;
+    private final ReactorRequestHandler requestHandler;
 
-    public ReactorWebsocketsHandler(ReactorMessageTransportProcessor messageProcessor) {
-        this.messageProcessor = messageProcessor;
+    public ReactorWebsocketsHandler(ReactorRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     @Override
     public WebSocket doWebSocketConnect(HttpServletRequest httpServletRequest, String protocol) {
-        return new ReactorWebSocket(messageProcessor, this);
+        return new ReactorWebSocket(requestHandler, this);
     }
 
     @Override

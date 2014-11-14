@@ -1,6 +1,10 @@
 package org.reactor.filesystem.process;
 
-import com.google.common.annotations.VisibleForTesting;
+import static org.reactor.request.ArgumentsParser.parseArguments;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 import org.reactor.AbstractAnnotatedReactor;
 import org.reactor.annotation.ReactOn;
 import org.reactor.request.ReactorRequest;
@@ -11,10 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeroturnaround.exec.ProcessExecutor;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
-import static org.reactor.request.ArgumentsParser.parseArguments;
+import com.google.common.annotations.VisibleForTesting;
 
 @ReactOn(value = "run", description = "Runs operating system process and prints out it's result")
 public class RunProcessReactor extends AbstractAnnotatedReactor<String> {
@@ -38,8 +39,6 @@ public class RunProcessReactor extends AbstractAnnotatedReactor<String> {
 
     @VisibleForTesting
     String runProcess(String... processArguments) throws IOException, InterruptedException, TimeoutException {
-        return new ProcessExecutor().command(processArguments)
-                .readOutput(true).execute()
-                .outputUTF8();
+        return new ProcessExecutor().command(processArguments).readOutput(true).execute().outputUTF8();
     }
 }

@@ -21,4 +21,8 @@ public class ForkingStepOutcome<SUBJECT> {
                                                          JourneyScenario<SUBJECT> parentScenario) {
         return forSubject(scenarioSubject).parentScenario(parentScenario).journeySteps(stepList).build();
     }
+
+    public boolean isEmpty() {
+        return stepList.isEmpty();
+    }
 }

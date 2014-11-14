@@ -3,7 +3,7 @@ package org.reactor;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
-import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES;
+import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES_INPUT;
 import static org.reactor.response.NoResponse.NO_RESPONSE;
 import com.google.common.base.Optional;
 import java.lang.reflect.Method;
@@ -46,6 +46,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
         private boolean hasOnlyOneParameter(Method method) {
             return method.getParameterTypes().length == 1;
         }
+
         private boolean inputTypeMatches(Method method) {
             return ReactorRequest.class.isAssignableFrom(method.getParameterTypes()[0]);
         }
@@ -79,7 +80,7 @@ public abstract class AbstractNestingReactor extends AbstractAnnotatedReactor<St
             LOG.debug("No reactor input given, printing out sub reactors information");
             return new ReactorsInformationResponse(subReactors);
         }
-        Optional<Reactor> subReactor = from(subReactors).filter(TRIGGER_MATCHES(requestInput)).first();
+        Optional<Reactor> subReactor = from(subReactors).filter(TRIGGER_MATCHES_INPUT(requestInput)).first();
         if (subReactor.isPresent()) {
             return subReactor.get().react(reactorRequest.getSender(), requestInput);
         }

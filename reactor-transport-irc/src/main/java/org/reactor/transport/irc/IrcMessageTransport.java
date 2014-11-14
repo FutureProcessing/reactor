@@ -8,7 +8,7 @@ import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.managers.ListenerManager;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
 import org.reactor.transport.alive.KeepAliveReactorMessageTransport;
 import org.reactor.transport.irc.listener.IrcTransportInitializationListener;
@@ -39,14 +39,14 @@ public class IrcMessageTransport extends KeepAliveReactorMessageTransport {
     private IrcBot botInstance;
 
     @Override
-    public void startTransportKeptAlive(TransportProperties transportProperties,
-                                        ReactorMessageTransportProcessor messageProcessor) {
+    protected void startTransportKeptAlive(TransportProperties transportProperties,
+                                        ReactorRequestHandler requestHandler) {
         LOG.debug("Starting IRC message transport ...");
 
         Configuration configuration = TO_CONFIG.apply(new IrcTransportProperties(transportProperties));
         ListenerManager listenerManager = configuration.getListenerManager();
         listenerManager.addListener(initializationListener);
-        listenerManager.addListener(new IrcBotReactorListener(messageProcessor));
+        listenerManager.addListener(new IrcBotReactorListener(requestHandler));
         botInstance = new IrcBot(configuration);
         try {
             new Thread(new BotInstanceRunnable()).start();
@@ -60,7 +60,7 @@ public class IrcMessageTransport extends KeepAliveReactorMessageTransport {
     }
 
     @Override
-    public void stopTransport() {
+    protected void stopTransportKeptAlive() {
         if (botInstance.getState() == DISCONNECTED) {
             LOG.debug("IRC transport already disconnected!");
             return;

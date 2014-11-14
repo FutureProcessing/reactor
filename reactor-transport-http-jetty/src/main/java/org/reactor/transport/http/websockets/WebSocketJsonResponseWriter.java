@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class WebSocketJsonResponseWriter {
 
-    private final static Logger LOG = LoggerFactory.getLogger(WebSocketJsonResponseWriter.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(WebSocketJsonResponseWriter.class);
 
     private static final String KEY_TYPE = "type";
     private static final String KEY_MESSAGE = "message";
@@ -28,7 +28,7 @@ public class WebSocketJsonResponseWriter {
         try {
             connection.sendMessage(jsonObject.toString());
         } catch (IOException e) {
-            LOG.error("An error occurred while generating JSON response", e);
+            LOGGER.error("An error occurred while generating JSON response", e);
         }
     }
 

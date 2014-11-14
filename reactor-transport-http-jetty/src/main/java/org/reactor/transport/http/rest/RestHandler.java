@@ -10,17 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.request.ReactorRequestInput;
+import org.reactor.transport.ReactorRequestHandler;
 
 public class RestHandler extends AbstractHandler {
 
     private static final String SENDER = "HTTP";
     private static final String CONTENT_TYPE = "text/plain";
 
-    private final ReactorMessageTransportProcessor messageProcessor;
+    private final ReactorRequestHandler requestHandler;
 
-    public RestHandler(ReactorMessageTransportProcessor messageProcessor) {
-        this.messageProcessor = messageProcessor;
+    public RestHandler(ReactorRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class RestHandler extends AbstractHandler {
         prepareContentType(response);
 
         PrintWriter writer = response.getWriter();
-        messageProcessor.processTransportMessage(reactorInput, SENDER, writer);
+        requestHandler.handleReactorRequest(new ReactorRequestInput(reactorInput), SENDER, writer);
         writer.flush();
     }
 

@@ -14,14 +14,14 @@ public class TestJourneyStep1 extends AbstractJourneyStep<StringBuffer> {
     }
 
     @Override
-    protected AbstractJourneyStepDirection<StringBuffer> doJourneyStep(String stepInput, StringBuffer journeySubject) {
+    public AbstractJourneyStepDirection<StringBuffer> doStep(String stepInput, StringBuffer journeySubject) {
         journal.logJournalEntry(format("Just entered: %s", stepInput));
         journeySubject.append(" - first");
         return forward();
     }
 
     @Override
-    protected void doBeforeStep() {
+    public void doBeforeStep() {
         journal.logJournalEntry("Please enter first value");
     }
 

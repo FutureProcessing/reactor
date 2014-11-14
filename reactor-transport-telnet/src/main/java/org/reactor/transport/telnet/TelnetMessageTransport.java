@@ -10,7 +10,7 @@ import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
 import org.reactor.transport.alive.KeepAliveReactorMessageTransport;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class TelnetMessageTransport extends KeepAliveReactorMessageTransport {
     private NioSocketAcceptor acceptor;
 
     private void startTelnetTransport(TelnetTransportProperties transportProperties,
-                                      ReactorMessageTransportProcessor messageTransportProcessor) {
+                                      ReactorRequestHandler messageTransportProcessor) {
         LOG.debug("Starting telnet message transport on port {} ...", transportProperties.getPortNumber());
         acceptor = new NioSocketAcceptor();
         acceptor.setHandler(new TelnetMessageProcessorHandler(messageTransportProcessor));
@@ -57,13 +57,13 @@ public class TelnetMessageTransport extends KeepAliveReactorMessageTransport {
     }
 
     @Override
-    public void startTransportKeptAlive(TransportProperties transportProperties,
-                                        ReactorMessageTransportProcessor messageProcessor) {
-        startTelnetTransport(new TelnetTransportProperties(transportProperties), messageProcessor);
+    protected void startTransportKeptAlive(TransportProperties transportProperties,
+                                        ReactorRequestHandler requestHandler) {
+        startTelnetTransport(new TelnetTransportProperties(transportProperties), requestHandler);
     }
 
     @Override
-    public void stopTransport() {
+    protected void stopTransportKeptAlive() {
         acceptor.dispose();
         acceptor.unbind();
         acceptor = null;

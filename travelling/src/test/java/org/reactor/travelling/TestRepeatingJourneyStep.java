@@ -14,12 +14,12 @@ public class TestRepeatingJourneyStep extends AbstractJourneyStep<StringBuffer> 
     }
 
     @Override
-    protected void doBeforeStep() {
+    public void doBeforeStep() {
         journal.logJournalEntry("Getting a little deeper? pass a color name i'm thinking about to pass through :P");
     }
 
     @Override
-    public AbstractJourneyStepDirection<StringBuffer> doJourneyStep(String stepInput, StringBuffer journeySubject) {
+    public AbstractJourneyStepDirection<StringBuffer> doStep(String stepInput, StringBuffer journeySubject) {
         if (stepInput.equals("red")) {
             journal.logJournalEntry(format("%s is pretty :)", stepInput));
             journeySubject.append(" # " + stepInput);

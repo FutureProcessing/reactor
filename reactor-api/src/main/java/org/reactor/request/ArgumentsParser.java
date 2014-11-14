@@ -21,7 +21,7 @@ public class ArgumentsParser {
     }
 
     public String[] parseArguments() {
-        List<String> v = new ArrayList<String>();
+        List<String> v = new ArrayList<>();
 
         ch = getNext();
         while (ch > 0) {
@@ -52,7 +52,7 @@ public class ArgumentsParser {
         ch = getNext();
         if (ch == '"') {
             ch = getNext();
-            return ""; //$NON-NLS-1$
+            return ""; //$NON-NLS-1$parseArguments(reactorRequest.getRequestData())
         }
         StringBuffer buf = new StringBuffer();
         while (ch > 0 && ch != '"') {
