@@ -1,21 +1,36 @@
 package org.reactor.transport.interactive;
 
+import static org.reactor.travelling.JourneyScenarioBuilder.forSubject;
+
+import org.reactor.Reactor;
+import org.reactor.request.ReactorRequestInput;
 import org.reactor.travelling.JourneyScenario;
+import org.reactor.travelling.JourneyScenarioBuilder;
+
+import java.io.Writer;
 
 public class JourneyScenarioFactory {
 
-    private final static JourneyScenarioFactory INSTANCE = new JourneyScenarioFactory();
+    private Reactor reactor;
 
-    public static final JourneyScenario getOrCreateJourneyInstance(String traveler) {
-        JourneyScenario journeyScenario = INSTANCE.findJourney(traveler);
-        return journeyScenario;
+    private JourneyScenarioFactory(Reactor reactor) {
+        this.reactor = reactor;
     }
 
-    private JourneyScenario findJourney(String traveler) {
-        return null;// TODO.
+    public static JourneyScenario<ReactorRequestInput> prepareReactorJourneyScenario(Reactor reactor, Writer responseWriter) {
+        return new JourneyScenarioFactory(reactor).prepareJourneyScenario(responseWriter);
     }
 
-    private JourneyScenarioFactory() {
+    public JourneyScenario<ReactorRequestInput> prepareJourneyScenario(Writer responseWriter) {
+        ReactorRequestInput requestInput = new ReactorRequestInput(reactor.getTriggeringExpression());
+        JourneyScenarioBuilder<ReactorRequestInput> scenarioBuilder = forSubject(requestInput);
+        prepareScenarioBuilder(scenarioBuilder, responseWriter);
+        return scenarioBuilder.build();
+    }
 
+    private void prepareScenarioBuilder(JourneyScenarioBuilder<ReactorRequestInput> scenarioBuilder, Writer responseWriter) {
+        JourneyScenarioReactorTopologyVisitor topologyVisitor = new JourneyScenarioReactorTopologyVisitor(
+            scenarioBuilder, responseWriter);
+        reactor.accept(topologyVisitor);
     }
 }

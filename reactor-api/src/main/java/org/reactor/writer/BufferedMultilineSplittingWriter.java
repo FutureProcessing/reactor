@@ -17,6 +17,9 @@ public abstract class BufferedMultilineSplittingWriter extends MultilineSplittin
     @Override
     public final void flush() throws IOException {
         writeLines(buffer.toString());
+
+        buffer = new StringWriter();
+        bufferedWriter = new PrintWriter(buffer);
     }
 
     protected abstract void writeLines(String lines) throws IOException;

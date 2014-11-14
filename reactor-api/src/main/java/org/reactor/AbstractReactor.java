@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractReactor<T> implements Reactor {
 
-    private final static Logger LOG = LoggerFactory.getLogger(AbstractReactor.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AbstractReactor.class);
     private final AbstractReactorRequestDataParser<T> dataParser;
 
     public AbstractReactor(Class<T> requestDataType) {
@@ -32,15 +32,15 @@ public abstract class AbstractReactor<T> implements Reactor {
         try {
             return react(dataParser.parseRequestWithData(sender, getTriggeringExpression(), requestInput.popArguments()));
         } catch (ReactorRequestParsingException e) {
-            LOG.error("An error occurred while parsing Request", e);
+            LOGGER.error("An error occurred while parsing Request", e);
             return new CommandHelpResponse(getRootCause(e).getMessage(), this);
         }
     }
 
     private ReactorResponse react(ReactorRequest<T> reactorRequest) {
         if (!reactorRequest.triggerMatches(getTriggeringExpression())) {
-            LOG.warn("Trigger does not match triggering expression: {} != {}", reactorRequest.getTrigger(),
-                getTriggeringExpression());
+            LOGGER.warn("Trigger does not match triggering expression: {} != {}", reactorRequest.getTrigger(),
+                    getTriggeringExpression());
             return NO_RESPONSE;
         }
         return doReact(reactorRequest);

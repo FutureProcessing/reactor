@@ -1,12 +1,14 @@
 package org.reactor.discovery;
 
 import org.reactor.Reactor;
-import org.reactor.request.parser.ReactorRequestParameterDefinition;
+import org.reactor.request.parser.ReactorRequestInputDefinition;
+import org.reactor.request.parser.ReactorRequestInputParameterDefinition;
 
 public interface ReactorTopologyDiscoveringVisitor {
 
-    void visitReactorRequestParameter(ReactorRequestParameterDefinition parameterDefinition);
+    void visitReactorRequestInputParameter(ReactorRequestInputParameterDefinition parameterDefinition);
+
+    void visitReactorRequestInput(ReactorRequestInputDefinition inputDefinition);
 
     void visitSubReactor(Reactor subReactor);
-
 }

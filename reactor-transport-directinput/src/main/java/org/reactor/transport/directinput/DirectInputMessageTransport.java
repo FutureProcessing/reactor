@@ -1,7 +1,7 @@
 package org.reactor.transport.directinput;
 
 import org.reactor.response.ReactorResponse;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
 import org.reactor.transport.alive.KeepAliveReactorMessageTransport;
 
@@ -12,13 +12,13 @@ public class DirectInputMessageTransport extends KeepAliveReactorMessageTranspor
 
     @Override
     protected void startTransportKeptAlive(TransportProperties transportProperties,
-                                           ReactorMessageTransportProcessor messageProcessor) {
-        inputProcessor = new DirectInputProcessor(messageProcessor);
+                                           ReactorRequestHandler requestHandler) {
+        inputProcessor = new DirectInputProcessor(requestHandler);
         running = true;
     }
 
     @Override
-    public void stopTransport() {
+    protected void stopTransportKeptAlive() {
         inputProcessor.stopProcessing();
         running = false;
     }

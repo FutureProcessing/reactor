@@ -5,21 +5,22 @@ import com.skype.ChatMessageAdapter;
 import com.skype.SkypeException;
 import com.skype.User;
 
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.request.ReactorRequestInput;
+import org.reactor.transport.ReactorRequestHandler;
 
 public class SkypeMessageProcessorChatMessageListener extends ChatMessageAdapter {
 
-    private final ReactorMessageTransportProcessor messageTransport;
+    private final ReactorRequestHandler requestHandler;
 
-    public SkypeMessageProcessorChatMessageListener(ReactorMessageTransportProcessor messageTransport) {
-        this.messageTransport = messageTransport;
+    public SkypeMessageProcessorChatMessageListener(ReactorRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     @Override
     public void chatMessageReceived(ChatMessage receivedChatMessage) throws SkypeException {
         User sender = receivedChatMessage.getSender();
-        messageTransport.processTransportMessage(receivedChatMessage.getContent(), sender.getId(),
-            new SkypeReactorResponseWriter(receivedChatMessage.getChat()));
+        requestHandler.handleReactorRequest(new ReactorRequestInput(receivedChatMessage.getContent()), sender.getId(),
+                new SkypeReactorResponseWriter(receivedChatMessage.getChat()));
 
     }
 }

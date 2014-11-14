@@ -1,7 +1,7 @@
 package org.reactor.response;
 
 import static com.google.common.collect.Iterables.transform;
-import static org.reactor.request.parser.ReactorRequestParameterDefinition.TO_CMD_LINE_OPTION;
+import static org.reactor.request.parser.ReactorRequestInputParameterDefinition.TO_CMD_LINE_OPTION;
 import com.google.common.annotations.VisibleForTesting;
 import java.io.PrintWriter;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.reactor.Reactor;
 import org.reactor.discovery.ReactorParametersDiscoveringVisitor;
-import org.reactor.request.parser.ReactorRequestParameterDefinition;
+import org.reactor.request.parser.ReactorRequestInputParameterDefinition;
 
 public class CommandHelpResponse extends StringReactorResponse {
 
@@ -21,7 +21,7 @@ public class CommandHelpResponse extends StringReactorResponse {
     private static final int LEFT_PAD = 3;
     private static final int DESC_PAD = 1;
 
-    private final List<ReactorRequestParameterDefinition> arguments;
+    private final List<ReactorRequestInputParameterDefinition> arguments;
     private final String triggeringExpression;
 
     private HelpFormatter helpFormatter;
@@ -34,7 +34,7 @@ public class CommandHelpResponse extends StringReactorResponse {
         initializeHelpFormatter();
     }
 
-    private List<ReactorRequestParameterDefinition> readArguments(Reactor reactor) {
+    private List<ReactorRequestInputParameterDefinition> readArguments(Reactor reactor) {
         ReactorParametersDiscoveringVisitor parametersVisitor = new ReactorParametersDiscoveringVisitor();
         reactor.accept(parametersVisitor);
         return parametersVisitor.getParameters();
@@ -56,9 +56,8 @@ public class CommandHelpResponse extends StringReactorResponse {
         helpFormatter.printHelp(printWriter, TEXT_WIDTH, triggeringExpression, HELP_HEADER, commandLineOptions, LEFT_PAD, DESC_PAD, HELP_FOOTER, AUTO_USAGE);
     }
 
-
     @VisibleForTesting
-    void setArguments(List<ReactorRequestParameterDefinition> arguments) {
+    void setArguments(List<ReactorRequestInputParameterDefinition> arguments) {
         this.arguments.clear();
         this.arguments.addAll(arguments);
     }

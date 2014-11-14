@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
 
-    private final static Logger LOG = LoggerFactory.getLogger(JourneyScenario.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(JourneyScenario.class);
 
     private final SUBJECT scenarioSubject;
     private final List<AbstractJourneyStep<SUBJECT>> journeySteps;
@@ -20,7 +20,7 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
     private boolean journeyEnded;
     private JourneyScenario<SUBJECT> forkedScenario;
 
-    public JourneyScenario(JourneyScenario<SUBJECT> parentScenario, SUBJECT scenarioSubject,
+    JourneyScenario(JourneyScenario<SUBJECT> parentScenario, SUBJECT scenarioSubject,
                            List<AbstractJourneyStep<SUBJECT>> journeySteps) {
         this.parentScenario = parentScenario;
         this.scenarioSubject = scenarioSubject;
@@ -30,7 +30,12 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
     }
 
     private void startJourney() {
-        currentStep().beforeStep();
+        AbstractJourneyStep<SUBJECT> firstStep = currentStep();
+        if (firstStep == null) {
+            journeyEnded = true;
+            return;
+        }
+        firstStep.doBeforeStep();
     }
 
     public boolean hasJourneyEnded() {
@@ -40,6 +45,9 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
     public void answer(String stepInput) {
         if (forkedScenario != null) {
             forkedScenario.answer(stepInput);
+            return;
+        }
+        if (hasJourneyEnded()) {
             return;
         }
         currentStep().doStep(stepInput, scenarioSubject).followDirection(this);
@@ -55,6 +63,7 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
             return forkedScenario.moveForward();
         }
         if (!validateCanMoveForward()) {
+            endJourney();
             return currentStep();
         }
         stepIndex++;
@@ -73,9 +82,17 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
         return currentStep();
     }
 
+    @Override
+    public void repeat() {
+        currentStep().doBeforeStep();
+    }
+
     private AbstractJourneyStep<SUBJECT> currentStep() {
         if (forkedScenario != null) {
             return forkedScenario.currentStep();
+        }
+        if (journeySteps.isEmpty()) {
+            return null;
         }
         return journeySteps.get(stepIndex);
     }
@@ -87,8 +104,10 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
 
     @Override
     public void endJourney() {
+        LOGGER.debug("Ending journey");
         journeyEnded = true;
         if (parentScenario != null) {
+            LOGGER.debug("Going back from forked scenario");
             parentScenario.forkedScenarioEnded(this);
         }
     }
@@ -96,24 +115,27 @@ public class JourneyScenario<SUBJECT> implements JourneyStepVisitor<SUBJECT> {
     private void forkedScenarioEnded(JourneyScenario<SUBJECT> journeyScenario) {
         if (forkedScenario.equals(journeyScenario)) {
             forkedScenario = null;
-            moveForward().beforeStep();
+            endJourney();
         }
     }
 
     private boolean validateCanMoveForward() {
-        if (stepIndex + 1 <= journeySteps.size()) {
-            return true;
+        if (stepIndex + 1 >= journeySteps.size()) {
+            LOGGER.warn("Can not move any forward");
+            return false;
         }
-        LOG.warn("Can not move any forward");
-        return false;
+        return true;
     }
 
     private boolean validateCanMoveBackward() {
         if (stepIndex > 0) {
             return true;
         }
-        LOG.warn("Can not move any backward");
+        LOGGER.warn("Can not move any backward");
         return false;
     }
 
+    public SUBJECT getSubject() {
+        return scenarioSubject;
+    }
 }

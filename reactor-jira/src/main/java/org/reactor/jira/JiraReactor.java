@@ -22,7 +22,7 @@ import org.reactor.jira.response.format.JiraSprintFormatter;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 
-@ReactOn(value = "jira", description = "Jira reactor - some description will be here")
+@ReactOn(value = "jira", description = "Jira reactor")
 public class JiraReactor extends AbstractNestingReactor {
 
     private JiraService jiraService;

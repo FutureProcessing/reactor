@@ -4,7 +4,7 @@ import org.reactor.response.ReactorResponse;
 
 public interface ReactorMessageTransport {
 
-    void startTransport(TransportProperties transportProperties, ReactorMessageTransportProcessor messageProcessor);
+    void startTransport(TransportProperties transportProperties, ReactorRequestHandler messageProcessor);
 
     void stopTransport();
 

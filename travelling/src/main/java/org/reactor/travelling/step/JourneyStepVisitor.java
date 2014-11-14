@@ -8,6 +8,8 @@ public interface JourneyStepVisitor<SUBJECT> {
 
     AbstractJourneyStep<SUBJECT> moveBackward();
 
+    void repeat();
+
     void fork(ForkingStepOutcome<SUBJECT> forkingStepOutcome);
 
     void endJourney();

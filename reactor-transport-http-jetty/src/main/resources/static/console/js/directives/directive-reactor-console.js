@@ -11,7 +11,7 @@ app.directive('reactorConsole', function(WebSocketService) {
             term.echo(WebSocketService.push(command));
         }, {
             prompt: '> ',
-            greetings: "Welcome in Reactor Console, type 'help' to get list of available commands",
+            greetings: "Welcome in Reactor Console, type 'help' to get list of available commands.\nType '!interactive' to go into interactive mode.",
             width: '100%'
         });
     };

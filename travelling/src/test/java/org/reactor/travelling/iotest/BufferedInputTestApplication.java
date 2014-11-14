@@ -40,13 +40,7 @@ public class BufferedInputTestApplication {
     }
 
     private JourneyJournal givenJournal() {
-        return new JourneyJournal() {
-
-            @Override
-            public void logJournalEntry(String entryContents) {
-                System.out.println("journal> " + entryContents);
-            }
-        };
+        return entryContents -> System.out.println("journal> " + entryContents);
     }
 
     private JourneyScenarioBuilder<StringBuffer> givenJourneyBuilder(StringBuffer scenarioSubject) {
@@ -63,17 +57,13 @@ public class BufferedInputTestApplication {
     }
 
     private Supplier<String> givenStepInputSupplier() {
-        return new Supplier<String>() {
-
-            @Override
-            public String get() {
-                System.out.print("> ");
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                try {
-                    return br.readLine();
-                } catch (IOException ioe) {
-                    return null;
-                }
+        return () -> {
+            System.out.print(scenarioSubject.toString() + "> ");
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                return br.readLine();
+            } catch (IOException ioe) {
+                return null;
             }
         };
     }

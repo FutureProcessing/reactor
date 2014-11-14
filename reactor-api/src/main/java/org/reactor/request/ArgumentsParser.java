@@ -21,7 +21,7 @@ public class ArgumentsParser {
     }
 
     public String[] parseArguments() {
-        List<String> v = new ArrayList<String>();
+        List<String> v = new ArrayList<>();
 
         ch = getNext();
         while (ch > 0) {

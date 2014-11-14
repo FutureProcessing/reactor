@@ -3,26 +3,27 @@ package org.reactor.transport.irc.listener;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
-import org.reactor.transport.ReactorMessageTransportProcessor;
+import org.reactor.request.ReactorRequestInput;
+import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.irc.IrcReactorCommandResponseWriter;
 
 public class IrcBotReactorListener extends ListenerAdapter {
 
-    private final ReactorMessageTransportProcessor messageProcessor;
+    private final ReactorRequestHandler requestHandler;
 
-    public IrcBotReactorListener(ReactorMessageTransportProcessor messageProcessor) {
-        this.messageProcessor = messageProcessor;
+    public IrcBotReactorListener(ReactorRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     @Override
     public final void onMessage(MessageEvent event) throws Exception {
-        messageProcessor.processTransportMessage(event.getMessage(), event.getUser().getNick(),
-            new IrcReactorCommandResponseWriter(event));
+        requestHandler.handleReactorRequest(new ReactorRequestInput(event.getMessage()), event.getUser().getNick(),
+                new IrcReactorCommandResponseWriter(event));
     }
 
     @Override
     public final void onPrivateMessage(PrivateMessageEvent event) throws Exception {
-        messageProcessor.processTransportMessage(event.getMessage(), event.getUser().getNick(),
-            new IrcReactorCommandResponseWriter(event));
+        requestHandler.handleReactorRequest(new ReactorRequestInput(event.getMessage()), event.getUser().getNick(),
+                new IrcReactorCommandResponseWriter(event));
     }
 }

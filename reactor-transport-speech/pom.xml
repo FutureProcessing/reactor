@@ -12,7 +12,9 @@
     <artifactId>reactor-transport-speech</artifactId>
 
     <properties>
-        <java-speech-api.version>0.0.1</java-speech-api.version>
+        <reactor.voice.version>0.0.1</reactor.voice.version>
+
+        <jlayer.version>1.0.1-1</jlayer.version>
     </properties>
 
     <dependencies>
@@ -22,9 +24,15 @@
         </dependency>
 
         <dependency>
-            <artifactId>java-speech-api</artifactId>
-            <groupId>com.darkprograms.speech</groupId>
-            <version>${java-speech-api.version}</version>
+            <groupId>org.reactor</groupId>
+            <artifactId>voice</artifactId>
+            <version>${reactor.voice.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>jlayer</artifactId>
+            <version>${jlayer.version}</version>
         </dependency>
 
         <dependency>

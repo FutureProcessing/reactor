@@ -16,10 +16,6 @@ public class ReactorRequestParser {
         return new ReactorRequestParser(sender, parseArguments(requestString)).parseRequest();
     }
 
-    public static <T> ReactorRequest<T> parseNestedRequest(ReactorRequest<String> reactorRequest) {
-        return new ReactorRequestParser(reactorRequest.getSender(), reactorRequest.getRequestData()).parseRequest();
-    }
-
     private ReactorRequest parseRequest() {
         if (!validateArguments(requestArguments)) {
             throw new ReactorRequestParsingException("Wrong arguments count");

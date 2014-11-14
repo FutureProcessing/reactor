@@ -4,7 +4,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.transform;
 import static java.util.Arrays.asList;
 import static org.apache.commons.beanutils.ConvertUtils.convert;
-import static org.reactor.request.parser.ReactorRequestParameterDefinition.TO_CMD_LINE_OPTION;
+import static org.reactor.request.parser.ReactorRequestInputParameterDefinition.TO_CMD_LINE_OPTION;
 import static org.reactor.utils.ClassUtils.isPrimitive;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -24,19 +24,19 @@ import org.reactor.request.ReactorRequestParsingException;
 
 public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDataParser<T> {
 
-    private static final Function<Field, ReactorRequestParameterDefinition> FROM_FIELD = new Function<Field, ReactorRequestParameterDefinition>() {
+    private static final Function<Field, ReactorRequestInputParameterDefinition> FROM_FIELD = new Function<Field, ReactorRequestInputParameterDefinition>() {
 
         @Override
-        public ReactorRequestParameterDefinition apply(Field field) {
+        public ReactorRequestInputParameterDefinition apply(Field field) {
             String fieldName = field.getName();
             Class<?> fieldType = field.getType();
-            ReactorRequestParameterDefinition parameterDefinition = new ReactorRequestParameterDefinition(fieldName,
+            ReactorRequestInputParameterDefinition parameterDefinition = new ReactorRequestInputParameterDefinition(fieldName,
                 fieldName, false, fieldType);
             processAnnotations(field, parameterDefinition);
             return parameterDefinition;
         }
 
-        private void processAnnotations(Field field, ReactorRequestParameterDefinition parameterDefinition) {
+        private void processAnnotations(Field field, ReactorRequestInputParameterDefinition parameterDefinition) {
             if (field.isAnnotationPresent(ReactorRequestParameter.class)) {
                 ReactorRequestParameter parameterAnnotation = field.getAnnotation(ReactorRequestParameter.class);
                 parameterDefinition.setShortName(parameterAnnotation.shortName());
@@ -59,7 +59,7 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
     };
 
     private final Class<T> dataType;
-    private final List<ReactorRequestParameterDefinition> requestParameters;
+    private final List<ReactorRequestInputParameterDefinition> requestParameters;
 
     public ReactorRequestComplexDataParser(Class<T> dataType) {
         this.dataType = dataType;
@@ -78,7 +78,7 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
         return new ReactorRequest<>(sender, trigger, requestData);
     }
 
-    private void setRequestDataParameter(T requestData, ReactorRequestParameterDefinition requestParameterDefinition,
+    private void setRequestDataParameter(T requestData, ReactorRequestInputParameterDefinition requestParameterDefinition,
                                          String parameterValue) {
         try {
             BeanUtils.setProperty(requestData, requestParameterDefinition.getName(),
@@ -113,6 +113,6 @@ public class ReactorRequestComplexDataParser<T> extends AbstractReactorRequestDa
     }
 
     public void accept(ReactorTopologyDiscoveringVisitor topologyVisitor) {
-        requestParameters.forEach(topologyVisitor::visitReactorRequestParameter);
+        requestParameters.forEach(topologyVisitor::visitReactorRequestInputParameter);
     }
 }
