@@ -11,7 +11,7 @@
     <repositories>
         <repository>
             <id>activey-maven-repository</id>
-            <url>https://raw.github.com/activey/maven-repository</url>
+            <url>https://raw.github.com/activey/maven-repository/master</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
