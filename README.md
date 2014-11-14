@@ -37,6 +37,23 @@ Having a given flow diagram the process can be explained as following:
 
 [IN PROGRESS]
 
+Project structure
+-----------------
+
+Project folder structure consist of several maven project modules located in following folders:
+
+- [reactor-api](https://github.com/activey/reactor/tree/master/reactor-api) - provide whole API and basic implementations required to build reactor instance,
+- [reactor-commons](https://github.com/activey/reactor/tree/master/reactor-commons) - right now it's just ... AbstractUnitTest :sweat_smile:,
+- [reactor-bootstrap](https://github.com/activey/reactor/tree/master/reactor-bootstrap) - 
+- [reactor-transport-directinput](https://github.com/activey/reactor/tree/master/reactor-transport-directinput) -
+- [reactor-transport-http-jetty](https://github.com/activey/reactor/tree/master/reactor-transport-http-jetty) - 
+- [reactor-transport-irc](https://github.com/activey/reactor/tree/master/reactor-transport-irc) -
+- [reactor-transport-skype](https://github.com/activey/reactor/tree/master/reactor-transport-skype) -
+- [reactor-transport-telnet](https://github.com/activey/reactor/tree/master/reactor-transport-telnet) -
+- [reactor-transport-speech](https://github.com/activey/reactor/tree/master/reactor-transport-speech) -
+
+[IN PROGRESS]
+
 Building up and running
 -----------------------
 Whole build process is quite straightforward and required only maven to be available in system binaries path, then just navigate to downloaded source code folder and run:
@@ -45,11 +62,18 @@ Whole build process is quite straightforward and required only maven to be avail
 mvn clean install
 ```
 
-It will then process every module, compile it and build binary package for each of them. When you want to start up the system there are basically two options available:
+It will then process every module, compile it and build binary package for each of them that will be a jar archive located under **module_folder/target/module_name.jar** file. When you want to start up the system there are basically two options available:
 - run script **run-cmd** that will pass command line parameters as an reactor input and print out results into terminal output,
 - run script **run-reactor** which results in starting up all transports and reactors available in system classpath.
 
-Those two scripts are located under **reactor-bootstrap/target/dist/bin* folder in two operating system flavors (windows and linux).
+Those two scripts are located under **reactor-bootstrap/target/dist/bin** folder in two operating system flavors (windows and linux).
+
+System configuration
+====================
+There are two configuration files provided for all message transports and reactors installed in the system located under **reactor-bootstrap/target/dist/etc** folder:
+
+- reactor.properties - consists of setting entries for all reactors out there, where each entry has a dedicated prefix recognized by a given reactor implementation, eg: all entries starting with string **reactor.sonar** will be passed over to [Sonar Reactor](https://github.com/activey/reactor/tree/master/reactor-sonar) in system initialization phase,
+- transport.properties - 
 
 
 [![Build Status](https://snap-ci.com/activey/reactor/branch/master/build_image)](https://snap-ci.com/activey/reactor/branch/master)
