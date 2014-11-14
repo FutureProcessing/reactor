@@ -52,7 +52,7 @@ public class ArgumentsParser {
         ch = getNext();
         if (ch == '"') {
             ch = getNext();
-            return ""; //$NON-NLS-1$parseArguments(reactorRequest.getRequestData())
+            return ""; //$NON-NLS-1$
         }
         StringBuffer buf = new StringBuffer();
         while (ch > 0 && ch != '"') {
