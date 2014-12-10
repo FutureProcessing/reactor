@@ -46,6 +46,7 @@
                             <assembleDirectory>${project.build.directory}/dist</assembleDirectory>
                             <platforms>
                                 <platform>unix</platform>
+                                <platform>windows</platform>
                             </platforms>
                             <copyConfigurationDirectory>true</copyConfigurationDirectory>
                             <configurationDirectory>etc</configurationDirectory>

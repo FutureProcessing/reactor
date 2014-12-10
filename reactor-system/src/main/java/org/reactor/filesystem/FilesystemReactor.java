@@ -2,10 +2,12 @@ package org.reactor.filesystem;
 
 import static java.lang.String.format;
 import static org.reactor.filesystem.event.DirectoryChangedEvent.TO_RESPONSE;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import org.reactor.AbstractNestingReactor;
 import org.reactor.ReactorProcessingException;
 import org.reactor.ReactorProperties;
@@ -73,7 +75,9 @@ public class FilesystemReactor extends AbstractNestingReactor implements EventPr
     }
 
     private void initDirectoryHandle(FilesystemReactorProperties filesystemReactorProperties) {
-        directory = new File(filesystemReactorProperties.getListeningDirectory());
+        String listeningDirectory = filesystemReactorProperties.getListeningDirectory();
+        LOG.debug("Listening directory is set to {}", listeningDirectory);
+        directory = new File(listeningDirectory);
         validateDirectory();
     }
 
