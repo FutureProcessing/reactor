@@ -65,46 +65,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-jira</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-jenkins</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-sonar</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-system</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-telnet</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-directinput</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-speech</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactor</groupId>
-            <artifactId>reactor-transport-http-jetty</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -120,25 +80,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.reactor</groupId>
             <artifactId>travelling</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

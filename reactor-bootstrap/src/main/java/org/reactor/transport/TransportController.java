@@ -5,15 +5,16 @@ import static com.google.common.util.concurrent.Futures.addCallback;
 import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.util.concurrent.ListeningExecutorService;
+import java.util.List;
+import java.util.ServiceLoader;
 
+import org.reactor.loader.LibrariesLoader;
 import org.reactor.response.ReactorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.ServiceLoader;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.util.concurrent.ListeningExecutorService;
 
 public class TransportController {
 
@@ -32,7 +33,7 @@ public class TransportController {
     private TransportController() {}
 
     private void loadTransports() {
-        ServiceLoader<ReactorMessageTransport> transportsLoader = ServiceLoader.load(ReactorMessageTransport.class);
+        ServiceLoader<ReactorMessageTransport> transportsLoader = LibrariesLoader.loadTransports();
         if (!transportsLoader.iterator().hasNext()) {
             LOGGER.warn("No message transport found!");
             return;
@@ -70,9 +71,8 @@ public class TransportController {
     }
 
     public void broadcast(ReactorResponse reactorResponse) {
-        transports.stream()
-                .filter(ReactorMessageTransport::isRunning)
-                .forEach(transport -> transport.broadcast(reactorResponse));
+        transports.stream().filter(ReactorMessageTransport::isRunning)
+            .forEach(transport -> transport.broadcast(reactorResponse));
     }
 
     @VisibleForTesting

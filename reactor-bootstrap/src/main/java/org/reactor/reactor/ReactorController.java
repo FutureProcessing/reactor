@@ -7,13 +7,16 @@ import static org.reactor.request.ReactorRequestInput.TRIGGER_MATCHES_INPUT;
 import static org.reactor.utils.ClassUtils.tryCall;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
+
 import java.util.List;
 import java.util.ServiceLoader;
+
 import org.reactor.InitializingReactor;
 import org.reactor.Reactor;
 import org.reactor.ReactorProperties;
 import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
+import org.reactor.loader.LibrariesLoader;
 import org.reactor.nesting.PrintReactorsInformationReactor;
 import org.reactor.request.ReactorRequestInput;
 import org.slf4j.Logger;
@@ -38,7 +41,7 @@ public class ReactorController {
     }
 
     private void collectReactors() {
-        ServiceLoader<Reactor> reactorsLoader = ServiceLoader.load(Reactor.class);
+        ServiceLoader<Reactor> reactorsLoader = LibrariesLoader.loadReactors();
         reactorsLoader.forEach(this::collectReactor);
 
         collectReactor(new PrintReactorsInformationReactor(reactors));
