@@ -45,8 +45,6 @@
                         <artifactId>maven-assembly-plugin</artifactId>
                         <version>2.5.2</version>
                         <configuration>
-                            <finalName>${reactor.lib.finalName}</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
@@ -65,22 +63,4 @@
             </build>
         </profile>
     </profiles>
-
-    <modules>
-        <module>reactor-jira</module>
-        <module>reactor-jenkins</module>
-        <module>reactor-sonar</module>
-        <module>reactor-system</module>
-
-        <module>reactor-transport-irc</module>
-        <module>reactor-transport-skype</module>
-        <module>reactor-transport-telnet</module>
-        <module>reactor-transport-http-jetty</module>
-        <module>reactor-transport-speech</module>
-        <module>reactor-transport-directinput</module>
-    </modules>
-
-    <properties>
-        <reactor.lib.finalName>${project.build.finalName}-lib</reactor.lib.finalName>
-    </properties>
 </project>
