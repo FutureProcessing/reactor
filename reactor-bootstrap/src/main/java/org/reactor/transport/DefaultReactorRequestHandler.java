@@ -1,7 +1,6 @@
 package org.reactor.transport;
 
-import java.io.Writer;
-
+import com.google.common.base.Optional;
 import org.reactor.Reactor;
 import org.reactor.reactor.ReactorController;
 import org.reactor.request.ReactorRequestInput;
@@ -10,42 +9,67 @@ import org.reactor.transport.interactive.InteractiveReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
+import java.io.Writer;
+import java.util.concurrent.ExecutorService;
+
+import static java.util.concurrent.Executors.newFixedThreadPool;
 
 public class DefaultReactorRequestHandler implements ReactorRequestHandler {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DefaultReactorRequestHandler.class);
 
-    private ReactorController reactorController;
+    private static final int THREADS_COUNT = 10;
+
+    private final ReactorController reactorController;
+    private final ExecutorService threadPool;
+
     private InteractiveReactorRequestHandler interactiveHandler;
 
     public DefaultReactorRequestHandler(ReactorController reactorController) {
         this.reactorController = reactorController;
+        this.threadPool = newFixedThreadPool(THREADS_COUNT);
 
         prepareInteractiveRequestHandler();
     }
 
     private void prepareInteractiveRequestHandler() {
         LOGGER.debug("Preparing interactive request handler");
-        interactiveHandler = new InteractiveReactorRequestHandler(reactorController, this::handleReactorRequest);
+        this.interactiveHandler = new InteractiveReactorRequestHandler(reactorController, this::handleReactorRequest);
     }
 
     @Override
     public void handleReactorRequest(ReactorRequestInput requestInput, String sender, Writer responseWriter) {
-        if (requestInput.isInteractive()) {
-            interactiveHandler.handleInteractiveRequest(requestInput.getArgumentsAsString(), sender, responseWriter);
-            return;
+        threadPool.execute(new HandleRequest(requestInput, sender, responseWriter));
+    }
+
+    private class HandleRequest implements Runnable {
+        private ReactorRequestInput requestInput;
+        private String sender;
+        private Writer responseWriter;
+
+        public HandleRequest(ReactorRequestInput requestInput, String sender, Writer responseWriter) {
+            this.requestInput = requestInput;
+            this.sender = sender;
+            this.responseWriter = responseWriter;
         }
-        try {
-            Optional<Reactor> reactor = reactorController.reactorMatchingInput(requestInput);
-            if (reactor.isPresent()) {
-                ReactorResponse response = reactor.get().react(sender, requestInput);
-                response.renderResponse(responseWriter);
+
+        @Override
+        public void run() {
+            if (requestInput.isInteractive()) {
+                interactiveHandler.handleInteractiveRequest(requestInput.getArgumentsAsString(), sender, responseWriter);
                 return;
             }
-            LOGGER.warn("Unable to find reactor matching input: {}", requestInput.getArgumentsAsString());
-        } catch (Exception e) {
-            LOGGER.error("An error occurred while calling Reactor", e);
+            try {
+                Optional<Reactor> reactor = reactorController.reactorMatchingInput(requestInput);
+                if (reactor.isPresent()) {
+                    ReactorResponse response = reactor.get().react(sender, requestInput);
+                    response.renderResponse(responseWriter);
+                    return;
+                }
+                LOGGER.warn("Unable to find reactor matching input: {}", requestInput.getArgumentsAsString());
+            } catch (Exception e) {
+                LOGGER.error("An error occurred while calling Reactor", e);
+            }
         }
     }
 }
