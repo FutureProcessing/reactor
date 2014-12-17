@@ -8,7 +8,7 @@ import org.reactor.annotation.ReactOn;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 
-@ReactOn("cpu")
+@ReactOn(value = "cpu", description = "Prints out current cpu usage")
 public class CpuUsageReactor extends AbstractAnnotatedReactor<Void> {
 
     private final static OperatingSystemMXBean OS_BEAN = ManagementFactory

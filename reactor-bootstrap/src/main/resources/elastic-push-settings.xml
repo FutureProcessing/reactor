@@ -1,0 +1,13 @@
+<definitions>
+    <!--
+        To define new elastic search push notification fill out following attributes:
+        - index - elastic search index name, has to be initialized in elastic search first,
+        - doc-type - document type in elastic search index,
+        - interval - quartz cron format value, tells the transport how often execute given
+
+        Type any reactor input as a tag contents and observe your elastic instance :)
+    -->
+    <push-definition index="index_name" doc-type="document_type" interval="0 0/1 * * * ?">
+        reactor --with some input
+    </push-definition>
+</definitions>

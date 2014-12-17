@@ -75,12 +75,15 @@
                 <module>reactor-jira</module>
                 <module>reactor-sonar</module>
                 <module>reactor-system</module>
+                <module>reactor-standup</module>
+                <module>reactor-database</module>
                 <module>reactor-transport-directinput</module>
                 <module>reactor-transport-http-jetty</module>
                 <module>reactor-transport-irc</module>
                 <module>reactor-transport-skype</module>
                 <module>reactor-transport-speech</module>
                 <module>reactor-transport-telnet</module>
+                <module>reactor-transport-elastic-push</module>
             </modules>
         </profile>
     </profiles>
