@@ -5,6 +5,8 @@ import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import java.util.concurrent.Executor;
 
 import org.reactor.request.ReactorRequestInput;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,9 @@ public class DirectInputProcessor {
             ReactorRequestInput requestInput = new ReactorRequestInput(inputValue);
             requestInput.setInteractive(true);
 
-            messageProcessor.handleReactorRequest(requestInput, SENDER_DIRECT, new DirectInputResponseWriter());
+            ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
+            messageProcessor.handleReactorRequest(requestInput, SENDER_DIRECT, responseRenderer);
+            responseRenderer.commit(new DirectInputResponseWriter());
         }) {
 
             @Override

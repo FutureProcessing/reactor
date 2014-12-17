@@ -1,4 +1,4 @@
-package org.reactor.filesystem.event;
+package org.reactor.system.event;
 
 import com.google.common.base.Function;
 import org.reactor.event.ReactorEvent;

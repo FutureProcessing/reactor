@@ -2,16 +2,21 @@ package org.reactor.response;
 
 import static com.google.common.collect.Iterables.transform;
 import static org.reactor.request.parser.ReactorRequestInputParameterDefinition.TO_CMD_LINE_OPTION;
-import com.google.common.annotations.VisibleForTesting;
+
 import java.io.PrintWriter;
 import java.util.List;
+
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.reactor.Reactor;
 import org.reactor.discovery.ReactorParametersDiscoveringVisitor;
 import org.reactor.request.parser.ReactorRequestInputParameterDefinition;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.RendererWriterAdapter;
 
-public class CommandHelpResponse extends StringReactorResponse {
+import com.google.common.annotations.VisibleForTesting;
+
+public class CommandHelpResponse implements ReactorResponse {
 
     private static final int TEXT_WIDTH = 100;
 
@@ -23,13 +28,14 @@ public class CommandHelpResponse extends StringReactorResponse {
 
     private final List<ReactorRequestInputParameterDefinition> arguments;
     private final String triggeringExpression;
+    private final String responseHeader;
 
     private HelpFormatter helpFormatter;
 
     public CommandHelpResponse(String header, Reactor reactor) {
-        super(header);
         triggeringExpression = reactor.getTriggeringExpression();
         arguments = readArguments(reactor);
+        responseHeader = header;
 
         initializeHelpFormatter();
     }
@@ -46,14 +52,19 @@ public class CommandHelpResponse extends StringReactorResponse {
     }
 
     @Override
-    protected void printResponse(PrintWriter printWriter) {
+    public void renderResponse(ReactorResponseRenderer responseRenderer) {
+        responseRenderer.renderHeadLine(responseHeader);
+
         Options commandLineOptions = new Options();
         transform(arguments, TO_CMD_LINE_OPTION).forEach(commandLineOptions::addOption);
-        printHelp(helpFormatter, printWriter, triggeringExpression, commandLineOptions);
+        printHelp(helpFormatter, new PrintWriter(new RendererWriterAdapter(responseRenderer)), triggeringExpression,
+            commandLineOptions);
     }
 
-    private void printHelp(HelpFormatter helpFormatter, PrintWriter printWriter, String triggeringExpression, Options commandLineOptions) {
-        helpFormatter.printHelp(printWriter, TEXT_WIDTH, triggeringExpression, HELP_HEADER, commandLineOptions, LEFT_PAD, DESC_PAD, HELP_FOOTER, AUTO_USAGE);
+    private void printHelp(HelpFormatter helpFormatter, PrintWriter printWriter, String triggeringExpression,
+                           Options commandLineOptions) {
+        helpFormatter.printHelp(printWriter, TEXT_WIDTH, triggeringExpression, HELP_HEADER, commandLineOptions,
+            LEFT_PAD, DESC_PAD, HELP_FOOTER, AUTO_USAGE);
     }
 
     @VisibleForTesting

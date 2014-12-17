@@ -1,4 +1,4 @@
-package org.reactor.filesystem.process;
+package org.reactor.system.process;
 
 import org.fest.assertions.Assertions;
 import org.junit.Before;

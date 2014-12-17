@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 public class IrcTransportInitializationListener extends ListenerAdapter {
 
     private final static Logger LOG = LoggerFactory.getLogger(IrcTransportInitializationListener.class);
-    
+
     private boolean connected;
 
     @Override

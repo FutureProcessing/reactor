@@ -1,4 +1,4 @@
-package org.reactor.filesystem.response;
+package org.reactor.system.response;
 
 import static com.google.common.base.Objects.firstNonNull;
 import static java.lang.String.format;
@@ -18,6 +18,7 @@ public class ListFilesResponse extends ListReactorResponse<File> {
     private final FilenameFilter filter;
 
     public ListFilesResponse(File directory, String fileNameMask) {
+        super("");
         this.directory = directory;
         this.filter = createFilter(fileNameMask);
     }
@@ -33,12 +34,6 @@ public class ListFilesResponse extends ListReactorResponse<File> {
 
     @Override
     protected ListElementFormatter<File> getElementFormatter() {
-        return new ListElementFormatter<File>() {
-
-            @Override
-            public String formatListElement(long elementIndex, File listElement) {
-                return format("%s. %s", elementIndex, listElement.getName());
-            }
-        };
+        return (elementIndex, listElement) -> format("%s. %s", elementIndex, listElement.getName());
     }
 }

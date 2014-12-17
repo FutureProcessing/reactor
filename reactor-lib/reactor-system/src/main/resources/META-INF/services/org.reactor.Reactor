@@ -1,2 +1,3 @@
-org.reactor.filesystem.FilesystemReactor
-org.reactor.filesystem.process.RunProcessReactor
+org.reactor.system.FilesystemReactor
+org.reactor.system.process.RunProcessReactor
+org.reactor.system.cpu.CpuUsageReactor

@@ -1,6 +1,6 @@
 package org.reactor.response;
 
-import java.io.Writer;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 
 public class NoResponse implements ReactorResponse {
 
@@ -9,5 +9,5 @@ public class NoResponse implements ReactorResponse {
     private NoResponse() {}
 
     @Override
-    public void renderResponse(Writer responseWriter) throws Exception {}
+    public void renderResponse(ReactorResponseRenderer responseRenderer) throws Exception {}
 }

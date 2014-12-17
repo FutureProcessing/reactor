@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.reactor.AbstractUnitTest;
 import org.reactor.Reactor;
 import org.reactor.request.parser.ReactorRequestInputParameterDefinition;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 
 public class CommandHelpResponseTest extends AbstractUnitTest {
 
@@ -37,12 +39,13 @@ public class CommandHelpResponseTest extends AbstractUnitTest {
         givenCommandHelpParameters();
 
         // when
-        PrintWriter writer = spy(new PrintWriter(System.out));
-        commandHelpResponse.printResponse(writer);
-        writer.flush();
+        ReactorResponseRenderer responseRenderer = spy(new SimpleReactorResponseRenderer());
+        PrintWriter writer = new PrintWriter(System.out);
+        commandHelpResponse.renderResponse(responseRenderer);
+        responseRenderer.commit(writer);
 
         // then
-        verify(writer).print("usage: expression -p1 <arg> -p2 <arg> -p3 <arg>");
+        verify(responseRenderer).renderTextLine("usage: expression -p1 <arg> -p2 <arg> -p3 <arg>");
     }
 
     private void givenReactor() {

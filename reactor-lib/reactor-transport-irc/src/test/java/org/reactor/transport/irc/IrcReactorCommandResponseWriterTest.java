@@ -8,14 +8,17 @@ import static org.mockito.Mockito.verify;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.pircbotx.hooks.types.GenericEvent;
 import org.reactor.AbstractUnitTest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.StringReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 
 public class IrcReactorCommandResponseWriterTest extends AbstractUnitTest {
 
     @Mock
-    private org.pircbotx.hooks.types.GenericEvent event;
+    private GenericEvent event;
 
     @InjectMocks
     private IrcReactorCommandResponseWriter responseWriter;
@@ -25,9 +28,11 @@ public class IrcReactorCommandResponseWriterTest extends AbstractUnitTest {
         // given
         String responseMessage = "first" + lineSeparator() + "second" + lineSeparator() + "third";
         ReactorResponse response = new StringReactorResponse(responseMessage);
+        ReactorResponseRenderer responseRenderer = givenSimpleResponseRenderer();
 
         // when
-        response.renderResponse(responseWriter);
+        response.renderResponse(responseRenderer);
+        responseRenderer.commit(responseWriter);
 
         // then
         verify(event, times(3)).respond(anyString());
@@ -38,11 +43,17 @@ public class IrcReactorCommandResponseWriterTest extends AbstractUnitTest {
         // given
         String responseMessage = "first second and third in one line";
         ReactorResponse response = new StringReactorResponse(responseMessage);
+        ReactorResponseRenderer responseRenderer = givenSimpleResponseRenderer();
 
         // when
-        response.renderResponse(responseWriter);
+        response.renderResponse(responseRenderer);
+        responseRenderer.commit(responseWriter);
 
         // then
         verify(event, times(1)).respond(anyString());
+    }
+
+    private SimpleReactorResponseRenderer givenSimpleResponseRenderer() {
+        return new SimpleReactorResponseRenderer();
     }
 }

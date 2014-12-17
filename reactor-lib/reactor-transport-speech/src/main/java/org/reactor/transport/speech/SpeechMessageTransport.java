@@ -11,6 +11,8 @@ import javazoom.jl.player.Player;
 
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
 import org.reactor.transport.alive.KeepAliveReactorMessageTransport;
@@ -84,7 +86,9 @@ public class SpeechMessageTransport extends KeepAliveReactorMessageTransport {
                         voiceCapture.resume();
                     }
                 };
-                requestHandler.handleReactorRequest(createRequestInput(recognitionData), "VOICE", responseWriter);
+                ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
+                requestHandler.handleReactorRequest(createRequestInput(recognitionData), "VOICE", responseRenderer);
+                responseRenderer.commit(responseWriter);
             }
 
             private ReactorRequestInput createRequestInput(VoiceRecognitionData recognitionData) {

@@ -8,14 +8,17 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>reactor-transport-skype</artifactId>
 
-    <dependencies>
+    <properties>
+        <com.github.taksan.skype.version>1.5</com.github.taksan.skype.version>
+    </properties>
 
+    <dependencies>
         <dependency>
             <groupId>com.github.taksan</groupId>
             <artifactId>skype-java-api</artifactId>
+            <version>${com.github.taksan.skype.version}</version>
         </dependency>
 
         <dependency>

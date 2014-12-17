@@ -7,6 +7,8 @@ import java.io.StringWriter;
 import org.junit.Test;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 
 public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
 
@@ -39,9 +41,11 @@ public class AbstractAnnotatedReactorTest extends AbstractUnitTest {
         reactor = givenAnnotatedReactor();
 
         // when
+        ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
         StringWriter writer = new StringWriter();
         ReactorResponse response = reactor.react(SENDER, new ReactorRequestInput("trigger arg1 arg2"));
-        response.renderResponse(writer);
+        response.renderResponse(responseRenderer);
+        responseRenderer.commit(writer);
 
         // then
         assertThat(writer.toString()).isEqualTo("arg1 arg2");

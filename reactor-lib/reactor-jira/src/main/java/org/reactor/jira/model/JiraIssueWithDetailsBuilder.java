@@ -11,20 +11,23 @@ public class JiraIssueWithDetailsBuilder {
     private String summary;
     private String issueKey;
     private String description;
+    private String url;
     private String asignee;
-    private String status = STATUS_UNKNOWN;
 
+    private String status = STATUS_UNKNOWN;
     public static final Function<Issue, JiraIssueWithDetails> FROM_JIRA_ISSUE_DETAILS = issue -> {
         JiraIssueWithDetailsBuilder builder = forKey(issue.getKey())
                 .summary(issue.getSummary())
                 .description(issue.getDescription())
-                .status(issue.getStatus().getName());
+                .status(issue.getStatus().getName())
+                .url(issue.getUrl());
         User assignee = issue.getAssignee();
         if (assignee != null) {
             builder.asignee(assignee.getDisplayName());
         }
         return builder.build();
     };
+
 
     private JiraIssueWithDetailsBuilder(String issueKey) {
         this.issueKey = issueKey;
@@ -54,7 +57,12 @@ public class JiraIssueWithDetailsBuilder {
         return this;
     }
 
+    public JiraIssueWithDetailsBuilder url(String url) {
+        this.url = url;
+        return this;
+    }
+
     public JiraIssueWithDetails build() {
-        return new JiraIssueWithDetails(issueKey, summary, description, status, asignee);
+        return new JiraIssueWithDetails(issueKey, summary, description, status, asignee, url);
     }
 }

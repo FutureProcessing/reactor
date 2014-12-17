@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 public class TransportsShutdownHook {
 
     private final static Logger LOG = LoggerFactory.getLogger(TransportsShutdownHook.class);
-    
+
     private final TransportController transportController;
 
     public TransportsShutdownHook(TransportController transportController) {
@@ -21,6 +21,6 @@ public class TransportsShutdownHook {
                 LOG.debug("Shutting down transports ...");
                 transportController.stopTransports();
             }
-        });        
+        });
     }
 }

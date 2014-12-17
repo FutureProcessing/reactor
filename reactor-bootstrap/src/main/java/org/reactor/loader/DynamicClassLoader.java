@@ -1,32 +1,33 @@
 package org.reactor.loader;
 
 import static com.google.common.io.Files.fileTreeTraverser;
+import static com.google.common.io.Files.isFile;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+
 public class DynamicClassLoader extends URLClassLoader {
 
     private final static Logger LOG = LoggerFactory.getLogger(DynamicClassLoader.class);
 
-    public DynamicClassLoader(String classesLocation) {
-        super(((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs());
-        fileTreeTraverser().preOrderTraversal(new File(classesLocation)).forEach(this::tryToRegisterFile);
-    }
-
-    private void tryToRegisterFile(File file) {
+    private final static Function<File, URL> TO_URL = file -> {
         try {
-            registerFile(file);
+            return file.toURI().toURL();
         } catch (MalformedURLException e) {
-            LOG.error("Could not register file", e);
+            LOG.error("An error occurred while transforming file to URL.", e);
+            return null;
         }
-    }
+    };
 
-    private void registerFile(File file) throws MalformedURLException {
-        addURL(file.toURI().toURL());
+    public DynamicClassLoader(String classesLocation) {
+        super(fileTreeTraverser().preOrderTraversal(new File(classesLocation)).filter(isFile()).transform(TO_URL)
+            .toArray(URL.class), DynamicClassLoader.class.getClassLoader());
     }
 }

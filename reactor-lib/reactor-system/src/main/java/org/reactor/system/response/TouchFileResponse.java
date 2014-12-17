@@ -1,4 +1,4 @@
-package org.reactor.filesystem.response;
+package org.reactor.system.response;
 
 import org.reactor.response.StringReactorResponse;
 

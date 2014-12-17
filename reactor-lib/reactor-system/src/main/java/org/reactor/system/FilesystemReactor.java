@@ -1,7 +1,7 @@
-package org.reactor.filesystem;
+package org.reactor.system;
 
 import static java.lang.String.format;
-import static org.reactor.filesystem.event.DirectoryChangedEvent.TO_RESPONSE;
+import static org.reactor.system.event.DirectoryChangedEvent.TO_RESPONSE;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,12 +14,12 @@ import org.reactor.ReactorProperties;
 import org.reactor.annotation.ReactOn;
 import org.reactor.event.EventProducingReactor;
 import org.reactor.event.ReactorEventConsumerFactory;
-import org.reactor.filesystem.event.DirectoryChangedEvent;
-import org.reactor.filesystem.request.FileNameMatchRequest;
-import org.reactor.filesystem.request.FileNameRequest;
-import org.reactor.filesystem.response.ListFilesResponse;
-import org.reactor.filesystem.response.RemoveFileResponse;
-import org.reactor.filesystem.response.TouchFileResponse;
+import org.reactor.system.event.DirectoryChangedEvent;
+import org.reactor.system.request.FileNameMatchRequest;
+import org.reactor.system.request.FileNameRequest;
+import org.reactor.system.response.ListFilesResponse;
+import org.reactor.system.response.RemoveFileResponse;
+import org.reactor.system.response.TouchFileResponse;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
 import org.reactor.transport.ReactorMessageTransportInitializationException;

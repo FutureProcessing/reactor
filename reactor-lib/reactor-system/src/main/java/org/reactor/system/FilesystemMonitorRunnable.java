@@ -1,9 +1,9 @@
-package org.reactor.filesystem;
+package org.reactor.system;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
 import org.reactor.event.ReactorEventConsumer;
-import org.reactor.filesystem.event.DirectoryChangedEvent;
+import org.reactor.system.event.DirectoryChangedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ import java.nio.file.WatchService;
 public class FilesystemMonitorRunnable implements Runnable {
 
     private final static Logger LOG = LoggerFactory.getLogger(FilesystemMonitorRunnable.class);
-    
+
     private final File watchingDirectory;
     private final ReactorEventConsumer<DirectoryChangedEvent> directoryChangedReactorEventConsumer;
     private WatchService watchService;

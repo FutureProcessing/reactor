@@ -1,11 +1,10 @@
 package org.reactor.transport;
 
-import java.io.Writer;
-
 import org.reactor.Reactor;
 import org.reactor.reactor.ReactorController;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.transport.interactive.InteractiveReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,16 +30,17 @@ public class DefaultReactorRequestHandler implements ReactorRequestHandler {
     }
 
     @Override
-    public void handleReactorRequest(ReactorRequestInput requestInput, String sender, Writer responseWriter) {
+    public void handleReactorRequest(ReactorRequestInput requestInput, String sender,
+                                     ReactorResponseRenderer responseRenderer) {
         if (requestInput.isInteractive()) {
-            interactiveHandler.handleInteractiveRequest(requestInput.getArgumentsAsString(), sender, responseWriter);
+            interactiveHandler.handleInteractiveRequest(requestInput.getArgumentsAsString(), sender, responseRenderer);
             return;
         }
         try {
             Optional<Reactor> reactor = reactorController.reactorMatchingInput(requestInput);
             if (reactor.isPresent()) {
                 ReactorResponse response = reactor.get().react(sender, requestInput);
-                response.renderResponse(responseWriter);
+                response.renderResponse(responseRenderer);
                 return;
             }
             LOGGER.warn("Unable to find reactor matching input: {}", requestInput.getArgumentsAsString());
