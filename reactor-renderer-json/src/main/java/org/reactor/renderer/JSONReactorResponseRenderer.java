@@ -5,6 +5,7 @@ import static java.lang.String.format;
 
 import java.io.Writer;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.reactor.response.list.ListElementFormatter;
@@ -12,10 +13,14 @@ import org.reactor.response.renderer.AbstractAutoFlushableResponseRenderer;
 
 public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRenderer {
 
-    private static final String PROPERTY_HEADER = "header";
-    private static final String PROPERTY_TEXT = "text";
-    private static final String PROPERTY_DOUBLE = "double";
-    private static final String PROPERTY_LONG = "long";
+    @VisibleForTesting
+    static final String PROPERTY_HEADER = "header";
+    @VisibleForTesting
+    static final String PROPERTY_TEXT = "text";
+    @VisibleForTesting
+    static final String PROPERTY_DOUBLE = "double";
+    @VisibleForTesting
+    static final String PROPERTY_LONG = "long";
     private static final String PROPERTY_LIST = "list";
 
     private JSONObject jsonObject;
@@ -82,7 +87,7 @@ public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRe
     }
 
     @Override
-    public void commitBeforeFlush(Writer responseWriter) {
+    protected void commitBeforeFlush(Writer responseWriter) {
         jsonObject.write(responseWriter);
     }
 }

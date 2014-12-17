@@ -1,20 +1,25 @@
 package org.reactor.response.renderer.simple;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.collect.Lists.newLinkedList;
+import static com.google.common.collect.Maps.newHashMap;
 import static java.lang.String.format;
 
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.List;
+import java.util.Map;
 
 import org.reactor.response.list.ListElementFormatter;
 import org.reactor.response.renderer.AbstractAutoFlushableResponseRenderer;
 
 public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponseRenderer {
 
+    private static final String PROPERTY_TEXT = "text";
+    private static final String PROPERTY_DOUBLE = "double";
+    private static final String PROPERTY_LONG = "long";
+    private static final String PROPERTY_LIST = "list";
+
     private String header;
-    private List<String> responseElements = newLinkedList();
+    private Map<String, String> responseElements = newHashMap();
 
     @Override
     public void renderHeadLine(String headerTemplateToBeRendered, Object... templateParameters) {
@@ -23,51 +28,52 @@ public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponse
 
     @Override
     public void renderTextLine(String lineId, String templateToBeRendered, Object... templateParameters) {
-        renderTextLine(templateToBeRendered, templateParameters);
+        responseElements.put(lineId, format(templateToBeRendered, templateParameters));
     }
 
     @Override
     public void renderTextLine(String templateToBeRendered, Object... templateParameters) {
-        responseElements.add(format(templateToBeRendered, templateParameters));
+        renderTextLine(PROPERTY_TEXT, templateToBeRendered, templateParameters);
     }
 
     @Override
     public <T> void renderListLine(String lineId, int index, T listElement, ListElementFormatter<T> formatter) {
         renderListLine(index, listElement, formatter);
+        responseElements.put(lineId, formatter.formatListElement(index, listElement));
     }
 
     @Override
     public <T> void renderListLine(int index, T listElement, ListElementFormatter<T> formatter) {
-        responseElements.add(formatter.formatListElement(index, listElement));
+        renderListLine(PROPERTY_LIST, index, listElement, formatter);
     }
 
     @Override
     public void renderDoubleLine(String lineId, double doubleValue) {
-        renderDoubleLine(doubleValue);
+        responseElements.put(lineId, Double.toString(doubleValue));
     }
 
     @Override
     public void renderDoubleLine(double doubleValue) {
-        responseElements.add(Double.toString(doubleValue));
+        renderDoubleLine(PROPERTY_DOUBLE, doubleValue);
     }
 
     @Override
     public void renderLongLine(String lineId, long longValue) {
-        renderLongLine(longValue);
+        responseElements.put(lineId, Long.toString(longValue));
     }
 
     @Override
     public void renderLongLine(long longValue) {
-        responseElements.add(Long.toString(longValue));
+        renderLongLine(PROPERTY_LONG, longValue);
     }
 
     @Override
-    public void commitBeforeFlush(Writer responseWriter) {
+    protected void commitBeforeFlush(Writer responseWriter) {
         PrintWriter printWriter = new PrintWriter(responseWriter);
         if (!isNullOrEmpty(header)) {
             printWriter.print(header);
         }
-        for (String responseElement : responseElements) {
+        for (String responseElement : responseElements.values()) {
             printWriter.print(responseElement);
         }
     }
