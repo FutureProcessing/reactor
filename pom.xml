@@ -79,6 +79,10 @@
         <org.slf4j.slf4j-log4j12.version>1.7.5</org.slf4j.slf4j-log4j12.version>
         <log4j.log4j.version>1.2.12</log4j.log4j.version>
 
+        <!-- Common libraries -->
+        <commons-io.version>2.4</commons-io.version>
+        <org.json.version>20140107</org.json.version>
+
         <!-- Musties -->
         <com.google.guava.version>16.0</com.google.guava.version>
 
@@ -91,35 +95,11 @@
         <fest-assert.version>1.4</fest-assert.version>
         <pl.pragmatists.JUnitParams.version>1.0.2</pl.pragmatists.JUnitParams.version>
 
-        <!-- TODO: verify if those should be defined in the parent project -->
-        <com.offbytwo.jenkins.jenkins-client.version>0.2.2-SNAPSHOT</com.offbytwo.jenkins.jenkins-client.version>
-        <com.github.taksan.skype.version>1.5</com.github.taksan.skype.version>
-        <org.eclipse.jetty.version>8.1.10.v20130312</org.eclipse.jetty.version>
-        <com.bethecode.ascii-table.version>0.0.1</com.bethecode.ascii-table.version>
-        <commons-beanutils.version>1.8.3</commons-beanutils.version>
-        <commons-cli.version>1.2</commons-cli.version>
-        <commons-io.version>2.4</commons-io.version>
-        <org.pircbotx.version>2.0</org.pircbotx.version>
-        <org.apache.mina.version>2.0.4</org.apache.mina.version>
-        <org.webbitserver.webbit.version>0.4.15</org.webbitserver.webbit.version>
-        <org.json.version>20140107</org.json.version>
 
-        <!-- TODO: what are those? -->
+        <!-- Reactor base and common libraries -->
         <org.reactor.travelling.version>0.0.1</org.reactor.travelling.version>
-
-        <!-- Modules -->
         <org.reactor.api.version>0.0.1</org.reactor.api.version>
-        <org.reactor.jira.version>0.0.1</org.reactor.jira.version>
-        <org.reactor.jenkins.version>0.0.1</org.reactor.jenkins.version>
-        <org.reactor.sonar.version>0.0.1</org.reactor.sonar.version>
-        <org.reactor.system.version>0.0.1</org.reactor.system.version>
-        <org.reactor.transport-irc.version>0.0.1</org.reactor.transport-irc.version>
-        <org.reactor.transport-skype.version>0.0.1</org.reactor.transport-skype.version>
-        <org.reactor.transport-telnet.version>0.0.1</org.reactor.transport-telnet.version>
-        <org.reactor.transport-http.version>0.0.1</org.reactor.transport-http.version>
-        <org.reactor.transport-speech.version>0.0.1</org.reactor.transport-speech.version>
-        <org.reactor.transport-direct.version>0.0.1</org.reactor.transport-direct.version>
-
+        <org.reactor.renderer-json.version>0.0.1</org.reactor.renderer-json.version>
     </properties>
 
     <dependencyManagement>
@@ -138,62 +118,8 @@
 
             <dependency>
                 <groupId>org.reactor</groupId>
-                <artifactId>reactor-jira</artifactId>
-                <version>${org.reactor.jira.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-jenkins</artifactId>
-                <version>${org.reactor.jenkins.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-sonar</artifactId>
-                <version>${org.reactor.sonar.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-system</artifactId>
-                <version>${org.reactor.system.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-transport-irc</artifactId>
-                <version>${org.reactor.transport-irc.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-transport-skype</artifactId>
-                <version>${org.reactor.transport-skype.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-transport-telnet</artifactId>
-                <version>${org.reactor.transport-telnet.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-transport-http-jetty</artifactId>
-                <version>${org.reactor.transport-http.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-transport-speech</artifactId>
-                <version>${org.reactor.transport-speech.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.reactor</groupId>
-                <artifactId>reactor-transport-directinput</artifactId>
-                <version>${org.reactor.transport-direct.version}</version>
+                <artifactId>reactor-renderer-json</artifactId>
+                <version>${org.reactor.renderer-json.version}</version>
             </dependency>
 
             <dependency>
@@ -203,57 +129,15 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.mina</groupId>
-                <artifactId>mina-core</artifactId>
-                <version>${org.apache.mina.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.webbitserver</groupId>
-                <artifactId>webbit</artifactId>
-                <version>${org.webbitserver.webbit.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-server</artifactId>
-                <version>${org.eclipse.jetty.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-websocket</artifactId>
-                <version>${org.eclipse.jetty.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
                 <version>${org.json.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.bethecoder</groupId>
-                <artifactId>ascii-table</artifactId>
-                <version>${com.bethecode.ascii-table.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${com.google.guava.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils-core</artifactId>
-                <version>${commons-beanutils.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-cli</groupId>
-                <artifactId>commons-cli</artifactId>
-                <version>${commons-cli.version}</version>
             </dependency>
 
             <dependency>
@@ -279,24 +163,6 @@
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${log4j.log4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.pircbotx</groupId>
-                <artifactId>pircbotx</artifactId>
-                <version>${org.pircbotx.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.offbytwo.jenkins</groupId>
-                <artifactId>jenkins-client</artifactId>
-                <version>${com.offbytwo.jenkins.jenkins-client.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.taksan</groupId>
-                <artifactId>skype-java-api</artifactId>
-                <version>${com.github.taksan.skype.version}</version>
             </dependency>
 
             <dependency>
@@ -340,11 +206,10 @@
 
     <modules>
         <module>reactor-commons</module>
-
         <module>reactor-api</module>
         <module>reactor-bootstrap</module>
+        <module>reactor-lib</module>
 
         <module>travelling</module>
-        <module>reactor-lib</module>
     </modules>
 </project>

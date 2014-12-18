@@ -8,14 +8,17 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>reactor-transport-irc</artifactId>
 
-    <dependencies>
+    <properties>
+        <org.pircbotx.version>2.0</org.pircbotx.version>
+    </properties>
 
+    <dependencies>
         <dependency>
             <groupId>org.pircbotx</groupId>
             <artifactId>pircbotx</artifactId>
+            <version>${org.pircbotx.version}</version>
         </dependency>
 
         <dependency>

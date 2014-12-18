@@ -1,8 +1,8 @@
 package org.reactor.response;
 
-import java.io.Writer;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 
 public interface ReactorResponse {
 
-    void renderResponse(Writer responseWriter) throws Exception;
+    void renderResponse(ReactorResponseRenderer responseRenderer) throws Exception;
 }

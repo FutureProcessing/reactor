@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.reactor.renderer.JSONReactorResponseRenderer;
 import org.reactor.request.ReactorRequestInput;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
 
 public class RestHandler extends AbstractHandler {
@@ -36,7 +38,9 @@ public class RestHandler extends AbstractHandler {
         prepareContentType(response);
 
         PrintWriter writer = response.getWriter();
-        requestHandler.handleReactorRequest(new ReactorRequestInput(reactorInput), SENDER, writer);
+        ReactorResponseRenderer renderer = new JSONReactorResponseRenderer();
+        requestHandler.handleReactorRequest(new ReactorRequestInput(reactorInput), SENDER, renderer);
+        renderer.commit(writer);
         writer.flush();
     }
 

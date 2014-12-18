@@ -8,19 +8,16 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>reactor-transport-http-jetty</artifactId>
 
+    <properties>
+        <org.eclipse.jetty.version>8.1.10.v20130312</org.eclipse.jetty.version>
+    </properties>
+
     <dependencies>
-
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-websocket</artifactId>
+            <groupId>org.reactor</groupId>
+            <artifactId>reactor-renderer-json</artifactId>
         </dependency>
 
         <dependency>
@@ -31,6 +28,18 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${org.eclipse.jetty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-websocket</artifactId>
+            <version>${org.eclipse.jetty.version}</version>
         </dependency>
     </dependencies>
 

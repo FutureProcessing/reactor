@@ -6,6 +6,8 @@ import static org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +67,9 @@ public class ReactorWebsocketsHandler extends WebSocketHandler implements WebSoc
             LOG.debug("Can't broadcast to given Connection, skipping");
             return;
         }
-        reactorResponse.renderResponse(new WebSocketResponseWriter(connection, WebSocketResponseType.BROADCAST));
+        ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
+        reactorResponse.renderResponse(responseRenderer);
+        responseRenderer.commit(new WebSocketResponseWriter(connection, WebSocketResponseType.BROADCAST));
     }
 
     private boolean validateConnection(Connection connection) {

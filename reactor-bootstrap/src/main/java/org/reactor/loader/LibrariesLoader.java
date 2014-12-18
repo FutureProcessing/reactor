@@ -11,7 +11,7 @@ import org.reactor.transport.ReactorMessageTransport;
 public class LibrariesLoader {
 
     private static final String PROPERTY_LIBRARIES_LOCATION = "libraries.location";
-    private static final String DEFAULT_LIBRARIES_LOCATION = "../lib";
+    private static final String DEFAULT_LIBRARIES_LOCATION = "../ext";
 
     public static ServiceLoader<Reactor> loadReactors() {
         return load(Reactor.class);

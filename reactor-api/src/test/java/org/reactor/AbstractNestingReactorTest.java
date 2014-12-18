@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.Test;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 
 public class AbstractNestingReactorTest extends AbstractUnitTest {
 
@@ -36,8 +38,10 @@ public class AbstractNestingReactorTest extends AbstractUnitTest {
                 "test singleArgument -a test"));
 
         // then
+        ReactorResponseRenderer renderer = new SimpleReactorResponseRenderer();
         Writer stringWriter = new StringWriter();
-        reactorResponse.renderResponse(stringWriter);
+        reactorResponse.renderResponse(renderer);
+        renderer.commit(stringWriter);
         assertThat(stringWriter.toString()).isEqualTo("test");
     }
 

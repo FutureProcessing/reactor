@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import org.reactor.reactor.ReactorController;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,10 +61,14 @@ public class ReactorRunner {
     public static void main(String[] arguments) {
         try {
             ReactorRequestInput requestInput = new ReactorRequestInput(arguments);
-            ReactorResponse response = new ReactorRunner().invokeReactorController(new ReactorProperties(
-                propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load()), requestInput);
+            ReactorResponse response = new ReactorRunner().invokeReactorController(
+                    new ReactorProperties(propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load()),requestInput);
+
+            ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
+            response.renderResponse(responseRenderer);
+
             StringWriter writer = new StringWriter();
-            response.renderResponse(writer);
+            responseRenderer.commit(writer);
             System.out.println(writer.toString());
         } catch (Exception e) {
             LOG.error("An exception has occurred while running reactor command", e);

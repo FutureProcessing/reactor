@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class DirectInputProcessingRunnable implements Runnable {
 
     private final static Logger LOG = LoggerFactory.getLogger(DirectInputProcessingRunnable.class);
-    
+
     private final DirectInputListener inputListener;
 
     public DirectInputProcessingRunnable(DirectInputListener inputListener) {

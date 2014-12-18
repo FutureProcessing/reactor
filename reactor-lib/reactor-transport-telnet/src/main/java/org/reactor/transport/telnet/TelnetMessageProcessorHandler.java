@@ -7,6 +7,8 @@ import static java.lang.String.valueOf;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.reactor.request.ReactorRequestInput;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
 
 public class TelnetMessageProcessorHandler extends IoHandlerAdapter {
@@ -14,10 +16,10 @@ public class TelnetMessageProcessorHandler extends IoHandlerAdapter {
     private static final String SESSION_INTERACTIVE = "INTERACTIVE";
     private static final String MESSAGE_INTERACTIVE_TOGGLE = "!interactive";
 
-    private final ReactorRequestHandler messageTransportProcessor;
+    private final ReactorRequestHandler requestHandler;
 
-    public TelnetMessageProcessorHandler(ReactorRequestHandler messageTransportProcessor) {
-        this.messageTransportProcessor = messageTransportProcessor;
+    public TelnetMessageProcessorHandler(ReactorRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     @Override
@@ -31,8 +33,9 @@ public class TelnetMessageProcessorHandler extends IoHandlerAdapter {
         if (isSessionInteractive(session)) {
             input.setInteractive(true);
         }
-        messageTransportProcessor.handleReactorRequest(input, valueOf(session.getId()),
-            new TelnetSessionResponseWriter(session));
+        ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
+        requestHandler.handleReactorRequest(input, valueOf(session.getId()), responseRenderer);
+        responseRenderer.commit(new TelnetSessionResponseWriter(session));
     }
 
     private void toggleSessionInteractive(IoSession session) {
@@ -47,10 +50,7 @@ public class TelnetMessageProcessorHandler extends IoHandlerAdapter {
 
     private boolean isSessionInteractive(IoSession session) {
         Boolean interactive = (Boolean) session.getAttribute(SESSION_INTERACTIVE);
-        if (interactive != null) {
-            return interactive.booleanValue();
-        }
-        return false;
+        return interactive != null && interactive;
     }
 
     private boolean isInteractiveToggleMessage(String textMessage) {

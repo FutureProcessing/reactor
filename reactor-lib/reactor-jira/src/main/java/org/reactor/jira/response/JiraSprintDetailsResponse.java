@@ -1,15 +1,12 @@
 package org.reactor.jira.response;
 
-import static java.lang.String.format;
-
-import java.io.PrintWriter;
-
 import org.reactor.jira.model.JiraSprintWithDetails;
-import org.reactor.response.StringReactorResponse;
+import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 
-public class JiraSprintDetailsResponse extends StringReactorResponse {
+public class JiraSprintDetailsResponse implements ReactorResponse {
 
-    public static final char DIVIDER_CHARACTER = '-';
+    private static final char DIVIDER_CHARACTER = '-';
     private JiraSprintWithDetails jiraSprintWithDetails;
 
     public JiraSprintDetailsResponse(JiraSprintWithDetails jiraSprintWithDetails) {
@@ -17,31 +14,31 @@ public class JiraSprintDetailsResponse extends StringReactorResponse {
     }
 
     @Override
-    protected void printResponse(PrintWriter printWriter) {
-        printSprintHeader(printWriter);
-        printSprintDates(printWriter);
+    public void renderResponse(ReactorResponseRenderer responseRenderer) {
+        printSprintHeader(responseRenderer);
+        printSprintDates(responseRenderer);
     }
 
-    private void printSprintDates(PrintWriter printWriter) {
-        printWriter.println(format("Start date: %s", jiraSprintWithDetails.getStartDate()));
+    private void printSprintDates(ReactorResponseRenderer responseRenderer) {
+        responseRenderer.renderTextLine("Start date: %s", jiraSprintWithDetails.getStartDate());
         if (jiraSprintWithDetails.isActive()) {
-            printWriter.println("This sprint is still active!");
+            responseRenderer.renderTextLine("This sprint is still active!");
         } else {
-            printWriter.println(format("Completed date: %s", jiraSprintWithDetails.getCompleteDate()));
+            responseRenderer.renderTextLine("Completed date: %s", jiraSprintWithDetails.getCompleteDate());
         }
     }
 
-    private void printSprintHeader(PrintWriter printWriter) {
+    private void printSprintHeader(ReactorResponseRenderer responseRenderer) {
         String header = jiraSprintWithDetails.getName();
-        printWriter.println(header);
-        generateDivider(printWriter, header.length());
+        responseRenderer.renderTextLine(header);
+        generateDivider(responseRenderer, header.length());
     }
 
-    private void generateDivider(PrintWriter printWriter, int length) {
+    private void generateDivider(ReactorResponseRenderer responseRenderer, int length) {
         StringBuilder dividerBuffer = new StringBuilder();
         for (int index = 0; index < length; index++) {
             dividerBuffer.append(DIVIDER_CHARACTER);
         }
-        printWriter.println(dividerBuffer.toString());
+        responseRenderer.renderTextLine(dividerBuffer.toString());
     }
 }

@@ -7,6 +7,8 @@ import com.skype.Skype;
 import com.skype.SkypeException;
 
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
 import org.reactor.transport.alive.KeepAliveReactorMessageTransport;
@@ -79,7 +81,9 @@ public class SkypeReactorMessageTransport extends KeepAliveReactorMessageTranspo
                     if (!validateFriendForBroadcast(friend)) {
                         continue;
                     }
-                    reactorResponse.renderResponse(new SkypeReactorResponseWriter(friend));
+                    ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
+                    reactorResponse.renderResponse(responseRenderer);
+                    responseRenderer.commit(new SkypeReactorResponseWriter(friend));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

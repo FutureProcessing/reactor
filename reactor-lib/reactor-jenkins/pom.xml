@@ -8,19 +8,24 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>reactor-jenkins</artifactId>
 
-    <dependencies>
+    <properties>
+        <com.offbytwo.jenkins.jenkins-client.version>0.2.2-SNAPSHOT</com.offbytwo.jenkins.jenkins-client.version>
+        <org.apache.mina.version>2.0.4</org.apache.mina.version>
+    </properties>
 
+    <dependencies>
         <dependency>
             <groupId>com.offbytwo.jenkins</groupId>
             <artifactId>jenkins-client</artifactId>
+            <version>${com.offbytwo.jenkins.jenkins-client.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.mina</groupId>
             <artifactId>mina-core</artifactId>
+            <version>${org.apache.mina.version}</version>
         </dependency>
 
         <dependency>

@@ -8,14 +8,13 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>reactor-system</artifactId>
 
     <properties>
         <zt-exec.version>1.7</zt-exec.version>
     </properties>
-    <artifactId>reactor-system</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

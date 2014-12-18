@@ -8,9 +8,9 @@ import org.mockito.Mock;
 import org.reactor.AbstractUnitTest;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
-import org.reactor.response.StringReactorResponse;
 import org.reactor.sonar.data.MetricWithValueResource;
 import org.reactor.sonar.request.GetSonarSingleMetricRequestData;
+import org.reactor.sonar.response.SonarMetricValueResponse;
 
 public class SonarReactorTest extends AbstractUnitTest {
 
@@ -37,7 +37,7 @@ public class SonarReactorTest extends AbstractUnitTest {
                 sonarRequestData));
 
         // then
-        assertThat(response).isInstanceOf(StringReactorResponse.class);
+        assertThat(response).isInstanceOf(SonarMetricValueResponse.class);
     }
 
     private void givenSonarMetricValueResource() {

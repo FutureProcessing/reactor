@@ -76,7 +76,6 @@ public class HttpMessageTransport implements ReactorMessageTransport {
         return contextHandler;
     }
 
-
     @Override
     public void stopTransport() {
         try {

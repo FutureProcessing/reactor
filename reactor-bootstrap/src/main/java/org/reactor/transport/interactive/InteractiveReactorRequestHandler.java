@@ -3,7 +3,6 @@ package org.reactor.transport.interactive;
 import static com.google.common.collect.Maps.newHashMap;
 import static org.reactor.transport.interactive.JourneyScenarioFactory.prepareReactorJourneyScenario;
 
-import java.io.Writer;
 import java.util.Map;
 
 import org.reactor.Reactor;
@@ -11,6 +10,7 @@ import org.reactor.reactor.ReactorController;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ResponseRenderingException;
 import org.reactor.response.StringReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.travelling.JourneyScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,30 +31,30 @@ public class InteractiveReactorRequestHandler {
         this.journeyScenarioListener = journeyScenarioListener;
     }
 
-    public void handleInteractiveRequest(String messageText, String sender, Writer responseWriter) {
+    public void handleInteractiveRequest(String messageText, String sender, ReactorResponseRenderer responseRenderer) {
         JourneyScenario<ReactorRequestInput> journey = findExistingJourney(sender);
         if (journey != null) {
             continueJourney(sender, journey, messageText);
         } else {
-            journey = startNewJourney(sender, messageText, responseWriter);
+            journey = startNewJourney(sender, messageText, responseRenderer);
             if (journey == null) {
                 return;
             }
         }
-        handleEndedScenario(sender, journey, responseWriter);
+        handleEndedScenario(sender, journey, responseRenderer);
     }
 
     private JourneyScenario<ReactorRequestInput> startNewJourney(String traveler, String journeyReactorTrigger,
-                                                                 Writer responseWriter) {
+                                                                 ReactorResponseRenderer responseRenderer) {
         LOGGER.debug("Starting new reactor journey ({}) for traveler: {}", journeyReactorTrigger, traveler);
 
         Optional<Reactor> journeyReactor = reactorController.reactorMatchingTrigger(journeyReactorTrigger);
         if (!journeyReactor.isPresent()) {
-            respondReactorMissing(responseWriter, journeyReactorTrigger);
+            respondReactorMissing(responseRenderer, journeyReactorTrigger);
             return null;
         }
         JourneyScenario<ReactorRequestInput> journeyScenario = prepareReactorJourneyScenario(journeyReactor.get(),
-            responseWriter);
+            responseRenderer);
         journeys.put(traveler, journeyScenario);
         return journeyScenario;
     }
@@ -66,11 +66,11 @@ public class InteractiveReactorRequestHandler {
     }
 
     private void handleEndedScenario(String traveler, JourneyScenario<ReactorRequestInput> journeyScenario,
-                                     Writer responseWriter) {
+                                     ReactorResponseRenderer responseRenderer) {
         if (verifyScenarioEnded(traveler, journeyScenario)) {
             LOGGER.debug("Processing generated reactor request input");
             journeys.remove(traveler);
-            journeyScenarioListener.reactorJourneyEnded(journeyScenario.getSubject(), traveler, responseWriter);
+            journeyScenarioListener.reactorJourneyEnded(journeyScenario.getSubject(), traveler, responseRenderer);
         }
     }
 
@@ -86,13 +86,14 @@ public class InteractiveReactorRequestHandler {
         return journeys.get(traveler);
     }
 
-    private void respondReactorMissing(Writer responseWriter, String journeyReactorTrigger) {
-        respond(responseWriter, "Unable to find reactor matching trigger: %s", journeyReactorTrigger);
+    private void respondReactorMissing(ReactorResponseRenderer responseRenderer, String journeyReactorTrigger) {
+        respond(responseRenderer, "Unable to find reactor matching trigger: %s", journeyReactorTrigger);
     }
 
-    private void respond(Writer responseWriter, String responseTemplate, String... responseParameters) {
+    private void respond(ReactorResponseRenderer responseRenderer, String responseTemplate,
+                         String... responseParameters) {
         try {
-            new StringReactorResponse(responseTemplate, responseParameters).renderResponse(responseWriter);
+            new StringReactorResponse(responseTemplate, responseParameters).renderResponse(responseRenderer);
         } catch (ResponseRenderingException e) {
             LOGGER.error("An error occurred while sending response", e);
         }

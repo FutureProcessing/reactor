@@ -9,6 +9,8 @@ import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
+import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
 import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
@@ -77,7 +79,9 @@ public class TelnetMessageTransport extends KeepAliveReactorMessageTransport {
         }
         for (IoSession session : acceptor.getManagedSessions().values()) {
             try {
-                reactorResponse.renderResponse(new TelnetSessionResponseWriter(session));
+                ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
+                reactorResponse.renderResponse(responseRenderer);
+                responseRenderer.commit(new TelnetSessionResponseWriter(session));
             } catch (Exception e) {
                 LOG.error("Unable to send response to session: {}", session.getId());
             }

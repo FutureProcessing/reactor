@@ -5,11 +5,11 @@ import org.reactor.Reactor;
 import org.reactor.reactor.ReactorController;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.transport.interactive.InteractiveReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Writer;
 import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -38,32 +38,32 @@ public class DefaultReactorRequestHandler implements ReactorRequestHandler {
     }
 
     @Override
-    public void handleReactorRequest(ReactorRequestInput requestInput, String sender, Writer responseWriter) {
-        threadPool.execute(new HandleRequest(requestInput, sender, responseWriter));
+    public void handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
+        threadPool.execute(new HandleRequest(requestInput, sender, responseRenderer));
     }
 
     private class HandleRequest implements Runnable {
         private ReactorRequestInput requestInput;
         private String sender;
-        private Writer responseWriter;
+        private ReactorResponseRenderer responseRenderer;
 
-        public HandleRequest(ReactorRequestInput requestInput, String sender, Writer responseWriter) {
+        public HandleRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
             this.requestInput = requestInput;
             this.sender = sender;
-            this.responseWriter = responseWriter;
+            this.responseRenderer = responseRenderer;
         }
 
         @Override
         public void run() {
             if (requestInput.isInteractive()) {
-                interactiveHandler.handleInteractiveRequest(requestInput.getArgumentsAsString(), sender, responseWriter);
+                interactiveHandler.handleInteractiveRequest(requestInput.getArgumentsAsString(), sender, responseRenderer);
                 return;
             }
             try {
                 Optional<Reactor> reactor = reactorController.reactorMatchingInput(requestInput);
                 if (reactor.isPresent()) {
                     ReactorResponse response = reactor.get().react(sender, requestInput);
-                    response.renderResponse(responseWriter);
+                    response.renderResponse(responseRenderer);
                     return;
                 }
                 LOGGER.warn("Unable to find reactor matching input: {}", requestInput.getArgumentsAsString());

@@ -18,7 +18,7 @@ public class PropertiesLoaderTest extends AbstractUnitTest {
     public void shouldLoadTestProperties() {
         // given
         propertiesLoader = givenLoaderForPropertiesFile(TEST_PROPERTIES);
-        
+
         // when
         Properties properties = propertiesLoader.load();
 

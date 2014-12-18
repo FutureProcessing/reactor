@@ -1,10 +1,9 @@
 package org.reactor.sonar.response;
 
-import static java.lang.String.format;
-import java.io.PrintWriter;
-import org.reactor.response.StringReactorResponse;
+import org.reactor.response.ReactorResponse;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 
-public abstract class AbstractMetricValueResponse extends StringReactorResponse {
+public abstract class AbstractMetricValueResponse implements ReactorResponse {
 
     private boolean valueOnly;
 
@@ -13,12 +12,12 @@ public abstract class AbstractMetricValueResponse extends StringReactorResponse 
     }
 
     @Override
-    protected void printResponse(PrintWriter printWriter) {
+    public void renderResponse(ReactorResponseRenderer responseRenderer) {
         if (valueOnly) {
-            printWriter.print(getMetricValue());
+            responseRenderer.renderDoubleLine(getMetricValue());
             return;
         }
-        printWriter.print(format("%s = %s", getMetricValueDescription(), getMetricValue()));
+        responseRenderer.renderTextLine("%s = %s", getMetricValueDescription(), getMetricValue());
     }
 
     protected abstract double getMetricValue();

@@ -1,0 +1,1 @@
+This is just a marker file to tell maven not to build assembly when running build only for installing pom in maven repository.

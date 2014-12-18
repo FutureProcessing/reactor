@@ -1,5 +1,6 @@
 package org.reactor.transport;
 
+import static org.reactor.loader.DifferentClassLoaderOperation.doInDifferentContextClassLoader;
 
 import java.util.concurrent.Callable;
 
@@ -9,8 +10,7 @@ public class TransportInitializationCallable implements Callable<ReactorMessageT
     private final TransportProperties transportProperties;
     private final ReactorRequestHandler messageProcessor;
 
-    public TransportInitializationCallable(ReactorMessageTransport transport,
-                                           TransportProperties transportProperties,
+    public TransportInitializationCallable(ReactorMessageTransport transport, TransportProperties transportProperties,
                                            ReactorRequestHandler messageProcessor) {
         this.transport = transport;
         this.transportProperties = transportProperties;
@@ -20,10 +20,13 @@ public class TransportInitializationCallable implements Callable<ReactorMessageT
     @Override
     public ReactorMessageTransport call() throws Exception {
         try {
-            transport.startTransport(transportProperties, messageProcessor);
+            return doInDifferentContextClassLoader(transport.getClass().getClassLoader(), () -> {
+                transport.startTransport(transportProperties, messageProcessor);
+                return transport;
+            });
+
         } catch (ReactorMessageTransportInitializationException e) {
             throw new Exception(e);
         }
-        return transport;
     }
 }

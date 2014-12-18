@@ -13,11 +13,11 @@ public class SkypeReactorResponseWriter extends BufferedMultilineSplittingWriter
     private final SkypeMessageSender sender;
 
     public SkypeReactorResponseWriter(User sender) {
-        this.sender = new SkypeMessageSender(sender);
+        this.sender = new SkypeUserMessageSender(sender);
     }
 
     public SkypeReactorResponseWriter(Chat chat) {
-        this.sender = new SkypeMessageSender(chat);
+        this.sender = new SkypeChatMessageSender(chat);
     }
 
     @Override

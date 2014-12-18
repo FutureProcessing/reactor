@@ -1,8 +1,7 @@
 package org.reactor.transport.interactive;
 
-import java.io.Writer;
-
 import org.reactor.request.ReactorRequestInput;
+import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.travelling.step.AbstractJourneyStep;
 import org.reactor.travelling.step.forking.ForkingStepOutcome;
 
@@ -11,8 +10,8 @@ public class ForkingStepReactorTopologyVisitor extends AbstractJourneyReactorTop
     private final ForkingStepOutcome<ReactorRequestInput> forkingStepOutcome;
 
     public ForkingStepReactorTopologyVisitor(ForkingStepOutcome<ReactorRequestInput> forkingStepOutcome,
-                                             Writer responseWriter) {
-        super(responseWriter);
+                                             ReactorResponseRenderer responseRenderer) {
+        super(responseRenderer);
         this.forkingStepOutcome = forkingStepOutcome;
     }
 

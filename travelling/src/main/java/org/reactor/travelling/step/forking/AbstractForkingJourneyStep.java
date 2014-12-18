@@ -12,7 +12,7 @@ public abstract class AbstractForkingJourneyStep<SUBJECT> extends AbstractJourne
 
     private Map<String, ForkingStepOutcome<SUBJECT>> outcomes = newHashMap();
 
-    protected ForkingStepOutcome onStepInput(String stepInput) {
+    protected ForkingStepOutcome<SUBJECT> onStepInput(String stepInput) {
         ForkingStepOutcome<SUBJECT> outcome = new ForkingStepOutcome<>();
         outcomes.put(stepInput, outcome);
         return outcome;
