@@ -73,8 +73,6 @@ public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponse
         if (!isNullOrEmpty(header)) {
             printWriter.print(header);
         }
-        for (String responseElement : responseElements.values()) {
-            printWriter.print(responseElement);
-        }
+        responseElements.values().forEach(printWriter::print);
     }
 }
