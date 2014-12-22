@@ -10,13 +10,15 @@ public class DatabaseAccessProperties extends FilteredProperties {
     private static final String PREFIX = "reactor.database";
 
     private static final String PROPERTY_CONNECTIONS = PREFIX + ".connections";
+    private static final String PROPERTY_CONNECTIONS_DEFAULT = "database-connections.xml";
 
     public DatabaseAccessProperties(ReactorProperties properties) {
         super(properties, propertyKeyStartPredicate(PREFIX));
     }
 
     public InputStream getConnectionsFileStream() {
-        String connectionsFileLocation = getProperty(PROPERTY_CONNECTIONS);
+        String connectionsFileLocation = getProperty(PROPERTY_CONNECTIONS, PROPERTY_CONNECTIONS_DEFAULT);
         return getClass().getClassLoader().getResourceAsStream(connectionsFileLocation);
     }
 }
+
