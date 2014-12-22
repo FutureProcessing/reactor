@@ -16,7 +16,6 @@ public class SonarMetricsListResponse extends ListReactorResponse<Metric> {
     private final String filter;
 
     public SonarMetricsListResponse(List<Metric> metricList, String filter) {
-        super("");
         this.metricList = metricList;
         this.filter = firstNonNull(filter, FILTER_DEFAULT);
     }
