@@ -1,0 +1,15 @@
+<databases>
+    <!--
+        To create new database definition fill out given attributes and tags:
+        - id - database id, used only for identification purposes,
+        - type - one of available database types, possible values: mssql, oracle
+        - connection-url - SQL database connection url with format specific to given db type
+        - username - database connection user name,
+        - password - database connection password
+    -->
+    <database id="db-id" type="mssql">
+        <connection-url>jdbc-url</connection-url>
+        <username>username</username>
+        <password>password</password>
+    </database>
+</databases>
