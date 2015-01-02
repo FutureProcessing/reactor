@@ -2,6 +2,9 @@ package org.reactor.transport.http.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +17,17 @@ import org.reactor.renderer.JSONReactorResponseRenderer;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class RestHandler extends AbstractHandler {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RestHandler.class);
     private static final String SENDER = "HTTP";
     private static final String CONTENT_TYPE = "text/plain";
+    private static final int REQUEST_TIMEOUT = 5;
 
     private final ReactorRequestHandler requestHandler;
 
@@ -39,9 +48,17 @@ public class RestHandler extends AbstractHandler {
 
         PrintWriter writer = response.getWriter();
         ReactorResponseRenderer renderer = new JSONReactorResponseRenderer();
-        requestHandler.handleReactorRequest(new ReactorRequestInput(reactorInput), SENDER, renderer);
+        awaitResponse(requestHandler.handleReactorRequest(new ReactorRequestInput(reactorInput), SENDER, renderer));
         renderer.commit(writer);
         writer.flush();
+    }
+
+    private void awaitResponse(Future<?> request) {
+        try {
+            request.get(REQUEST_TIMEOUT, SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            LOG.error("An error occurred while handling request", e);
+        }
     }
 
     private void markRequestHandled(Request request) {

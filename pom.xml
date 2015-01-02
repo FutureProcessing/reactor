@@ -211,5 +211,6 @@
         <module>reactor-lib</module>
 
         <module>travelling</module>
+        <module>reactor-renderer-json</module>
     </modules>
 </project>
