@@ -18,7 +18,7 @@ import org.reactor.transport.ReactorRequestHandler;
 public class RestHandler extends AbstractHandler {
 
     private static final String SENDER = "HTTP";
-    private static final String CONTENT_TYPE = "text/plain";
+    private static final String CONTENT_TYPE = "application/json";
 
     private final ReactorRequestHandler requestHandler;
 
