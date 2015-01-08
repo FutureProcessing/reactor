@@ -5,9 +5,11 @@ Table of Contents
     * [Architecture overview](#architecture-overview)
     * [System usage concept](#system-usage-concept)
     * [Transport - Reactor interaction](#transport---reactor-interaction)
-    * [Project structure](#project-structure)
-    * [Building up and running](#building-up-and-running)
+  * [Project structure](#project-structure)
+  * [Building up and running](#building-up-and-running)
     * [Distribution folder structure](#distribution-folder-structure)
+    * [Installing system extensions](#installing-system-extensions)
+  * [Creating own extensions](#creating-own-extensions)
   * [System configuration](#system-configuration)
 
 Reactor
