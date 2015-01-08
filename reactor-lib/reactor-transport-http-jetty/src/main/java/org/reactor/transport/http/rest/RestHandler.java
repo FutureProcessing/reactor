@@ -26,7 +26,7 @@ public class RestHandler extends AbstractHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestHandler.class);
     private static final String SENDER = "HTTP";
-    private static final String CONTENT_TYPE = "text/plain";
+    private static final String CONTENT_TYPE = "application/json";
     private static final int REQUEST_TIMEOUT = 5;
 
     private final ReactorRequestHandler requestHandler;

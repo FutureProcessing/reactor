@@ -1,0 +1,41 @@
+<div data-ng-repeat="(key, value) in content">
+	<div data-ng-switch="key">
+
+		<div data-ng-switch-when="header" class="ui header">
+			<div class="content">
+				{{ value }}
+			</div>
+		</div>
+
+		<table data-ng-switch-when="list" class="ui compact table">
+			<tr data-ng-repeat="element in value">
+				<td>
+					{{ element }}
+				</td>
+			</tr>
+		</table>
+
+		<div data-ng-switch-when="double" class="ui statistic">
+			<div class="value">
+				{{ value }}
+			</div>
+		</div>
+
+		<div data-ng-switch-when="long" class="ui statistic">
+			<div class="value">
+				{{ value }}
+			</div>
+		</div>
+
+		<p data-ng-switch-when="text">
+			{{ value }}
+		</p>
+
+		<div data-ng-switch-default class="ui header">
+			{{ key }}
+			<div class="sub header">
+				{{ value }}
+			</div>
+		</div>
+	</div>
+</div>

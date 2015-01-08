@@ -28,34 +28,5 @@
 		{{widget.visual.title}}
 	</h4>
 
-	<div data-ng-repeat="(key, value) in widgetContent">
-		<div ng-switch="key">
-			<div class="ui header" data-ng-switch-when="header">
-				<div class="content">
-					{{ value }}
-				</div>
-			</div>
-
-			<table class="ui compact table" data-ng-switch-when="list">
-				<tr data-ng-repeat="element in value">
-					<td>{{ element }}</td>
-				</tr>
-			</table>
-
-			<div class="ui statistic" data-ng-switch-when="double">
-				<div class="value">{{ value }}</div>
-			</div>
-
-			<div class="ui statistic" data-ng-switch-when="long">
-				<div class="value">{{ value }}</div>
-			</div>
-
-			<p data-ng-switch-when="text">{{ value }}</p>
-
-			<div class="ui header" data-ng-switch-default>
-				{{ key }}
-				<div class="sub header">{{ value }}</div>
-			</div>
-		</div>
-	</div>
+	<div data-response-renderer="widgetContent"></div>
 </li>
