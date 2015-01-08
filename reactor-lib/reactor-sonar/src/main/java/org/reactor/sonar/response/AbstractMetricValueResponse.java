@@ -17,7 +17,7 @@ public abstract class AbstractMetricValueResponse implements ReactorResponse {
             responseRenderer.renderDoubleLine(getMetricValue());
             return;
         }
-        responseRenderer.renderTextLine("%s = %s", getMetricValueDescription(), getMetricValue());
+        responseRenderer.renderTextLine("metric", "%s = %s", getMetricValueDescription(), getMetricValue());
     }
 
     protected abstract double getMetricValue();

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
@@ -38,8 +39,8 @@ public class DefaultReactorRequestHandler implements ReactorRequestHandler {
     }
 
     @Override
-    public void handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
-        threadPool.execute(new HandleRequest(requestInput, sender, responseRenderer));
+    public Future<?> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
+        return threadPool.submit(new HandleRequest(requestInput, sender, responseRenderer));
     }
 
     private class HandleRequest implements Runnable {
