@@ -24,7 +24,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class RestHandler extends AbstractHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RestHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestHandler.class);
     private static final String SENDER = "HTTP";
     private static final String CONTENT_TYPE = "application/json";
     private static final int REQUEST_TIMEOUT = 5;
@@ -57,7 +57,7 @@ public class RestHandler extends AbstractHandler {
         try {
             request.get(REQUEST_TIMEOUT, SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            LOG.error("An error occurred while handling request", e);
+            LOGGER.error("An error occurred while handling request", e);
         }
     }
 

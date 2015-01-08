@@ -209,8 +209,8 @@
         <module>reactor-api</module>
         <module>reactor-bootstrap</module>
         <module>reactor-lib</module>
+        <module>reactor-renderer-json</module>
 
         <module>travelling</module>
-        <module>reactor-renderer-json</module>
     </modules>
 </project>
