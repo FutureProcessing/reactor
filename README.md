@@ -43,7 +43,6 @@ Each entity type, be it [ReactorMessageTransport] or [Reactor], is being loaded 
 
 System usage concept
 --------------------
-
 :hourglass: **IN PROGRESS**
 
 Transport - Reactor interaction
@@ -62,7 +61,7 @@ Having a given interaction diagram the process can be explained as following:
 ![Transport interaction with Reactor](https://www.dropbox.com/s/5v58lqeqo5nehz8/reactor-transport.svg?dl=1)
 
 Project structure
------------------
+=================
 
 Project folder structure consist of several maven project modules located in following folders:
 
@@ -88,7 +87,7 @@ with any [Reactor] by using any of available [ReactorMessageTransport] instance.
 :hourglass: **IN PROGRESS**
   
 Building up and running
------------------------
+=======================
 Whole build process is quite straightforward and required only maven to be available in system binaries path, then just navigate to downloaded source code folder and run:
 
 ```
@@ -101,7 +100,7 @@ When you would like to build system with all extensions provided just use a dedi
 ```
 mvn clean install -DprovidedModules=true
 ```
-This process will go through every extension that is located under reactor-lib module, compile it and build a JAR archive with all required dependencies included.
+This process will do the same as above but also will go through every extension that is located under **reactor-lib** module, compile it and build a JAR archive with all required dependencies included.
 
 When you want to start up the system there are basically two options available:
 - run script **run-cmd** that will pass command line parameters as an reactor input and print out results into terminal output,
@@ -111,12 +110,19 @@ Those two scripts are located under **reactor-bootstrap/target/dist/bin** folder
 
 Distribution folder structure
 -----------------------------
-Structure of distribution package folder is quite straightforward and it's naming follows common conventions. Basically we can enlist three folders out there:
+Structure of distribution package folder (that is **reactor-bootstrap/target/dist), is quite straightforward and it's naming follows common used conventions. Basically we can enlist three folders out there:
 - /bin - consists of scripts for starting up the system, there should be couple of them each for a single dedicated operating system,
 - /etc - one can find all configuration files used by a system and system extensions as well,
 - /lib - contains basic libraries used by system mechanisms,
 - /ext - put your system extensions here, both [Reactor] and [ReactorMessageTransport] implementations.
 
+Installing system extensions
+----------------------------
+After building system source code with provided modules you can find the outcome of the process as a set of JAR files with all dependencies required by each of modules being built. Each of jar file is locater under corresponding module subfolder in **reactor-lib/[module-folder]/target**. Please note that JAR file generated for one module comes in two flavors. Get the one with **-jar-with-dependencies** suffix in file name, copy it over into **/ext** subfolder of distribution package and you're done :) Now start up the system and enjoy new extension.
+
+Creating own extensions
+=======================
+:hourglass: **IN PROGRESS, follow source code of provided modules for now**
 
 System configuration
 ====================
