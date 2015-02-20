@@ -1,21 +1,21 @@
-var NewWidgetButtonController = function($scope, $widgetPopupService) {
+var NewWidgetButtonController = function ($scope, $widgetPopupService) {
 
-    $scope.showNewWidgetWindow = function() {
+    $scope.showNewWidgetWindow = function () {
         $widgetPopupService.newWidgetWindow();
     };
-}
+};
 
-var NewWidgetButtonLinker = function($scope, $element, $attrs) {
-    
-    var initNewWidgetButton = function($element) {
-    	$($element).click(function() {
-    		$scope.showNewWidgetWindow();
-    	});
+var NewWidgetButtonLinker = function ($scope, $element, $attrs) {
+
+    var initNewWidgetButton = function ($element) {
+        $($element).click(function () {
+            $scope.showNewWidgetWindow();
+        });
     };
     initNewWidgetButton($element);
-}
+};
 
-app.directive('newWidget', function() {
+app.directive('newWidget', function () {
     return {
         restrict: 'A',
         link: NewWidgetButtonLinker,

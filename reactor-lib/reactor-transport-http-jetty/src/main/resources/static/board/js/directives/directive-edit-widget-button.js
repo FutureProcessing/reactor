@@ -3,9 +3,9 @@ var EditWidgetButtonController = function($scope, $widgetPopupService) {
     $scope.showNewWidgetWindow = function() {
         $widgetPopupService.newWidgetWindow();
     };
-}
+};
 
-var EditWidgetButtonLinker = function($scope, $element, $attrs) {
+var EditWidgetButtonLinker = function($scope, $element) {
     
     var initNewWidgetButton = function($element) {
     	$($element).click(function() {
@@ -13,7 +13,7 @@ var EditWidgetButtonLinker = function($scope, $element, $attrs) {
     	});
     };
     initNewWidgetButton($element);
-}
+};
 
 app.directive('editWidget', function() {
     return {

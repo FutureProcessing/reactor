@@ -22,14 +22,14 @@ Requirements
 
 Before building reactor-database package you need to have following dependencies in your maven repository first:
 
-**com.oracle.ojdbc14-10.2.0.3.0**
+**com.microsoft.sqlserver.sqljdbc4-4.0**
 If doesn't exist, go to http://msdn.microsoft.com/pl-pl/sqlserver/aa937724.aspx, download jar file and install it in maven repository with following command:
 
 ```
 mvn install:install-file -Dfile=sqljdbc4.jar -Dpackaging=jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc4 -Dversion=4.0
 ```
 
-**com.microsoft.sqlserver.sqljdbc4-4.0**
+**com.oracle.ojdbc14-10.2.0.3.0**
 If doesn't exist, go to http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html, download jar file and install it in maven repository with following command:
 
 ```
