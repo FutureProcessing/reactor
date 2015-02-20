@@ -1,18 +1,32 @@
 package org.reactor.jira.response;
 
+import org.reactor.annotation.ToBeDeleted;
 import org.reactor.jira.model.JiraSprintWithDetails;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.renderer.ReactorResponseRenderer;
 
+import java.util.StringJoiner;
+
+import static java.lang.String.format;
+
 public class JiraSprintDetailsResponse implements ReactorResponse {
 
-    private static final char DIVIDER_CHARACTER = '-';
+    private transient static final char DIVIDER_CHARACTER = '-';
     private JiraSprintWithDetails jiraSprintWithDetails;
 
     public JiraSprintDetailsResponse(JiraSprintWithDetails jiraSprintWithDetails) {
         this.jiraSprintWithDetails = jiraSprintWithDetails;
     }
 
+    @Override
+    public String toConsoleOutput() {
+        String header = jiraSprintWithDetails.getName();
+        String startDate = format("Start date: %s", jiraSprintWithDetails.getStartDate());
+        String completeDate = (jiraSprintWithDetails.isActive())? "This sprint is still active!" : format("Completed date: %s", jiraSprintWithDetails.getCompleteDate());
+        return new StringJoiner("\n").add(header).add(startDate).add(completeDate).toString();
+    }
+
+    @ToBeDeleted
     @Override
     public void renderResponse(ReactorResponseRenderer responseRenderer) {
         printSprintHeader(responseRenderer);

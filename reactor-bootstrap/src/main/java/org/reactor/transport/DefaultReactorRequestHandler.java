@@ -10,6 +10,7 @@ import org.reactor.transport.interactive.InteractiveReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -39,11 +40,11 @@ public class DefaultReactorRequestHandler implements ReactorRequestHandler {
     }
 
     @Override
-    public Future<?> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
+    public Future<String> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
         return threadPool.submit(new HandleRequest(requestInput, sender, responseRenderer));
     }
 
-    private class HandleRequest implements Runnable {
+    private class HandleRequest implements Callable<String> {
         private ReactorRequestInput requestInput;
         private String sender;
         private ReactorResponseRenderer responseRenderer;
@@ -55,22 +56,22 @@ public class DefaultReactorRequestHandler implements ReactorRequestHandler {
         }
 
         @Override
-        public void run() {
+        public String call() {
             if (requestInput.isInteractive()) {
                 interactiveHandler.handleInteractiveRequest(requestInput.getArgumentsAsString(), sender, responseRenderer);
-                return;
             }
             try {
                 Optional<Reactor> reactor = reactorController.reactorMatchingInput(requestInput);
                 if (reactor.isPresent()) {
                     ReactorResponse response = reactor.get().react(sender, requestInput);
-                    response.renderResponse(responseRenderer);
-                    return;
+                    response.renderResponse(responseRenderer); // legacy
+                    return responseRenderer.render(response);
                 }
                 LOGGER.warn("Unable to find reactor matching input: {}", requestInput.getArgumentsAsString());
             } catch (Exception e) {
                 LOGGER.error("An error occurred while calling Reactor", e);
             }
+            throw new IllegalStateException("Expected request to be handled by now");
         }
     }
 }

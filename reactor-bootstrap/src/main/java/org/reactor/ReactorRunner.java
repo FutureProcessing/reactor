@@ -3,8 +3,6 @@ package org.reactor;
 import static org.reactor.properties.PropertiesLoader.propertiesLoader;
 import static org.reactor.response.NoResponse.NO_RESPONSE;
 
-import java.io.StringWriter;
-
 import org.reactor.reactor.ReactorController;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.ReactorResponse;
@@ -20,10 +18,9 @@ public class ReactorRunner {
     private final static String REACTOR_PROPERTIES = "reactor.properties";
     private final static Logger LOG = LoggerFactory.getLogger(ReactorRunner.class);
     private final static String SENDER_SYSTEM = "SYSTEM";
+    private final static ReactorResponseRenderer RESPONSE_RENDERER = new SimpleReactorResponseRenderer();
 
-    private ReactorResponse invokeReactorController(ReactorProperties reactorProperties,
-                                                    ReactorRequestInput requestInput) throws IllegalAccessException,
-            InstantiationException, ClassNotFoundException {
+    private ReactorResponse invokeReactorController(ReactorProperties reactorProperties, ReactorRequestInput requestInput) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         if (!validateMinArgumentsLength(requestInput, 1)) {
             return NO_RESPONSE;
         }
@@ -38,8 +35,7 @@ public class ReactorRunner {
         return reactorController;
     }
 
-    private ReactorResponse processWithReactorController(ReactorController reactorController,
-                                                         ReactorRequestInput requestInput) {
+    private ReactorResponse processWithReactorController(ReactorController reactorController, ReactorRequestInput requestInput) {
         Optional<Reactor> reactorOptional = reactorController.reactorMatchingInput(requestInput);
         if (reactorOptional.isPresent()) {
             Reactor reactor = reactorOptional.get();
@@ -51,8 +47,7 @@ public class ReactorRunner {
 
     private boolean validateMinArgumentsLength(ReactorRequestInput arguments, int minLength) {
         if (arguments.argumentsLength() < minLength) {
-            LOG.debug("Not enough arguments to process message: {}, required min length: {}",
-                arguments.argumentsLength(), minLength);
+            LOG.debug("Not enough arguments to process message: {}, required min length: {}", arguments.argumentsLength(), minLength);
             return false;
         }
         return true;
@@ -61,15 +56,10 @@ public class ReactorRunner {
     public static void main(String[] arguments) {
         try {
             ReactorRequestInput requestInput = new ReactorRequestInput(arguments);
-            ReactorResponse response = new ReactorRunner().invokeReactorController(
-                    new ReactorProperties(propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load()),requestInput);
+            ReactorProperties reactorProperties = new ReactorProperties(propertiesLoader().fromResourceStream(REACTOR_PROPERTIES).load());
+            ReactorResponse response = new ReactorRunner().invokeReactorController(reactorProperties, requestInput);
 
-            ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
-            response.renderResponse(responseRenderer);
-
-            StringWriter writer = new StringWriter();
-            responseRenderer.commit(writer);
-            System.out.println(writer.toString());
+            System.out.println(RESPONSE_RENDERER.render(response));
         } catch (Exception e) {
             LOG.error("An exception has occurred while running reactor command", e);
         }

@@ -16,6 +16,14 @@ public class IssuesMetricResponse extends AbstractMetricValueResponse {
     }
 
     @Override
+    public String toConsoleOutput() {
+        if(valueOnly) {
+            return "All issues without Info";
+        }
+        return String.valueOf(allIssuesMetric.getMetricValue() - infoIssuesMetric.getMetricValue());
+    }
+
+    @Override
     protected double getMetricValue() {
         return allIssuesMetric.getMetricValue() - infoIssuesMetric.getMetricValue();
     }

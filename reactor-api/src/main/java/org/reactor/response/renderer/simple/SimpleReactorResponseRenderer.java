@@ -1,15 +1,19 @@
 package org.reactor.response.renderer.simple;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.collect.Maps.newHashMap;
-import static java.lang.String.format;
+import org.reactor.ReactorProcessingException;
+import org.reactor.response.ReactorResponse;
+import org.reactor.response.list.ListElementFormatter;
+import org.reactor.response.renderer.AbstractAutoFlushableResponseRenderer;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-import org.reactor.response.list.ListElementFormatter;
-import org.reactor.response.renderer.AbstractAutoFlushableResponseRenderer;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Maps.newHashMap;
+import static java.lang.String.format;
 
 public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponseRenderer {
 
@@ -20,6 +24,26 @@ public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponse
 
     private String header;
     private Map<String, String> responseElements = newHashMap();
+    private final Writer writer;
+
+    public SimpleReactorResponseRenderer() {
+        this.writer = new StringWriter();
+    }
+
+    public SimpleReactorResponseRenderer(Writer writer) {
+        this.writer = writer;
+    }
+
+    @Override
+    public String render(ReactorResponse source) {
+        try {
+            writer.write(source.toConsoleOutput());
+            writer.flush();
+        } catch (IOException e) {
+            throw new ReactorProcessingException(e);
+        }
+        return writer.toString();
+    }
 
     @Override
     public void renderHeadLine(String headerTemplateToBeRendered, Object... templateParameters) {
@@ -38,7 +62,6 @@ public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponse
 
     @Override
     public <T> void renderListLine(String lineId, int index, T listElement, ListElementFormatter<T> formatter) {
-        renderListLine(index, listElement, formatter);
         responseElements.put(lineId, formatter.formatListElement(index, listElement));
     }
 

@@ -1,15 +1,21 @@
 package org.reactor.renderer;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-import static java.lang.String.format;
-
-import java.io.Writer;
-
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.reactor.ReactorProcessingException;
+import org.reactor.response.ReactorResponse;
 import org.reactor.response.list.ListElementFormatter;
 import org.reactor.response.renderer.AbstractAutoFlushableResponseRenderer;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.lang.String.format;
 
 public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRenderer {
 
@@ -22,15 +28,30 @@ public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRe
     @VisibleForTesting
     static final String PROPERTY_LONG = "long";
     private static final String PROPERTY_LIST = "list";
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final Writer writer;
+    private final JSONObject jsonObject;
 
-    private JSONObject jsonObject;
-
-    public JSONReactorResponseRenderer() {
-        prepareJSONObject();
+    public JSONReactorResponseRenderer(Writer writer) {
+        this.writer = writer;
+        this.jsonObject = new JSONObject();
     }
 
-    private void prepareJSONObject() {
-        jsonObject = new JSONObject();
+    public JSONReactorResponseRenderer() {
+        this.writer = new StringWriter();
+        this.jsonObject = new JSONObject();
+    }
+
+    @Override
+    public String render(ReactorResponse source) {
+        String result = gson.toJson(source);
+        try {
+            writer.write(result);
+            writer.flush();
+        } catch (IOException e) {
+            throw new ReactorProcessingException(e);
+        }
+        return result;
     }
 
     @Override

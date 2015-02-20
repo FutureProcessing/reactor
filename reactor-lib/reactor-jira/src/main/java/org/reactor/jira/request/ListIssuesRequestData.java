@@ -7,6 +7,13 @@ public class ListIssuesRequestData {
     @ReactorRequestParameter(shortName = "s", description = "If given, will print out only issues matching given status")
     private String status;
 
+    public ListIssuesRequestData() {
+    }
+
+    public ListIssuesRequestData(String status) {
+        this.status = status;
+    }
+
     public String getStatus() {
         return status;
     }

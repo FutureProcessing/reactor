@@ -8,7 +8,7 @@ public class StringReactorResponse implements ReactorResponse {
 
     private static final String EMPTY_RESPONSE = "";
 
-    private final StringBuffer response;
+    private transient final StringBuffer response;
 
     public StringReactorResponse(String response) {
         this.response = new StringBuffer(response);

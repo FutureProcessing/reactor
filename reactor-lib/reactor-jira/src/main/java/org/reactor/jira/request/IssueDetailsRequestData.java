@@ -10,6 +10,14 @@ public class IssueDetailsRequestData {
     @ReactorRequestParameter(shortName = "s", required = false, description = "If set, will print out only current status of issue with given key")
     private boolean statusOnly = false;
 
+    public IssueDetailsRequestData() {
+    }
+
+    public IssueDetailsRequestData(String issueKey, boolean statusOnly) {
+        this.issueKey = issueKey;
+        this.statusOnly = statusOnly;
+    }
+
     public String getIssueKey() {
         return issueKey;
     }

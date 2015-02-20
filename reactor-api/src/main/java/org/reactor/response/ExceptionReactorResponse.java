@@ -18,6 +18,11 @@ public class ExceptionReactorResponse implements ReactorResponse {
     }
 
     @Override
+    public String toConsoleOutput() {
+        return getExceptionMessage();
+    }
+
+    @Override
     public void renderResponse(ReactorResponseRenderer responseRenderer) throws Exception {
         LOG.error("An error occurred", throwable);
         responseRenderer.renderTextLine(getExceptionMessage());

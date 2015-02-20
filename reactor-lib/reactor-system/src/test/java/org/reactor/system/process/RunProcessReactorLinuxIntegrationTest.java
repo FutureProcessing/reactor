@@ -1,14 +1,11 @@
 package org.reactor.system.process;
 
-import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.reactor.AbstractUnitTest;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 import static java.lang.System.getProperty;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
 public class RunProcessReactorLinuxIntegrationTest extends AbstractUnitTest {
@@ -17,12 +14,11 @@ public class RunProcessReactorLinuxIntegrationTest extends AbstractUnitTest {
 
     @Before
     public void runIfLinux() {
-        assumeTrue(!getProperty("os.name").contains("Windows"));
+        assumeTrue(getProperty("os.name").contains("Linux"));
     }
 
-
     @Test
-    public void shouldGetSomeTextAfterRunningSystemProcess() throws IOException, InterruptedException, TimeoutException {
+    public void shouldGetSomeTextAfterRunningSystemProcess() throws Exception{
         // given
         givenRunProcessReactor();
 
@@ -30,7 +26,7 @@ public class RunProcessReactorLinuxIntegrationTest extends AbstractUnitTest {
         String processResult = reactor.runProcess("uname", "-a");
 
         // then
-        Assertions.assertThat(processResult).contains("Linux");
+        assertThat(processResult).contains("Linux");
 
     }
 

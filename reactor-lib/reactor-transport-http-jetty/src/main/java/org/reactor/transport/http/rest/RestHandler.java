@@ -1,10 +1,6 @@
 package org.reactor.transport.http.rest;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeoutException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,19 +11,14 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.reactor.renderer.JSONReactorResponseRenderer;
 import org.reactor.request.ReactorRequestInput;
-import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.reactor.transport.http.ResponseAwaiter.awaitResponse;
 
 public class RestHandler extends AbstractHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestHandler.class);
     private static final String SENDER = "HTTP";
     private static final String CONTENT_TYPE = "application/json";
-    private static final int REQUEST_TIMEOUT = 5;
 
     private final ReactorRequestHandler requestHandler;
 
@@ -46,19 +37,8 @@ public class RestHandler extends AbstractHandler {
     private void processTransportMessage(String reactorInput, HttpServletResponse response) throws IOException {
         prepareContentType(response);
 
-        PrintWriter writer = response.getWriter();
-        ReactorResponseRenderer renderer = new JSONReactorResponseRenderer();
+        JSONReactorResponseRenderer renderer = new JSONReactorResponseRenderer(response.getWriter());
         awaitResponse(requestHandler.handleReactorRequest(new ReactorRequestInput(reactorInput), SENDER, renderer));
-        renderer.commit(writer);
-        writer.flush();
-    }
-
-    private void awaitResponse(Future<?> request) {
-        try {
-            request.get(REQUEST_TIMEOUT, SECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            LOGGER.error("An error occurred while handling request", e);
-        }
     }
 
     private void markRequestHandled(Request request) {

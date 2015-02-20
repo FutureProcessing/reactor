@@ -7,6 +7,13 @@ public class SprintDetailsRequestData {
     @ReactorRequestParameter(required = true, shortName = "i", description = "Sprint id details to be displayed")
     private int sprintId;
 
+    public SprintDetailsRequestData() {
+    }
+
+    public SprintDetailsRequestData(int sprintId) {
+        this.sprintId = sprintId;
+    }
+
     public int getSprintId() {
         return sprintId;
     }
