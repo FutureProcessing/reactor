@@ -1,15 +1,20 @@
 # Table of Contents
-
-  * [Reactor](#reactor)
-    * [Architecture overview](#architecture-overview)
-    * [System usage concept](#system-usage-concept)
-    * [Transport - Reactor interaction](#transport---reactor-interaction)
-  * [Project structure](#project-structure)
-  * [Building up and running](#building-up-and-running)
-    * [Distribution folder structure](#distribution-folder-structure)
-    * [Installing system extensions](#installing-system-extensions)
-  * [Creating own extensions](#creating-own-extensions)
-  * [System configuration](#system-configuration)
+- [Reactor](#reactor)
+    - [Architecture overview](#architecture-overview)
+    - [System usage concept](#system-usage-concept)
+    - [Transport - Reactor interaction](#transport-reactor-interaction)
+- [Project structure](#project-structure)
+- [Building up and running](#building-up-and-running)
+    - [Distribution folder structure](#distribution-folder-structure)
+    - [Installing system extensions](#installing-system-extensions)
+- [Creating own extensions](#creating-own-extensions)
+    - [Creating own Reactor](#creating-own-reactor)
+        - [Reactor](#reactor)
+        - [AbstractReactor](#abstractreactor)
+        - [AbstractAnnotatedReactor](#abstractannotatedreactor)
+        - [AbstractNestingReactor](#abstractnestingreactor)
+    - [Creating own ReactorMessageTransport](#creating-own-reactormessagetransport)
+- [System configuration](#system-configuration)
 
 # Reactor
 Reactor is a lightweight, system resource friendly, system integration and data retrieval micro kernel intended to be stupid simple making development process easy and painless. It was forged to make those possible:
@@ -116,7 +121,7 @@ After building system source code with provided modules you can find the outcome
 Creating own Reactor extensions, both for Reactors and Transports, is rather straightforward and does not introduce any rocket science. To create new [Reactor] or [ReactorMessageTransport] go and follow given checklist:
 
 1. Create new Maven artifact with desired group, id and version,
-1. Use this as maven parent: ```<parent><groupId>org.reactor</groupId><artifactId>reactor-lib</artifactId><version>0.0.1</version></parent>```
+1. Use this as maven parent: ```<parent><groupId>org.reactor</groupId><artifactId>reactor-lib</artifactId><version>0.0.1</version></parent>```,
 1. Add [reactor-api] as a dependency,
 1. Depending if creating new [Reactor] or [ReactorMessageTransport] create new implementation of one of given interfaces,
 1. Add a module related code that will do all logic related to a given extension activity,
@@ -126,8 +131,8 @@ Creating own Reactor extensions, both for Reactors and Transports, is rather str
   1. **org.reactor.transport.ReactorMessageTransport** when this is a new [ReactorMessageTransport] module,
   1. Yes, one of them should be the WHOLE file name, no extensions.
 1. Make sure you have some tests provided ;)
-1. Build module via ```mvn clean install```
-1. Upload result jar file into /ext directory under distribution folder.
+1. Build module via ```mvn clean install```,
+1. Upload result jar file (that one with  **-jar-with-dependencies** suffix) into /ext directory under distribution folder.
   
 ## Creating own Reactor
 
@@ -158,4 +163,4 @@ There are two configuration files provided for all message transports and reacto
 [ReactorMessageTransport]: https://github.com/FutureProcessing/reactor/blob/master/reactor-api/src/main/java/org/reactor/transport/ReactorMessageTransport.java
 [ReactorController]: https://github.com/FutureProcessing/reactor/blob/master/reactor-bootstrap/src/main/java/org/reactor/reactor/ReactorController.java
 [TransportController]: https://github.com/FutureProcessing/reactor/blob/master/reactor-bootstrap/src/main/java/org/reactor/transport/TransportController.java
-[reactor-api]: (https://github.com/FutureProcessing/reactor/tree/master/reactor-api)
+[reactor-api]: https://github.com/FutureProcessing/reactor/tree/master/reactor-api
