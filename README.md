@@ -84,8 +84,6 @@ with any [Reactor] by using any of available [ReactorMessageTransport] instance.
   - [reactor-sonar](https://github.com/FutureProcessing/reactor/tree/master/reactor-lib/reactor-sonar) - manages connection with Sonar instance and allows for getting Code Coverage metrics values,
   - [reactor-system](https://github.com/FutureProcessing/reactor/tree/master/reactor-lib/reactor-system) - acts as a bridge between Reactor and a filesystem, monitors and manages contents of a given folder on hard disk.
 
-:hourglass: **IN PROGRESS**
-  
 # Building up and running
 Whole build process is quite straightforward and required only maven to be available in system binaries path, then just navigate to downloaded source code folder and run:
 
