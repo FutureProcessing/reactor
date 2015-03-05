@@ -32,5 +32,4 @@ public abstract class KeepAliveReactorMessageTransport implements ReactorMessage
 
     protected abstract void startTransportKeptAlive(TransportProperties transportProperties,
                                                     ReactorRequestHandler requestHandler);
-
 }
