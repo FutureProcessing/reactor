@@ -162,3 +162,10 @@ There are two configuration files provided for all message transports and reacto
 [ReactorController]: https://github.com/FutureProcessing/reactor/blob/master/reactor-bootstrap/src/main/java/org/reactor/reactor/ReactorController.java
 [TransportController]: https://github.com/FutureProcessing/reactor/blob/master/reactor-bootstrap/src/main/java/org/reactor/transport/TransportController.java
 [reactor-api]: https://github.com/FutureProcessing/reactor/tree/master/reactor-api
+
+License
+=======
+
+    Copyright 2015 Future Processing Sp. z o.o.
+
+    Licensed under The MIT License (MIT), see LICENSE.txt for details.
