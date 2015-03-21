@@ -7,8 +7,8 @@ public abstract class ListReactorResponse<T> implements ReactorResponse {
 
     private static final String HEADER_TEMPLATE_EMPTY = "";
 
-    private final String headerTemplate;
-    private final Object[] variables;
+    private transient final String headerTemplate;
+    private transient final Object[] variables;
 
     public ListReactorResponse(String headerTemplate, Object... variables) {
         this.headerTemplate = headerTemplate;

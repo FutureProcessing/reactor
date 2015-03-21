@@ -29,7 +29,7 @@ public class PrintReactorsInformationReactor extends AbstractAnnotatedReactor<St
     @Override
     public ReactorResponse doReact(ReactorRequest<String> request) {
         if (isNullOrEmpty(request.getRequestData())) {
-            return new ReactorsInformationResponse("Available reactors", reactors);
+            return new ReactorsInformationResponse(reactors);
         }
         Optional<Reactor> subReactorOptional = reactors.stream().filter(TRIGGER_EQUALS(request.getRequestData())).findFirst();
         if (subReactorOptional.isPresent()) {

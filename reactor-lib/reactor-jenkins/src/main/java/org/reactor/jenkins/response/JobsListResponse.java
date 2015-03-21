@@ -1,30 +1,31 @@
 package org.reactor.jenkins.response;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import com.offbytwo.jenkins.model.Job;
-
-import org.reactor.response.list.ListElementFormatter;
-import org.reactor.response.list.ListReactorResponse;
+import org.reactor.response.ReactorResponse;
 
 import java.util.List;
 
-public class JobsListResponse extends ListReactorResponse<Job> {
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
-    private List<Job> jobs = newArrayList();
+public class JobsListResponse implements ReactorResponse {
 
-    @Override
-    protected List<Job> getElements() {
-        return jobs;
+    private final List<String> jobsNames;
+
+    public JobsListResponse() {
+        this.jobsNames = newArrayList();
     }
 
-    public JobsListResponse addJob(Job job) {
-        jobs.add(job);
-        return this;
+    public JobsListResponse(Iterable<Job> jobs) {
+        this.jobsNames = stream(jobs.spliterator(), false).map(Job::getName).collect(toList());
     }
 
-    @Override
-    protected ListElementFormatter<Job> getElementFormatter() {
-        return new JobListElementFormatter();
+    public JobsListResponse(List<Job> jobs) {
+        this.jobsNames = jobs.stream().map(Job::getName).collect(toList());
+    }
+
+    public List<String> getJobsNames() {
+        return jobsNames;
     }
 }

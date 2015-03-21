@@ -1,32 +1,33 @@
 package org.reactor.nesting;
 
-import static java.lang.String.format;
 import java.util.List;
 import org.reactor.Reactor;
 import org.reactor.response.list.ListElementFormatter;
 import org.reactor.response.list.ListReactorResponse;
 
-public class ReactorsInformationResponse extends ListReactorResponse<Reactor> {
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-    private final List<Reactor> reactors;
+public class ReactorsInformationResponse extends ListReactorResponse<String> {
+
+    private final List<String> reactors;
 
     public ReactorsInformationResponse(List<Reactor> reactors) {
-        this.reactors = reactors;
-    }
-
-    public ReactorsInformationResponse(String header, List<Reactor> reactors) {
-        super(header);
-        this.reactors = reactors;
+        this.reactors = reactors.stream().map((reactor) -> reactor.getTriggeringExpression() + " - " + reactor.getDescription()).collect(toList());
     }
 
     @Override
-    protected final Iterable<Reactor> getElements() {
+    public String toConsoleOutput() {
+        return reactors.stream().collect(joining("\n"));
+    }
+
+    @Override
+    protected final Iterable<String> getElements() {
         return reactors;
     }
 
     @Override
-    protected final ListElementFormatter<Reactor> getElementFormatter() {
-        return (elementIndex, nestedReactor) -> format("%s. %s - %s", elementIndex, nestedReactor.getTriggeringExpression(),
-                nestedReactor.getDescription());
+    protected final ListElementFormatter<String> getElementFormatter() {
+        return (elementIndex, nestedReactor) -> nestedReactor;
     }
 }

@@ -11,8 +11,7 @@ import org.reactor.response.ReactorResponse;
 @ReactOn(value = "cpu", description = "Prints out current cpu usage")
 public class CpuUsageReactor extends AbstractAnnotatedReactor<Void> {
 
-    private final static OperatingSystemMXBean OS_BEAN = ManagementFactory
-        .getPlatformMXBean(OperatingSystemMXBean.class);
+    private final static OperatingSystemMXBean OS_BEAN = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
 
     public CpuUsageReactor() {
         super(Void.class);
@@ -20,6 +19,11 @@ public class CpuUsageReactor extends AbstractAnnotatedReactor<Void> {
 
     @Override
     protected ReactorResponse doReact(ReactorRequest<Void> reactorRequest) {
-        return responseRenderer -> responseRenderer.renderDoubleLine(OS_BEAN.getSystemLoadAverage());
+        return new ReactorResponse() {
+            @Override
+            public String toConsoleOutput() {
+                return String.valueOf(OS_BEAN.getSystemLoadAverage());
+            }
+        };
     }
 }

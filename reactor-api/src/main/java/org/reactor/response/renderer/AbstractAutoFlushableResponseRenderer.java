@@ -1,5 +1,6 @@
 package org.reactor.response.renderer;
 
+import org.reactor.annotation.ToBeDeleted;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,6 @@ public abstract class AbstractAutoFlushableResponseRenderer implements ReactorRe
         }
     }
 
+    @ToBeDeleted
     protected abstract void commitBeforeFlush(Writer responseWriter);
-
 }

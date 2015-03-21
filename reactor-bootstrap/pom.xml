@@ -11,7 +11,7 @@
     <artifactId>reactor-bootstrap</artifactId>
 
     <properties>
-        <appassembler.version>1.1.1</appassembler.version>
+        <appassembler.version>1.9</appassembler.version>
     </properties>
 
     <build>
@@ -51,6 +51,7 @@
                             <copyConfigurationDirectory>true</copyConfigurationDirectory>
                             <configurationDirectory>etc</configurationDirectory>
                             <configurationSourceDirectory>${project.basedir}/src/main/resources</configurationSourceDirectory>
+                            <tempDirectory>ext</tempDirectory>
                         </configuration>
                     </execution>
                 </executions>

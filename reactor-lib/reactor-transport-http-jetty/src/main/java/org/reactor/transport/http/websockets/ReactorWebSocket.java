@@ -7,11 +7,12 @@ import java.io.Writer;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.reactor.request.ReactorRequestInput;
-import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.response.renderer.simple.SimpleReactorResponseRenderer;
 import org.reactor.transport.ReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.reactor.transport.http.ResponseAwaiter.awaitResponse;
 
 public class ReactorWebSocket implements WebSocket.OnTextMessage {
 
@@ -40,9 +41,8 @@ public class ReactorWebSocket implements WebSocket.OnTextMessage {
 
         ReactorRequestInput requestInput = new ReactorRequestInput(message);
         requestInput.setInteractive(interactive);
-        ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
-        requestHandler.handleReactorRequest(requestInput, SENDER, responseRenderer);
-        responseRenderer.commit(new WebSocketResponseWriter(connection, RESPONSE));
+        SimpleReactorResponseRenderer renderer = new SimpleReactorResponseRenderer(new WebSocketResponseWriter(connection, RESPONSE));
+        awaitResponse(requestHandler.handleReactorRequest(requestInput, SENDER, renderer));
     }
 
     private boolean isInteractiveToggleMessage(String textMessage) {

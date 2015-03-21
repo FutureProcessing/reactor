@@ -1,36 +1,36 @@
 package org.reactor.response;
 
-import static com.google.common.collect.Iterables.transform;
-import static org.reactor.request.parser.ReactorRequestInputParameterDefinition.TO_CMD_LINE_OPTION;
-
-import java.io.PrintWriter;
-import java.util.List;
-
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.reactor.Reactor;
+import org.reactor.annotation.ToBeDeleted;
 import org.reactor.discovery.ReactorParametersDiscoveringVisitor;
 import org.reactor.request.parser.ReactorRequestInputParameterDefinition;
 import org.reactor.response.renderer.ReactorResponseRenderer;
 import org.reactor.response.renderer.RendererWriterAdapter;
 
-import com.google.common.annotations.VisibleForTesting;
+import java.io.PrintWriter;
+import java.util.List;
+
+import static com.google.common.collect.Iterables.transform;
+import static org.reactor.request.parser.ReactorRequestInputParameterDefinition.TO_CMD_LINE_OPTION;
 
 public class CommandHelpResponse implements ReactorResponse {
 
-    private static final int TEXT_WIDTH = 100;
+    private transient static final int TEXT_WIDTH = 100;
 
-    private static final String HELP_HEADER = "Available parameters:";
-    private static final String HELP_FOOTER = null;
-    private static final boolean AUTO_USAGE = true;
-    private static final int LEFT_PAD = 3;
-    private static final int DESC_PAD = 1;
+    private transient static final String HELP_HEADER = "Available parameters:";
+    private transient static final String HELP_FOOTER = null;
+    private transient static final boolean AUTO_USAGE = true;
+    private transient static final int LEFT_PAD = 3;
+    private transient static final int DESC_PAD = 1;
 
-    private final List<ReactorRequestInputParameterDefinition> arguments;
+    private transient final List<ReactorRequestInputParameterDefinition> arguments;
+    private transient HelpFormatter helpFormatter;
+
     private final String triggeringExpression;
     private final String responseHeader;
-
-    private HelpFormatter helpFormatter;
 
     public CommandHelpResponse(String header, Reactor reactor) {
         triggeringExpression = reactor.getTriggeringExpression();
@@ -52,6 +52,12 @@ public class CommandHelpResponse implements ReactorResponse {
     }
 
     @Override
+    public String toConsoleOutput() {
+        return responseHeader;
+    }
+
+    @Override
+    @ToBeDeleted
     public void renderResponse(ReactorResponseRenderer responseRenderer) {
         responseRenderer.renderHeadLine(responseHeader);
 

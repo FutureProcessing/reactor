@@ -7,5 +7,5 @@ import java.util.concurrent.Future;
 
 public interface ReactorRequestHandler {
 
-    public Future<?> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer);
+    public Future<String> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer);
 }

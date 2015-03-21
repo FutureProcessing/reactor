@@ -1,12 +1,12 @@
 package org.reactor.jira;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.transform;
 import static org.reactor.jira.JiraQueryBuilder.forProject;
 import static org.reactor.jira.model.JiraIssueBuilder.FROM_JIRA_ISSUE;
 import static org.reactor.jira.model.JiraIssueWithDetailsBuilder.FROM_JIRA_ISSUE_DETAILS;
 import static org.reactor.jira.model.JiraSprintBuilder.FROM_GREENHOPPER_SPRINT;
 import static org.reactor.jira.model.JiraSprintWithDetailsBuilder.FROM_GREENHOPPER_SPRINT_DETAILS;
+import static org.reactor.jira.JiraQueryBuilder.QUERY_STATUS;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -27,8 +27,6 @@ import org.reactor.jira.model.JiraSprint;
 import org.reactor.jira.model.JiraSprintWithDetails;
 
 public class JiraService {
-
-    private static final String QUERY_STATUS = "status";
 
     private final GreenHopperClient greenHopperClient;
     private final JiraClient jiraClient;
@@ -51,11 +49,7 @@ public class JiraService {
 
     public List<JiraIssue> findIssues(String status) {
         try {
-            JiraQueryBuilder queryBuilder = forProject(projectName);
-            if (!isNullOrEmpty(status)) {
-                queryBuilder.andFor(QUERY_STATUS, status);
-            }
-            SearchResult searchResult = jiraClient.searchIssues(queryBuilder.build());
+            SearchResult searchResult = jiraClient.searchIssues(forProject(projectName).and(QUERY_STATUS).isEqualTo(status).build());
             return transform(searchResult.issues, FROM_JIRA_ISSUE);
         } catch (JiraException e) {
             throw new ReactorProcessingException(e);

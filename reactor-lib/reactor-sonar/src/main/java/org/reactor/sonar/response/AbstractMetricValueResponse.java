@@ -1,11 +1,12 @@
 package org.reactor.sonar.response;
 
+import org.reactor.annotation.ToBeDeleted;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.renderer.ReactorResponseRenderer;
 
 public abstract class AbstractMetricValueResponse implements ReactorResponse {
 
-    private boolean valueOnly;
+    protected boolean valueOnly;
 
     public AbstractMetricValueResponse(boolean valueOnly) {
         this.valueOnly = valueOnly;
@@ -20,7 +21,9 @@ public abstract class AbstractMetricValueResponse implements ReactorResponse {
         responseRenderer.renderTextLine("metric", "%s = %s", getMetricValueDescription(), getMetricValue());
     }
 
+    @ToBeDeleted
     protected abstract double getMetricValue();
 
+    @ToBeDeleted
     protected abstract String getMetricValueDescription();
 }

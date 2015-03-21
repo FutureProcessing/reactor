@@ -4,19 +4,32 @@ import org.reactor.jira.model.JiraIssueWithDetails;
 import org.reactor.response.ReactorResponse;
 import org.reactor.response.renderer.ReactorResponseRenderer;
 
+import java.util.StringJoiner;
+
 import static com.google.common.base.Objects.firstNonNull;
 import static java.lang.String.format;
 
 public class JiraIssueDetailsResponse implements ReactorResponse {
 
-    public static final char DIVIDER_CHARACTER = '-';
-    public static final String NOT_ASSIGNED = "- not assigned -";
+    public transient static final char DIVIDER_CHARACTER = '-';
+    public transient static final String NOT_ASSIGNED = "- not assigned -";
+    private transient boolean statusOnly;
     private JiraIssueWithDetails jiraIssueWithDetails;
-    private boolean statusOnly;
 
     public JiraIssueDetailsResponse(JiraIssueWithDetails jiraIssueWithDetails, boolean statusOnly) {
         this.jiraIssueWithDetails = jiraIssueWithDetails;
         this.statusOnly = statusOnly;
+    }
+
+    @Override
+    public String toConsoleOutput() {
+        if (statusOnly) {
+            return jiraIssueWithDetails.getStatus().toUpperCase();
+        }
+        String header = format("%s details: %s [%s]", jiraIssueWithDetails.getKey(), jiraIssueWithDetails.getSummary(), jiraIssueWithDetails.getStatus().toUpperCase());
+        String url = jiraIssueWithDetails.getUrl();
+        String assignee = format("Assigned to: %s", firstNonNull(jiraIssueWithDetails.getAsignee(), NOT_ASSIGNED));
+        return new StringJoiner("\n").add(header).add(url).add(assignee).add(jiraIssueWithDetails.getDescription()).toString();
     }
 
     @Override

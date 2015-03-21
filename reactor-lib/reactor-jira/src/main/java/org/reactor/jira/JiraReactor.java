@@ -49,7 +49,7 @@ public class JiraReactor extends AbstractNestingReactor {
     }
 
     @ReactOn(value = "issue", description = "Displays details of issue with given key")
-    public ReactorResponse issueDetails(ReactorRequest<IssueDetailsRequestData> reactorRequest) {
+    public ReactorResponse displayIssueDetails(ReactorRequest<IssueDetailsRequestData> reactorRequest) {
         IssueDetailsRequestData requestData = reactorRequest.getRequestData();
         return new JiraIssueDetailsResponse(jiraService.getIssueWithDetails(requestData.getIssueKey()),
             requestData.isStatusOnly());
@@ -62,7 +62,7 @@ public class JiraReactor extends AbstractNestingReactor {
     }
 
     @ReactOn(value = "sprint", description = "Displays details of sprint with given id")
-    public ReactorResponse sprintDetails(ReactorRequest<SprintDetailsRequestData> reactorRequest) {
+    public ReactorResponse displaySprintDetails(ReactorRequest<SprintDetailsRequestData> reactorRequest) {
         return new JiraSprintDetailsResponse(jiraService.getSprintWithDetails(reactorRequest.getRequestData().getSprintId()));
     }
 }

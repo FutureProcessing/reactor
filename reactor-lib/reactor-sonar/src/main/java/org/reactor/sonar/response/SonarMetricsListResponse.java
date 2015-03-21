@@ -11,13 +11,22 @@ import org.sonar.wsclient.services.Metric;
 
 public class SonarMetricsListResponse extends ListReactorResponse<Metric> {
 
-    public static final String FILTER_DEFAULT = "*";
+    public transient static final String FILTER_DEFAULT = "*";
+    private transient final String filter;
     private final List<Metric> metricList;
-    private final String filter;
 
     public SonarMetricsListResponse(List<Metric> metricList, String filter) {
         this.metricList = metricList;
         this.filter = firstNonNull(filter, FILTER_DEFAULT);
+    }
+
+    @Override
+    public String toConsoleOutput() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < metricList.size(); i++) {
+            builder.append(getElementFormatter().formatListElement(i + 1, metricList.get(i))).append("\n");
+        }
+        return builder.toString();
     }
 
     @Override

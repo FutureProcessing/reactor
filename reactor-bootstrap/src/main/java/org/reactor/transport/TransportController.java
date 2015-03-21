@@ -1,20 +1,19 @@
 package org.reactor.transport;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.util.concurrent.Futures.addCallback;
-import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
-import static java.util.concurrent.Executors.newFixedThreadPool;
-
-import java.util.List;
-import java.util.ServiceLoader;
-
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import org.reactor.loader.LibrariesLoader;
 import org.reactor.response.ReactorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.util.concurrent.ListeningExecutorService;
+import java.util.List;
+import java.util.ServiceLoader;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.util.concurrent.Futures.addCallback;
+import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
+import static java.util.concurrent.Executors.newFixedThreadPool;
 
 public class TransportController {
 
