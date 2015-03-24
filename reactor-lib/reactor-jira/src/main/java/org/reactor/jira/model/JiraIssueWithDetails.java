@@ -2,8 +2,8 @@ package org.reactor.jira.model;
 
 public class JiraIssueWithDetails extends JiraIssue {
 
-    private String description;
-    private String asignee;
+    private final String description;
+    private final String asignee;
     private final String url;
 
     public JiraIssueWithDetails(String key, String summary, String description, String status, String asignee, String url) {

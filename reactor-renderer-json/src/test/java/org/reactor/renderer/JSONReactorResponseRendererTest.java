@@ -2,9 +2,9 @@ package org.reactor.renderer;
 
 import static java.lang.String.format;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.reactor.renderer.JSONReactorResponseRenderer.PROPERTY_DOUBLE;
-import static org.reactor.renderer.JSONReactorResponseRenderer.PROPERTY_LONG;
-import static org.reactor.renderer.JSONReactorResponseRenderer.PROPERTY_TEXT;
+import static org.reactor.renderer.JSONReactorResponseRenderer.DEFAULT_PROPERTY_DOUBLE;
+import static org.reactor.renderer.JSONReactorResponseRenderer.DEFAULT_PROPERTY_LONG;
+import static org.reactor.renderer.JSONReactorResponseRenderer.DEFAULT_PROPERTY_TEXT;
 
 import java.io.StringWriter;
 
@@ -51,7 +51,7 @@ public class JSONReactorResponseRendererTest extends AbstractUnitTest {
         JSONObject jsonObject = new JSONObject(jsonContents);
 
         // then
-        assertThat(jsonObject.getString(JSONReactorResponseRenderer.PROPERTY_HEADER)).isEqualTo(
+        assertThat(jsonObject.getString(JSONReactorResponseRenderer.DEFAULT_PROPERTY_HEADER)).isEqualTo(
             format(HEADER_TEMPLATE, HEADER_PARAM_1, HEADER_PARAM_2));
         assertThat(jsonObject.getLong(LONG_LINE_1)).isEqualTo(LONG_VALUE_1);
         assertThat(jsonObject.getLong(LONG_LINE_2)).isEqualTo(LONG_VALUE_2);
@@ -81,9 +81,9 @@ public class JSONReactorResponseRendererTest extends AbstractUnitTest {
         JSONObject jsonObject = new JSONObject(jsonContents);
 
         // then
-        assertThat(jsonObject.getLong(PROPERTY_LONG)).isEqualTo(LONG_VALUE_2);
-        assertThat(jsonObject.getString(PROPERTY_TEXT)).isEqualTo(TEXT_VALUE_2);
-        assertThat(jsonObject.getDouble(PROPERTY_DOUBLE)).isEqualTo(DOUBLE_VALUE_2);
+        assertThat(jsonObject.getLong(DEFAULT_PROPERTY_LONG)).isEqualTo(LONG_VALUE_2);
+        assertThat(jsonObject.getString(DEFAULT_PROPERTY_TEXT)).isEqualTo(TEXT_VALUE_2);
+        assertThat(jsonObject.getDouble(DEFAULT_PROPERTY_DOUBLE)).isEqualTo(DOUBLE_VALUE_2);
     }
 
 }

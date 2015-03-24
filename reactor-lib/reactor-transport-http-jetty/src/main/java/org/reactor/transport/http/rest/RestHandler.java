@@ -3,13 +3,13 @@ package org.reactor.transport.http.rest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -50,10 +50,9 @@ public class RestHandler extends AbstractHandler {
         ReactorResponseRenderer renderer = new JSONReactorResponseRenderer();
         awaitResponse(requestHandler.handleReactorRequest(new ReactorRequestInput(reactorInput), SENDER, renderer));
         renderer.commit(writer);
-        writer.flush();
     }
 
-    private void awaitResponse(Future<?> request) {
+    private void awaitResponse(ListenableFuture<?> request) {
         try {
             request.get(REQUEST_TIMEOUT, SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {

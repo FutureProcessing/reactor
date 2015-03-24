@@ -10,6 +10,7 @@ import org.reactor.ReactorInitializationException;
 import org.reactor.ReactorProperties;
 import org.reactor.annotation.ReactOn;
 import org.reactor.jira.model.JiraIssue;
+import org.reactor.jira.model.JiraIssueWithDetails;
 import org.reactor.jira.model.JiraSprint;
 import org.reactor.jira.request.IssueDetailsRequestData;
 import org.reactor.jira.request.ListIssuesRequestData;
@@ -21,6 +22,7 @@ import org.reactor.jira.response.format.JiraIssueFormatter;
 import org.reactor.jira.response.format.JiraSprintFormatter;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.StringReactorResponse;
 
 @ReactOn(value = "jira", description = "Jira reactor")
 public class JiraReactor extends AbstractNestingReactor {
@@ -51,8 +53,11 @@ public class JiraReactor extends AbstractNestingReactor {
     @ReactOn(value = "issue", description = "Displays details of issue with given key")
     public ReactorResponse issueDetails(ReactorRequest<IssueDetailsRequestData> reactorRequest) {
         IssueDetailsRequestData requestData = reactorRequest.getRequestData();
-        return new JiraIssueDetailsResponse(jiraService.getIssueWithDetails(requestData.getIssueKey()),
-            requestData.isStatusOnly());
+        JiraIssueWithDetails issueWithDetails = jiraService.getIssueWithDetails(requestData.getIssueKey());
+        if (requestData.isStatusOnly()) {
+            return new StringReactorResponse(issueWithDetails.getStatus().toUpperCase());
+        }
+        return new JiraIssueDetailsResponse(jiraService.getIssueWithDetails(requestData.getIssueKey()));
     }
 
     @ReactOn(value = "sprints", description = "Lists all sprints (started and completed)")

@@ -7,11 +7,10 @@
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>reactor-bootstrap</artifactId>
 
     <properties>
-        <appassembler.version>1.1.1</appassembler.version>
+        <appassembler.version>1.3</appassembler.version>
     </properties>
 
     <build>
@@ -34,11 +33,11 @@
                             <programs>
                                 <program>
                                     <mainClass>org.reactor.ReactorRunner</mainClass>
-                                    <name>run-cmd</name>
+                                    <name>run-reactor</name>
                                 </program>
                                 <program>
                                     <mainClass>org.reactor.TransportRunner</mainClass>
-                                    <name>run-bot</name>
+                                    <name>run-transports</name>
                                 </program>
                             </programs>
                             <repositoryLayout>flat</repositoryLayout>
@@ -51,6 +50,7 @@
                             <copyConfigurationDirectory>true</copyConfigurationDirectory>
                             <configurationDirectory>etc</configurationDirectory>
                             <configurationSourceDirectory>${project.basedir}/src/main/resources</configurationSourceDirectory>
+                            <useWildcardClassPath>true</useWildcardClassPath>
                         </configuration>
                     </execution>
                 </executions>

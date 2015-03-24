@@ -12,25 +12,15 @@ public class JiraIssueDetailsResponse implements ReactorResponse {
     public static final char DIVIDER_CHARACTER = '-';
     public static final String NOT_ASSIGNED = "- not assigned -";
     private JiraIssueWithDetails jiraIssueWithDetails;
-    private boolean statusOnly;
 
-    public JiraIssueDetailsResponse(JiraIssueWithDetails jiraIssueWithDetails, boolean statusOnly) {
+    public JiraIssueDetailsResponse(JiraIssueWithDetails jiraIssueWithDetails) {
         this.jiraIssueWithDetails = jiraIssueWithDetails;
-        this.statusOnly = statusOnly;
     }
 
     @Override
     public void renderResponse(ReactorResponseRenderer responseRenderer) {
-        if (statusOnly) {
-            printIssueStatus(responseRenderer);
-            return;
-        }
         printIssueHeader(responseRenderer);
         printIssueDescription(responseRenderer);
-    }
-
-    private void printIssueStatus(ReactorResponseRenderer responseRenderer) {
-        responseRenderer.renderTextLine(jiraIssueWithDetails.getStatus().toUpperCase());
     }
 
     private void printIssueHeader(ReactorResponseRenderer responseRenderer) {

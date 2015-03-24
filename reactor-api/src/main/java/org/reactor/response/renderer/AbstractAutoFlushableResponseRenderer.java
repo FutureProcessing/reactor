@@ -15,6 +15,7 @@ public abstract class AbstractAutoFlushableResponseRenderer implements ReactorRe
         commitBeforeFlush(responseWriter);
         try {
             responseWriter.flush();
+            responseWriter.close();
         } catch (IOException e) {
             LOGGER.error("Unable to commit writer buffer", e);
         }

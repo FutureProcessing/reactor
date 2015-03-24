@@ -1,10 +1,12 @@
 package org.reactor.transport.http.websockets;
 
+import static com.google.common.util.concurrent.Futures.addCallback;
 import static org.reactor.transport.http.websockets.WebSocketResponseType.RESPONSE;
 
 import java.io.IOException;
 import java.io.Writer;
 
+import com.google.common.util.concurrent.FutureCallback;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.renderer.ReactorResponseRenderer;
@@ -41,8 +43,18 @@ public class ReactorWebSocket implements WebSocket.OnTextMessage {
         ReactorRequestInput requestInput = new ReactorRequestInput(message);
         requestInput.setInteractive(interactive);
         ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
-        requestHandler.handleReactorRequest(requestInput, SENDER, responseRenderer);
-        responseRenderer.commit(new WebSocketResponseWriter(connection, RESPONSE));
+        addCallback(requestHandler.handleReactorRequest(requestInput, SENDER, responseRenderer), new FutureCallback<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                responseRenderer.commit(new WebSocketResponseWriter(connection, RESPONSE));
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                LOGGER.error("An error occurred while processing request.", throwable);
+            }
+        });
+
     }
 
     private boolean isInteractiveToggleMessage(String textMessage) {

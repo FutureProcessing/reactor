@@ -39,7 +39,7 @@ public class SkypeMessageProcessorChatMessageListener implements ChatMessageList
         String chatMessageNoPrefix = chatMessageContent.substring(1);
         ReactorResponseRenderer responseRenderer = new SimpleReactorResponseRenderer();
         requestHandler.handleReactorRequest(new ReactorRequestInput(chatMessageNoPrefix), sender.getId(),
-            responseRenderer);
+                responseRenderer);
         responseRenderer.commit(new SkypeReactorResponseWriter(chatMessage.getChat()));
     }
 

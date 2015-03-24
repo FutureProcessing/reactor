@@ -1,6 +1,8 @@
 package org.reactor.transport;
 
 import com.google.common.base.Optional;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import org.reactor.Reactor;
 import org.reactor.reactor.ReactorController;
 import org.reactor.request.ReactorRequestInput;
@@ -10,9 +12,7 @@ import org.reactor.transport.interactive.InteractiveReactorRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-
+import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 public class DefaultReactorRequestHandler implements ReactorRequestHandler {
@@ -22,13 +22,13 @@ public class DefaultReactorRequestHandler implements ReactorRequestHandler {
     private static final int THREADS_COUNT = 10;
 
     private final ReactorController reactorController;
-    private final ExecutorService threadPool;
+    private final ListeningExecutorService executorService;
 
     private InteractiveReactorRequestHandler interactiveHandler;
 
     public DefaultReactorRequestHandler(ReactorController reactorController) {
         this.reactorController = reactorController;
-        this.threadPool = newFixedThreadPool(THREADS_COUNT);
+        this.executorService = listeningDecorator(newFixedThreadPool(THREADS_COUNT));
 
         prepareInteractiveRequestHandler();
     }
@@ -39,8 +39,8 @@ public class DefaultReactorRequestHandler implements ReactorRequestHandler {
     }
 
     @Override
-    public Future<?> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
-        return threadPool.submit(new HandleRequest(requestInput, sender, responseRenderer));
+    public ListenableFuture<?> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer) {
+        return executorService.submit(new HandleRequest(requestInput, sender, responseRenderer));
     }
 
     private class HandleRequest implements Runnable {

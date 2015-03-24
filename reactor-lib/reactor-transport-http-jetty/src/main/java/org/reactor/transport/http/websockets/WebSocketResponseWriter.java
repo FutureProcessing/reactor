@@ -9,6 +9,7 @@ import java.io.IOException;
 public class WebSocketResponseWriter extends BufferedMultilineSplittingWriter {
 
     private final WebSocketJsonResponseWriter jsonWriter;
+
     public WebSocketResponseWriter(Connection connection, WebSocketResponseType responseType) {
         this.jsonWriter = new WebSocketJsonResponseWriter(connection, responseType);
     }

@@ -14,14 +14,14 @@ import org.reactor.response.renderer.AbstractAutoFlushableResponseRenderer;
 public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRenderer {
 
     @VisibleForTesting
-    static final String PROPERTY_HEADER = "header";
+    static final String DEFAULT_PROPERTY_HEADER = "header";
     @VisibleForTesting
-    static final String PROPERTY_TEXT = "text";
+    static final String DEFAULT_PROPERTY_TEXT = "text";
     @VisibleForTesting
-    static final String PROPERTY_DOUBLE = "double";
+    static final String DEFAULT_PROPERTY_DOUBLE = "double";
     @VisibleForTesting
-    static final String PROPERTY_LONG = "long";
-    private static final String PROPERTY_LIST = "list";
+    static final String DEFAULT_PROPERTY_LONG = "long";
+    private static final String DEFAULT_PROPERTY_LIST = "list";
 
     private JSONObject jsonObject;
 
@@ -38,7 +38,7 @@ public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRe
         if (isNullOrEmpty(headerTemplateToBeRendered)) {
             return;
         }
-        jsonObject.put(PROPERTY_HEADER, format(headerTemplateToBeRendered, templateParameters));
+        jsonObject.put(DEFAULT_PROPERTY_HEADER, format(headerTemplateToBeRendered, templateParameters));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRe
 
     @Override
     public void renderTextLine(String templateToBeRendered, Object... templateParameters) {
-        renderTextLine(PROPERTY_TEXT, templateToBeRendered, templateParameters);
+        renderTextLine(DEFAULT_PROPERTY_TEXT, templateToBeRendered, templateParameters);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRe
 
     @Override
     public <T> void renderListLine(int index, T listElement, ListElementFormatter<T> formatter) {
-        renderListLine(PROPERTY_LIST, index, listElement, formatter);
+        renderListLine(DEFAULT_PROPERTY_LIST, index, listElement, formatter);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRe
 
     @Override
     public void renderDoubleLine(double doubleValue) {
-        renderDoubleLine(PROPERTY_DOUBLE, doubleValue);
+        renderDoubleLine(DEFAULT_PROPERTY_DOUBLE, doubleValue);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class JSONReactorResponseRenderer extends AbstractAutoFlushableResponseRe
 
     @Override
     public void renderLongLine(long longValue) {
-        renderLongLine(PROPERTY_LONG, longValue);
+        renderLongLine(DEFAULT_PROPERTY_LONG, longValue);
     }
 
     @Override

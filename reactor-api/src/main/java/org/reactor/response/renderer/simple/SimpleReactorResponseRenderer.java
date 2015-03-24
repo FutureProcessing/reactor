@@ -38,7 +38,6 @@ public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponse
 
     @Override
     public <T> void renderListLine(String lineId, int index, T listElement, ListElementFormatter<T> formatter) {
-        renderListLine(index, listElement, formatter);
         responseElements.put(lineId, formatter.formatListElement(index, listElement));
     }
 

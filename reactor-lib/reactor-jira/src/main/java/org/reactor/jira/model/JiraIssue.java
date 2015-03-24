@@ -2,9 +2,9 @@ package org.reactor.jira.model;
 
 public class JiraIssue {
 
-    private String key;
-    private String summary;
-    private String status;
+    private final String key;
+    private final String summary;
+    private final String status;
 
     public JiraIssue(String key, String summary, String status) {
         this.key = key;

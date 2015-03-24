@@ -1,11 +1,10 @@
 package org.reactor.transport;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import org.reactor.request.ReactorRequestInput;
 import org.reactor.response.renderer.ReactorResponseRenderer;
 
-import java.util.concurrent.Future;
-
 public interface ReactorRequestHandler {
 
-    public Future<?> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer);
+    public ListenableFuture<?> handleReactorRequest(ReactorRequestInput requestInput, String sender, ReactorResponseRenderer responseRenderer);
 }
