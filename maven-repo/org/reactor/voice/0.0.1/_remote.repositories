@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Mar 24 19:24:18 CET 2015
+voice-0.0.1.pom>=
+voice-0.0.1.pom>activey-maven-repository=
+voice-0.0.1.jar>=
+voice-0.0.1.jar>activey-maven-repository=
