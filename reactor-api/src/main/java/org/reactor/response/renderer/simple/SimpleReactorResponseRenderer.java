@@ -1,13 +1,13 @@
 package org.reactor.response.renderer.simple;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.ArrayListMultimap.create;
 import static java.lang.String.format;
 
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Map;
 
+import com.google.common.collect.Multimap;
 import org.reactor.response.list.ListElementFormatter;
 import org.reactor.response.renderer.AbstractAutoFlushableResponseRenderer;
 
@@ -19,7 +19,7 @@ public class SimpleReactorResponseRenderer extends AbstractAutoFlushableResponse
     private static final String PROPERTY_LIST = "list";
 
     private String header;
-    private Map<String, String> responseElements = newHashMap();
+    private Multimap<String, String> responseElements = create();
 
     @Override
     public void renderHeadLine(String headerTemplateToBeRendered, Object... templateParameters) {
