@@ -29,6 +29,8 @@ public class SimpleReactorResponseRendererTest extends AbstractUnitTest {
     private static final String DOUBLE_LINE_2 = "doubleLine2";
     private static final double DOUBLE_VALUE_1 = 1.1d;
     private static final double DOUBLE_VALUE_2 = 2.2d;
+    private static final double DOUBLE_VALUE_3 = 3.3d;
+    private static final double DOUBLE_VALUE_4 = 4.4d;
 
     @Test
     public void shouldPrintHeaderIfNotNull() {
@@ -71,6 +73,9 @@ public class SimpleReactorResponseRendererTest extends AbstractUnitTest {
         responseRenderer.renderTextLine(TEXT_LINE_2, TEXT_VALUE_2);
         responseRenderer.renderDoubleLine(DOUBLE_LINE_1, DOUBLE_VALUE_1);
         responseRenderer.renderDoubleLine(DOUBLE_LINE_2, DOUBLE_VALUE_2);
+        responseRenderer.renderDoubleLine(DOUBLE_VALUE_3);
+        responseRenderer.renderDoubleLine(DOUBLE_VALUE_4);
+
 
         // and after commit to writer
         StringWriter writer = spy(new StringWriter());
@@ -83,6 +88,8 @@ public class SimpleReactorResponseRendererTest extends AbstractUnitTest {
         verify(writer).write(TEXT_VALUE_2, 0, TEXT_VALUE_2.length());
         verify(writer).write(Double.toString(DOUBLE_VALUE_1), 0, Double.toString(DOUBLE_VALUE_1).length());
         verify(writer).write(Double.toString(DOUBLE_VALUE_2), 0, Double.toString(DOUBLE_VALUE_2).length());
+        verify(writer).write(Double.toString(DOUBLE_VALUE_3), 0, Double.toString(DOUBLE_VALUE_3).length());
+        verify(writer).write(Double.toString(DOUBLE_VALUE_4), 0, Double.toString(DOUBLE_VALUE_4).length());
     }
 
     @Test
