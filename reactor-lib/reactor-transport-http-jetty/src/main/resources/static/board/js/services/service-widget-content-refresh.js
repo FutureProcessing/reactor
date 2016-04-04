@@ -1,4 +1,4 @@
-var WidgetContentRefreshService = function($http, $widgetsService) {
+var WidgetContentRefreshService = function($http, $widgetsService, CONTEXT_PATH) {
     this.dataRefreshListeners = [];
 
     this.addDataRefreshListener = function($widget, $dataRefreshListener) {
@@ -9,7 +9,7 @@ var WidgetContentRefreshService = function($http, $widgetsService) {
         	refreshData: function(delay) {
                 this.timeoutId = setTimeout($.proxy(function() {
                     this.refreshListener.onDataRefreshStarted();
-                    $http.post('/rest/', this.widgetData.reactor.input).success($.proxy(function($data) {
+                    $http.post(CONTEXT_PATH + '/rest/', this.widgetData.reactor.input).success($.proxy(function($data) {
                         this.refreshListener.onDataRefreshFinished($data);
                         this.refreshData(this.widgetData.reactor.interval * 1000);
                     }, this)).error($.proxy(function() {

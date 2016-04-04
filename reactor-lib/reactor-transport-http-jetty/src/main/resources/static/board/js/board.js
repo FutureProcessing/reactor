@@ -1,4 +1,4 @@
-var app = angular.module('ReactorBoard',['ngStorage', 'semantic', 'gridster']);
+var app = angular.module('ReactorBoard',['ngStorage', 'semantic', 'gridster', 'TransportConfiguration']);
 
 var semantic = angular.module('semantic', []);
 semantic.directive('dropdown', function ($timeout) {

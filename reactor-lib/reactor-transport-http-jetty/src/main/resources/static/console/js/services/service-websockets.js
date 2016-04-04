@@ -1,4 +1,4 @@
-app.service('WebSocketService', function() {
+app.service('WebSocketService', function(CONTEXT_PATH) {
     this.ws = {};
     this.messageListeners = [];
     this.connectListeners = [];
@@ -49,7 +49,7 @@ app.service('WebSocketService', function() {
     };
 
     // initializeWebSockets
-    this.ws = new ReconnectingWebSocket('ws://' + document.location.host + '/websockets/');
+    this.ws = new ReconnectingWebSocket('ws://' + document.location.host + CONTEXT_PATH + '/websockets');
     this.ws.onmessage = $.proxy(this.onMessage, this);
     this.ws.onopen = $.proxy(this.onConnect, this);
     this.ws.onclose = $.proxy(this.onDisconnect, this);
