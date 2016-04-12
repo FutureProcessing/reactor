@@ -12,6 +12,7 @@
 
     <properties>
         <org.eclipse.jetty.version>8.1.10.v20130312</org.eclipse.jetty.version>
+        <com.github.spullara.mustache.java.compiler.version>0.8.18</com.github.spullara.mustache.java.compiler.version>
     </properties>
 
     <dependencies>
@@ -40,6 +41,12 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-websocket</artifactId>
             <version>${org.eclipse.jetty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.spullara.mustache.java</groupId>
+            <artifactId>compiler</artifactId>
+            <version>${com.github.spullara.mustache.java.compiler.version}</version>
         </dependency>
     </dependencies>
 

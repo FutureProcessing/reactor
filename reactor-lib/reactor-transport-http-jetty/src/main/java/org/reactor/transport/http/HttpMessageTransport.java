@@ -10,10 +10,14 @@ import org.reactor.transport.ReactorMessageTransport;
 import org.reactor.transport.ReactorMessageTransportInitializationException;
 import org.reactor.transport.ReactorRequestHandler;
 import org.reactor.transport.TransportProperties;
+import org.reactor.transport.http.config.ConfigContentBuilder;
+import org.reactor.transport.http.config.ConfigContentHandler;
 import org.reactor.transport.http.rest.RestHandler;
 import org.reactor.transport.http.websockets.ReactorWebsocketsHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.reactor.transport.http.config.ConfigContentBuilder.configContent;
 
 public class HttpMessageTransport implements ReactorMessageTransport {
 
@@ -24,9 +28,11 @@ public class HttpMessageTransport implements ReactorMessageTransport {
     private static final String CONTEXT_PATH_REST = "/rest";
     private static final String CONTEXT_PATH_WEBSOCKETS = "/websockets";
     private static final String CONTEXT_PATH_RESOURCES = "/";
+    private static final String CONTEXT_PATH_CONFIG = "/config.js";
 
     private Server server;
     private ReactorWebsocketsHandler webSocketHandler;
+    private String contextPath;
 
     @Override
     public void startTransport(TransportProperties transportProperties, ReactorRequestHandler messageProcessor) {
@@ -37,11 +43,18 @@ public class HttpMessageTransport implements ReactorMessageTransport {
                                           ReactorRequestHandler messageProcessor) {
         try {
             server = new Server(transportProperties.getPortNumber());
-            server.setHandler(createHandlersCollection(messageProcessor));
+            server.setHandler(createContextHandler(contextPath = transportProperties.getContextPath(), messageProcessor));
             server.start();
         } catch (Exception e) {
             throw new ReactorMessageTransportInitializationException(e);
         }
+    }
+
+    private ContextHandler createContextHandler(String contextPath, ReactorRequestHandler messageProcessor) {
+        ContextHandler contextHandler = new ContextHandler();
+        contextHandler.setContextPath(contextPath);
+        contextHandler.setHandler(createHandlersCollection(messageProcessor));
+        return contextHandler;
     }
 
     private ContextHandlerCollection createHandlersCollection(ReactorRequestHandler messageProcessor) {
@@ -49,6 +62,7 @@ public class HttpMessageTransport implements ReactorMessageTransport {
         handlerCollection.addHandler(createStaticResourcesHandler());
         handlerCollection.addHandler(createRestHandler(messageProcessor));
         handlerCollection.addHandler(createWebSocketsHandler(messageProcessor));
+        handlerCollection.addHandler(createChannelConfigContentHandler());
         return handlerCollection;
     }
 
@@ -73,6 +87,15 @@ public class HttpMessageTransport implements ReactorMessageTransport {
         ContextHandler contextHandler = new ContextHandler();
         contextHandler.setContextPath(CONTEXT_PATH_REST);
         contextHandler.setHandler(new RestHandler(messageProcessor));
+        return contextHandler;
+    }
+
+    private ContextHandler createChannelConfigContentHandler() {
+        ContextHandler contextHandler = new ContextHandler();
+        contextHandler.setContextPath(CONTEXT_PATH_CONFIG);
+        contextHandler.setHandler(new ConfigContentHandler(configContent()
+            .contextPath(contextPath)
+            .build()));
         return contextHandler;
     }
 

@@ -1,4 +1,4 @@
-var app = angular.module('ReactorConsole',['ngStorage']);
+var app = angular.module('ReactorConsole',['ngStorage', 'TransportConfiguration']);
 
 app.filter('startFrom', function() {
     return function(input, start) {
