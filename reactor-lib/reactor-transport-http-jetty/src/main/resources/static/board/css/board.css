@@ -12,7 +12,7 @@ body {
   color: #555555;  
   text-rendering: optimizeLegibility;
   min-width: 320px;
-  background: url(http://subtlepatterns.com/patterns/purty_wood.png);
+  background: url(../backdrops/wood1.png);
 }
 
 #board .ui.header {
@@ -169,6 +169,6 @@ body {
 -------------------------------*/
 
 .ui.segment.shadow {
- -webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1) !important;
+ -webkit-box-shadow: 0px 2px 3px 2px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0px 2px 3px 3px rgba(0, 0, 0, 0.2) !important;
 }
