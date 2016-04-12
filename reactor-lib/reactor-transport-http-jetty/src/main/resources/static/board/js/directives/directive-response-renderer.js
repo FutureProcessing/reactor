@@ -3,7 +3,8 @@ app.directive('responseRenderer', function () {
 		restrict: 'A',
 		templateUrl: 'js/directives/directive-response-renderer.html',
 		scope: {
-			content: '=responseRenderer'
+			content: '=responseRenderer',
+			visual: '=rendererVisualConfig'
 		}
 	};
 });

@@ -1,41 +1,43 @@
 <div data-ng-repeat="(key, value) in content">
-	<div data-ng-switch="key">
+    <div data-ng-switch="key">
 
-		<div data-ng-switch-when="header" class="ui header">
-			<div class="content">
-				{{ value }}
-			</div>
-		</div>
+        <div data-ng-switch-when="header" class="ui header">
+            <div class="content nowrap ng-class:visual.fontSize">
+                {{ value }}
+            </div>
+        </div>
 
-		<table data-ng-switch-when="list" class="ui compact table">
-			<tr data-ng-repeat="element in value">
-				<td>
-					{{ element }}
-				</td>
-			</tr>
-		</table>
+        <div class="ui inverted relaxed divided list" data-ng-switch-when="list">
+            <div class="value item ng-class:visual.fontSize" data-ng-repeat="element in value">
+                <div class="content">
+                    {{ element }}
+                </div>
+            </div>
+        </div>
 
-		<div data-ng-switch-when="double" class="ui statistic">
-			<div class="value">
-				{{ value }}
-			</div>
-		</div>
+        <div data-ng-switch-when="double" class="ui statistic">
+            <div class="value ng-class:visual.fontSize">
+                {{ value }}
+            </div>
+        </div>
 
-		<div data-ng-switch-when="long" class="ui statistic">
-			<div class="value">
-				{{ value }}
-			</div>
-		</div>
+        <div data-ng-switch-when="long" class="ui statistic">
+            <div class="value ng-class:visual.fontSize">
+                {{ value }}
+            </div>
+        </div>
 
-		<p data-ng-switch-when="text">
-			{{ value }}
-		</p>
+        <p data-ng-switch-when="text" class="nowrap value ng-class:visual.fontSize">
+            {{ value }}
+        </p>
 
-		<div data-ng-switch-default class="ui header">
-			{{ key }}
-			<div class="sub header">
-				{{ value }}
-			</div>
-		</div>
-	</div>
+        <div data-ng-switch-default class="ui header">
+            <div class="value ng-class:visual.fontSize">
+                {{ key }}
+                <div class="sub header">
+                    {{ value }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
