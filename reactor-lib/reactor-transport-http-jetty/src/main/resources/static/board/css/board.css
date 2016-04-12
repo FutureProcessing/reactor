@@ -112,15 +112,15 @@ body {
           Widget visuals
 -------------------------------*/
 
-.widget-align-left {
+.widget-align-left .value {
     text-align: left !important;
 }
 
-.widget-align-center {
+.widget-align-center .value {
     text-align: center !important;
 }
 
-.widget-align-right {
+.widget-align-right .value {
     text-align: right !important;
 }
 
