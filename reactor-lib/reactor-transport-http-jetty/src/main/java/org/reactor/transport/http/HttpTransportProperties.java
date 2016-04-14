@@ -10,6 +10,8 @@ public class HttpTransportProperties extends TransportProperties {
 
     private static final String PREFIX = "reactor.transport.websockets";
 
+    private static final String PROPERTY_CONTEXT_PATH = PREFIX + ".contextPath";
+    private static final String DEFAULT_CONTEXT_PATH = "";
     private static final String PROPERTY_PORT = PREFIX + ".port";
     private static final String DEFAULT_PORT = "8080";
 
@@ -19,5 +21,9 @@ public class HttpTransportProperties extends TransportProperties {
 
     public int getPortNumber() {
         return parseInt(getProperty(PROPERTY_PORT, DEFAULT_PORT));
+    }
+
+    public String getContextPath() {
+        return getProperty(PROPERTY_CONTEXT_PATH, DEFAULT_CONTEXT_PATH);
     }
 }
