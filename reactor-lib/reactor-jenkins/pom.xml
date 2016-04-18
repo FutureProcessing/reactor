@@ -11,7 +11,7 @@
     <artifactId>reactor-jenkins</artifactId>
 
     <properties>
-        <com.offbytwo.jenkins.jenkins-client.version>0.2.2-SNAPSHOT</com.offbytwo.jenkins.jenkins-client.version>
+        <com.offbytwo.jenkins.jenkins-client.version>0.3.2</com.offbytwo.jenkins.jenkins-client.version>
         <org.apache.mina.version>2.0.4</org.apache.mina.version>
     </properties>
 
