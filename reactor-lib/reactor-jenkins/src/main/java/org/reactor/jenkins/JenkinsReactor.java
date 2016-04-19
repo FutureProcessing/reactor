@@ -21,6 +21,7 @@ import org.reactor.jenkins.response.JobDetailsResponse;
 import org.reactor.jenkins.response.JobsListResponse;
 import org.reactor.request.ReactorRequest;
 import org.reactor.response.ReactorResponse;
+import org.reactor.response.StringReactorResponse;
 
 @ReactOn(value = "jenkins", description = "Jenkins reactor")
 public class JenkinsReactor extends AbstractNestingReactor implements EventProducingReactor {
@@ -42,6 +43,12 @@ public class JenkinsReactor extends AbstractNestingReactor implements EventProdu
     public ReactorResponse getJobDetails(ReactorRequest<JenkinsJobDetailsRequestData> jenkinsJobRequest)
             throws IOException {
         JobWithDetails job = jenkinsServerFacade.getJob(jenkinsJobRequest.getRequestData().getJobName());
+        if (job == null) {
+            throw new JobNotFoundException(jenkinsJobRequest.getRequestData().getJobName());
+        }
+        if (jenkinsJobRequest.getRequestData().isJobStatusOnly()) {
+            return new StringReactorResponse(job.getLastBuild().details().getResult().name());
+        }
         return new JobDetailsResponse(job);
     }
 

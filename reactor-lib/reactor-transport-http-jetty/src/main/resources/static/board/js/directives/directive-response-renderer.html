@@ -2,7 +2,7 @@
     <div data-ng-switch="key">
 
         <div data-ng-switch-when="header" class="ui header">
-            <div class="content nowrap ng-class:visual.fontSize">
+            <div class="content ng-class:visual.fontSize">
                 {{ value }}
             </div>
         </div>
@@ -27,9 +27,7 @@
             </div>
         </div>
 
-        <p data-ng-switch-when="text" class="nowrap value ng-class:visual.fontSize">
-            {{ value }}
-        </p>
+        <p data-ng-switch-when="text" class="nowrap value ng-class:visual.fontSize">{{ value }}</p>
 
         <div data-ng-switch-default class="ui header">
             <div class="value ng-class:visual.fontSize">
