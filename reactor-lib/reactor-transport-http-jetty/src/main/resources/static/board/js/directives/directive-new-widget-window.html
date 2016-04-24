@@ -4,7 +4,13 @@
 <div class="header" data-ng-show="!isNewWidget()">
     Update widget
 </div>
-<div class="content">
+
+<div class="ui top attached pointing secondary menu">
+    <a class="active item" data-tab="basic-settings">Basic settings</a>
+    <a class="item" data-tab="color-settings">Widget color</a>
+</div>
+
+<div class="ui bottom attached active tab segment" data-tab="basic-settings">
     <div class="ui two column grid">
         <div class="column">
             <h3 class="ui dividing header">
@@ -22,7 +28,7 @@
                 </div>
             
                 <div class="fields">
-                    <div class="eight wide field">
+                    <div class="sixteen wide field">
                         <label>Font size:</label>
                         <div class="ui fluid dropdown selection" data-ng-model="widgetData.visual.fontSize">
                             <div class="default text">Default</div>
@@ -36,25 +42,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="eight wide field">
-                        <label>Widget color:</label>
-
-                        <div class="ui fluid dropdown selection" data-ng-model="widgetData.visual.color">
-                            <div class="default text">Default</div>
-                            <i class="dropdown icon"></i>
-                            <div class="menu">
-                                <div class="item" data-value="">Default</div>
-                                <div class="item" data-value="green">Green</div>
-                                <div class="item" data-value="red">Red</div>
-                                <div class="item" data-value="blue">Blue</div>
-                                <div class="item" data-value="purple">Purple</div>
-                                <div class="item" data-value="orange">Orange</div>
-                                <div class="item" data-value="teal">Teal</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
             </div>
         </div>
         <div class="column">
@@ -103,7 +91,7 @@
 
     <div class="ui form">
         <div class="fields">
-            <div class="four wide field">
+            <div class="eight wide field">
                 <div class="ui input">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" id="dropShadow" data-ng-model="widgetData.visual.dropShadow">
@@ -112,16 +100,7 @@
                     <label></label>
                 </div>
             </div>
-            <div class="four wide field">
-                <div class="ui input">
-                    <div class="ui toggle checkbox">
-                        <input type="checkbox" id="invertedColors" data-ng-model="widgetData.visual.inverted">
-                        <label for="invertedColors">Inverted colors</label>
-                    </div>
-                    <label></label>
-                </div>
-            </div>
-            <div class="six wide field">
+            <div class="eight wide field">
                 <div class="ui input">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" id="showDimmerLoading" data-ng-model="widgetData.visual.showDimmerLoading">
@@ -159,6 +138,67 @@
         </div>
     </div>
 </div>
+
+<div class="ui bottom attached tab segment" data-tab="color-settings">
+    <div class="ui form">
+        <div class="inline fields widget-color-model">
+            <div class="field">
+                <label>Widget color model</label>
+                <div class="ui radio checkbox">
+                    <input name="model" value="static" type="radio" data-ng-model="widgetData.visual.colorSettings.model">
+                    <label>Static</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input name="model" value="dynamic" type="radio" data-ng-model="widgetData.visual.colorSettings.model">
+                    <label>Dynamic</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui one column grid" data-ng-hide="widgetData.visual.colorSettings.model !== 'static'">
+        <div class="column">
+            <div class="ui form">
+                <div class="fields">
+                    <div class="sixteen wide field">
+                        <label>Widget color:</label>
+
+                        <div class="ui fluid dropdown selection" data-ng-model="widgetData.visual.colorSettings.color">
+                            <div class="default text">Default</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item" data-value="">Default</div>
+                                <div class="item" data-value="green">Green</div>
+                                <div class="item" data-value="red">Red</div>
+                                <div class="item" data-value="blue">Blue</div>
+                                <div class="item" data-value="purple">Purple</div>
+                                <div class="item" data-value="orange">Orange</div>
+                                <div class="item" data-value="teal">Teal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui form">
+        <div class="fields">
+            <div class="sixteen wide field">
+                <div class="ui input">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" id="invertedColors" data-ng-model="widgetData.visual.colorSettings.inverted">
+                        <label for="invertedColors">Inverted colors</label>
+                    </div>
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="actions">
     <div class="ui button">
         Cancel

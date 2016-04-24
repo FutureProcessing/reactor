@@ -9,10 +9,13 @@ var NewWidgetWindowController = function($scope, $widgetPopupService, $widgetsSe
             visual: {
                 title: '',
                 fontSize: '',
-                color: '',
+                colorSettings: {
+                    model: 'static',
+                    color: 'default',
+                    inverted: false
+                },
                 textAlign: 'widget-align-left',
                 dropShadow: false,
-                inverted: false,
                 showDimmerLoading: true
             },
             layout: {
@@ -146,8 +149,22 @@ var NewWidgetWindowLinker = function($scope, $element, $attrs) {
         });
     };
 
+    var initTabs = function($element) {
+        $('.pointing.secondary.menu .item', $element).tab({
+            history: true,
+            historyType: 'hash',
+            alwaysRefresh: true
+        });
+    };
+
+    var initColorModelRadioGroup = function($element) {
+        $('.widget-color-model .ui.checkbox', $element).checkbox();
+    };
+
     initPopup($scope, $element);    
     initFormValidation($scope, $element);
+    initTabs($element);
+    initColorModelRadioGroup($element)
 }
 
 app.directive('widgetWindow', function() {

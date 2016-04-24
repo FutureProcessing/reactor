@@ -12,10 +12,9 @@
     <script src="../js/semantic.js"></script>
     <script src="../js/ngStorage.js"></script>
     <script src="../console/js/reconnecting-websocket.js"></script>
-    <!--script src="../js/services/service-websockets.js"></script>
-    <script src="../js/directives/directive-connection-monitor.js"></script-->
 
     <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.address.js"></script>
     <script src="js/detect-element-resize.js"></script>
     <script src="js/angular-gridster.js"></script>
     
@@ -63,9 +62,7 @@
     <div class="ui grid one column" data-ng-controller="ReactorBoardController">
         <div class="ui column" data-gridster="gristerOptions">
             <ul>
-                <li data-ng-repeat="widget in widgets" data-gridster-item="widgetLayoutMap" data-widget="widget">
-            
-                </li>
+                <li data-ng-repeat="widget in widgets" data-gridster-item="widgetLayoutMap" data-widget="widget"></li>
             </ul>
         </div>
     </div>

@@ -17,8 +17,8 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
     };
 
     $scope.getWidgetDecoration = function() {
-        var decoration = $scope.widget.visual.color;
-        if ($scope.widget.visual.inverted === true) {
+        var decoration = $scope.widget.visual.colorSettings.color;
+        if ($scope.widget.visual.colorSettings.inverted === true) {
             decoration = decoration + ' inverted';
         }
         if ($scope.widget.visual.dropShadow === true) {
@@ -36,7 +36,6 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
                 });
             },
             onDataRefreshFinished: function($widgetData) {
-                console.log('refresing widget: ' + $scope.widget.id)
                 $scope.widgetContent = $widgetData;
                 $scope.processing = false;
                 $scope.error = false;
