@@ -14,7 +14,7 @@
     <div class="ui two column grid">
         <div class="column">
             <h3 class="ui dividing header">
-            Widget visual settings
+                Widget visual settings
             </h3>
             <div class="ui form">
                 <div class="eight wide field">
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="fields">
                     <div class="sixteen wide field">
                         <label>Font size:</label>
@@ -103,7 +103,8 @@
             <div class="eight wide field">
                 <div class="ui input">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" id="showDimmerLoading" data-ng-model="widgetData.visual.showDimmerLoading">
+                        <input type="checkbox" id="showDimmerLoading"
+                               data-ng-model="widgetData.visual.showDimmerLoading">
                         <label for="showDimmerLoading">Show dimmer when loading data</label>
                     </div>
                     <label></label>
@@ -140,42 +141,45 @@
 </div>
 
 <div class="ui bottom attached tab segment" data-tab="color-settings">
+
     <div class="ui form">
         <div class="inline fields widget-color-model">
-            <div class="field">
-                <label>Widget color model</label>
-                <div class="ui radio checkbox">
-                    <input name="model" value="static" type="radio" data-ng-model="widgetData.visual.colorSettings.model">
-                    <label>Static</label>
+            <div class="ui input">
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" id="dynamicColorModel"
+                           data-ng-model="widgetData.visual.colorSettings.dynamic">
+                    <label for="dynamicColorModel" data-ng-hide="widgetData.visual.colorSettings.dynamic">Static
+                        color model</label>
+                    <label for="dynamicColorModel" data-ng-hide="!widgetData.visual.colorSettings.dynamic">Dynamic
+                        color model</label>
                 </div>
-            </div>
-            <div class="field">
-                <div class="ui radio checkbox">
-                    <input name="model" value="dynamic" type="radio" data-ng-model="widgetData.visual.colorSettings.model">
-                    <label>Dynamic</label>
-                </div>
+                <label></label>
             </div>
         </div>
     </div>
 
-    <div class="ui one column grid" data-ng-hide="widgetData.visual.colorSettings.model !== 'static'">
-        <div class="column">
-            <div class="ui form">
-                <div class="fields">
-                    <div class="sixteen wide field">
-                        <label>Widget color:</label>
+    <div class="ui segment" data-ng-hide="widgetData.visual.colorSettings.dynamic">
+        <div class="ui top attached label">Static color settings</div>
+        <div class="ui one column grid">
+            <div class="column">
+                <div class="ui form">
+                    <div class="inline fields">
+                        <div class="sixteen wide field">
+                            <label>Widget color:</label>
 
-                        <div class="ui fluid dropdown selection" data-ng-model="widgetData.visual.colorSettings.color">
-                            <div class="default text">Default</div>
-                            <i class="dropdown icon"></i>
-                            <div class="menu">
-                                <div class="item" data-value="">Default</div>
-                                <div class="item" data-value="green">Green</div>
-                                <div class="item" data-value="red">Red</div>
-                                <div class="item" data-value="blue">Blue</div>
-                                <div class="item" data-value="purple">Purple</div>
-                                <div class="item" data-value="orange">Orange</div>
-                                <div class="item" data-value="teal">Teal</div>
+                            <div class="ui dropdown selection"
+                                 data-ng-model="widgetData.visual.colorSettings.staticModel.color">
+                                <div class="default text">Default</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item" data-value="">Default</div>
+                                    <div class="item" data-value="green">Green</div>
+                                    <div class="item" data-value="red">Red</div>
+                                    <div class="item" data-value="blue">Blue</div>
+                                    <div class="item" data-value="purple">Purple</div>
+                                    <div class="item" data-value="orange">Orange</div>
+                                    <div class="item" data-value="teal">Teal</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,19 +188,68 @@
         </div>
     </div>
 
-    <div class="ui form">
-        <div class="fields">
-            <div class="sixteen wide field">
-                <div class="ui input">
-                    <div class="ui toggle checkbox">
-                        <input type="checkbox" id="invertedColors" data-ng-model="widgetData.visual.colorSettings.inverted">
-                        <label for="invertedColors">Inverted colors</label>
-                    </div>
-                    <label></label>
+    <div class="ui segment" data-ng-hide="!widgetData.visual.colorSettings.dynamic">
+        <div class="ui top attached label">Dynamic color settings</div>
+
+        <div class="ui three column grid">
+            <div class="column">
+                <div class="ui mini icon fluid input">
+                    <input type="text" class="" placeholder="Type condition..." data-ng-model="widgetData.visual.colorSettings.dynamicModel.blue">
+                    <i class="inverted blue question icon"></i>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui mini icon fluid input">
+                    <input type="text" placeholder="Type condition..." data-ng-model="widgetData.visual.colorSettings.dynamicModel.orange">
+                    <i class="inverted orange question icon"></i>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui mini icon fluid input">
+                    <input type="text" placeholder="Type condition..." data-ng-model="widgetData.visual.colorSettings.dynamicModel.green">
+                    <i class="inverted green question icon"></i>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui mini icon fluid input">
+                    <input type="text" placeholder="Type condition..." data-ng-model="widgetData.visual.colorSettings.dynamicModel.red">
+                    <i class="inverted red question icon"></i>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui mini icon fluid input">
+                    <input type="text" placeholder="Type condition..." data-ng-model="widgetData.visual.colorSettings.dynamicModel.purple">
+                    <i class="inverted purple question icon"></i>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui mini icon fluid input">
+                    <input type="text" placeholder="Type condition..." data-ng-model="widgetData.visual.colorSettings.dynamicModel.teal">
+                    <i class="inverted teal question icon"></i>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="ui one column grid">
+        <div class="column">
+            <div class="ui form">
+                <div class="fields">
+                    <div class="sixteen wide field">
+                        <div class="ui input">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="invertedColors"
+                                       data-ng-model="widgetData.visual.colorSettings.inverted">
+                                <label for="invertedColors">Inverted colors</label>
+                            </div>
+                            <label></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <div class="actions">

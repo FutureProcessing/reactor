@@ -10,8 +10,18 @@ var NewWidgetWindowController = function($scope, $widgetPopupService, $widgetsSe
                 title: '',
                 fontSize: '',
                 colorSettings: {
-                    model: 'static',
-                    color: 'default',
+                    dynamic: false,
+                    dynamicModel: {
+                        blue: '',
+                        orange: '',
+                        green: '',
+                        red: '',
+                        purple: '',
+                        teal: ''
+                    },
+                    staticModel: {
+                        color: 'default'
+                    },
                     inverted: false
                 },
                 textAlign: 'widget-align-left',
@@ -157,14 +167,9 @@ var NewWidgetWindowLinker = function($scope, $element, $attrs) {
         });
     };
 
-    var initColorModelRadioGroup = function($element) {
-        $('.widget-color-model .ui.checkbox', $element).checkbox();
-    };
-
     initPopup($scope, $element);    
     initFormValidation($scope, $element);
     initTabs($element);
-    initColorModelRadioGroup($element)
 }
 
 app.directive('widgetWindow', function() {

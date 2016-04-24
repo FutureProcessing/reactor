@@ -17,7 +17,10 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
     };
 
     $scope.getWidgetDecoration = function() {
-        var decoration = $scope.widget.visual.colorSettings.color;
+        var decoration = $scope.widget.visual.colorSettings.staticModel.color;
+        if ($scope.widget.visual.colorSettings.dynamic) {
+            decoration = evalWidgetDynamicColor();
+        }
         if ($scope.widget.visual.colorSettings.inverted === true) {
             decoration = decoration + ' inverted';
         }
@@ -27,6 +30,29 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
         decoration = decoration + ' ' + $scope.widget.visual.textAlign;
         return decoration;
     };
+
+    var evalWidgetDynamicColor = function() {
+        var response = $scope.widgetContent;
+        var widgetDynamicColorModel = $scope.widget.visual.colorSettings.dynamicModel;
+        if (eval(widgetDynamicColorModel.blue)) {
+            return 'blue';
+        }
+        if (eval(widgetDynamicColorModel.blue)) {
+            return 'orange';
+        }
+        if (eval(widgetDynamicColorModel.green)) {
+            return 'green';
+        }
+        if (eval(widgetDynamicColorModel.red)) {
+            return 'red';
+        }
+        if (eval(widgetDynamicColorModel.purple)) {
+            return 'purple';
+        }
+        if (eval(widgetDynamicColorModel.teal)) {
+            return 'teal';
+        }
+    }
 
     var bindContentRefreshEvents = function($scope) {
         $widgetContentRefreshService.addDataRefreshListener($scope.widget, {
