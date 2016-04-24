@@ -161,8 +161,7 @@ var NewWidgetWindowLinker = function($scope, $element, $attrs) {
 
     var initTabs = function($element) {
         $('.pointing.secondary.menu .item', $element).tab({
-            history: true,
-            historyType: 'hash',
+            history: false,
             alwaysRefresh: true
         });
     };
