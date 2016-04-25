@@ -34,23 +34,14 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
     var evalWidgetDynamicColor = function() {
         var response = $scope.widgetContent;
         var widgetDynamicColorModel = $scope.widget.visual.colorSettings.dynamicModel;
-        if (eval(widgetDynamicColorModel.blue)) {
-            return 'blue';
-        }
-        if (eval(widgetDynamicColorModel.blue)) {
-            return 'orange';
-        }
-        if (eval(widgetDynamicColorModel.green)) {
-            return 'green';
-        }
-        if (eval(widgetDynamicColorModel.red)) {
-            return 'red';
-        }
-        if (eval(widgetDynamicColorModel.purple)) {
-            return 'purple';
-        }
-        if (eval(widgetDynamicColorModel.teal)) {
-            return 'teal';
+
+        switch (true) {
+            case eval(widgetDynamicColorModel.blue): return 'blue';
+            case eval(widgetDynamicColorModel.orange): return 'orange';
+            case eval(widgetDynamicColorModel.green): return 'green';
+            case eval(widgetDynamicColorModel.red): return 'red';
+            case eval(widgetDynamicColorModel.purple): return 'purple';
+            case eval(widgetDynamicColorModel.teal): return 'teal';
         }
     }
 
