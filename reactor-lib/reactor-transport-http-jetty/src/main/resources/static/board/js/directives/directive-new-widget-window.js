@@ -9,10 +9,23 @@ var NewWidgetWindowController = function($scope, $widgetPopupService, $widgetsSe
             visual: {
                 title: '',
                 fontSize: '',
-                color: '',
+                colorSettings: {
+                    dynamic: false,
+                    dynamicModel: {
+                        blue: '',
+                        orange: '',
+                        green: '',
+                        red: '',
+                        purple: '',
+                        teal: ''
+                    },
+                    staticModel: {
+                        color: 'default'
+                    },
+                    inverted: false
+                },
                 textAlign: 'widget-align-left',
                 dropShadow: false,
-                inverted: false,
                 showDimmerLoading: true
             },
             layout: {
@@ -146,8 +159,16 @@ var NewWidgetWindowLinker = function($scope, $element, $attrs) {
         });
     };
 
+    var initTabs = function($element) {
+        $('.pointing.secondary.menu .item', $element).tab({
+            history: false,
+            alwaysRefresh: true
+        });
+    };
+
     initPopup($scope, $element);    
     initFormValidation($scope, $element);
+    initTabs($element);
 }
 
 app.directive('widgetWindow', function() {

@@ -49,7 +49,7 @@ body {
         Grid
 --------------------*/
 
-#board .ui.grid {
+#board .ui.board.grid {
   padding-top: 10px;
 }
 

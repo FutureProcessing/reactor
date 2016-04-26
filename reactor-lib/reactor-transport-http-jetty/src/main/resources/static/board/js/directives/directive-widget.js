@@ -17,8 +17,11 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
     };
 
     $scope.getWidgetDecoration = function() {
-        var decoration = $scope.widget.visual.color;
-        if ($scope.widget.visual.inverted === true) {
+        var decoration = $scope.widget.visual.colorSettings.staticModel.color;
+        if ($scope.widget.visual.colorSettings.dynamic) {
+            decoration = evalWidgetDynamicColor();
+        }
+        if ($scope.widget.visual.colorSettings.inverted === true) {
             decoration = decoration + ' inverted';
         }
         if ($scope.widget.visual.dropShadow === true) {
@@ -28,6 +31,20 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
         return decoration;
     };
 
+    var evalWidgetDynamicColor = function() {
+        var response = $scope.widgetContent;
+        var widgetDynamicColorModel = $scope.widget.visual.colorSettings.dynamicModel;
+
+        switch (true) {
+            case eval(widgetDynamicColorModel.blue): return 'blue';
+            case eval(widgetDynamicColorModel.orange): return 'orange';
+            case eval(widgetDynamicColorModel.green): return 'green';
+            case eval(widgetDynamicColorModel.red): return 'red';
+            case eval(widgetDynamicColorModel.purple): return 'purple';
+            case eval(widgetDynamicColorModel.teal): return 'teal';
+        }
+    }
+
     var bindContentRefreshEvents = function($scope) {
         $widgetContentRefreshService.addDataRefreshListener($scope.widget, {
             onDataRefreshStarted: function() {
@@ -36,7 +53,6 @@ var WidgetController = function($scope, $widgetPopupService, $widgetContentRefre
                 });
             },
             onDataRefreshFinished: function($widgetData) {
-                console.log('refresing widget: ' + $scope.widget.id)
                 $scope.widgetContent = $widgetData;
                 $scope.processing = false;
                 $scope.error = false;
